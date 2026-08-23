@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>Anime Pure | عالم الأنمي والمانجا بين يديك</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --bg:#0a0c11; --bg-rgb:10,12,17; --bg-alt:#12151c; --card:#181c24; --card-rgb:24,28,36; --card2:#1f242e;
+    --text:#f2f3f6; --text-dim:#8b93a5; --line:rgba(255,255,255,.08); --line-strong:rgba(255,255,255,.14);
+    --accent:#ff7a45; --accent-rgb:255,122,69; --accent-soft:#ffb08a; --on-accent:#1a0d05;
+    --secondary:#4fd1c5; --secondary-rgb:79,209,197; --star:#ffc247; --heart:#ef5164;
+    --safe-top:env(safe-area-inset-top,0px); --safe-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  html{background:var(--bg);}
+  body{
+    font-family:'Tajawal', sans-serif;
+    background:radial-gradient(ellipse 480px 300px at 90% -5%, rgba(var(--accent-rgb),.10), transparent 60%),
+      radial-gradient(ellipse 420px 300px at 0% 10%, rgba(var(--secondary-rgb),.06), transparent 55%), var(--bg);
+    color:var(--text); min-height:100vh; overflow-x:hidden; padding-bottom:calc(96px + var(--safe-bottom));
+    max-width:480px; margin:0 auto; position:relative; transition:background .3s, color .3s;
+  }
+  a{color:inherit; text-decoration:none;}
+  button, input, textarea, select{font-family:inherit;}
+  ::-webkit-scrollbar{display:none;} *{scrollbar-width:none;}
+
+  .topbar{position:sticky; top:0; z-index:40; padding:calc(10px + var(--safe-top)) 16px 12px; background:rgba(var(--bg-rgb),.9); backdrop-filter:blur(14px); border-bottom:1px solid var(--line);}
+  .brand-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+  .brand{display:flex; align-items:center; gap:8px;}
+  .brand .mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--secondary));display:flex;align-items:center;justify-content:center;}
+  .brand .mark svg{width:16px;height:16px;fill:var(--on-accent);stroke:none;}
+  .brand .name{font-weight:900; font-size:18px; color:var(--text);}
+  .brand .tag{font-size:9px; color:var(--text-dim); margin-top:1px;}
+  .icon-btn{width:38px; height:38px; border-radius:12px; flex-shrink:0; background:var(--card); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--text); position:relative; cursor:pointer; transition:.2s;}
+  .icon-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8;}
+  .icon-btn:active{transform:scale(.92);}
+  .icon-btn .dot{position:absolute; top:6px; left:7px; width:7px; height:7px; border-radius:50%; background:var(--heart); border:1.5px solid var(--bg);}
+  .search-wrap{display:flex; flex-direction:column; gap:8px;}
+  .searchbox{display:flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:10px 14px; font-size:12.5px; color:var(--text-dim); cursor:pointer;}
+  .searchbox svg{width:16px;height:16px;stroke:var(--text-dim);fill:none;stroke-width:1.8;flex-shrink:0;}
+  .searchbox input{background:none; border:none; outline:none; color:var(--text); width:100%; cursor:pointer;}
+  .quick-filters{display:flex; gap:6px; overflow-x:auto; padding-bottom:2px;}
+  .q-tag{padding:5px 12px; border-radius:10px; font-size:11px; white-space:nowrap; background:var(--card); border:1px solid var(--line); color:var(--text-dim); cursor:pointer;}
+  .q-tag.active{background:var(--accent); color:var(--on-accent); font-weight:700; border-color:var(--accent);}
+
+  main{padding:16px 16px 90px;}
+  .hero-carousel{position:relative; border-radius:20px; overflow:hidden; border:1px solid var(--line);}
+  .hero-track{display:flex; overflow-x:auto; scroll-snap-type:x mandatory; scroll-behavior:smooth;}
+  .hero-slide{flex:0 0 100%; scroll-snap-align:start; min-height:220px; position:relative; display:flex; flex-direction:column; justify-content:flex-end;}
+  .hs1{background:linear-gradient(135deg,#221610 0%,#141821 60%,#0a0c11 100%);}
+  .hs2{background:linear-gradient(135deg,#101f22 0%,#141821 60%,#0a0c11 100%);}
+  .hs3{background:linear-gradient(135deg,#1a1224 0%,#141821 60%,#0a0c11 100%);}
+  .hero-bg-glow{position:absolute; inset:0; background:radial-gradient(circle at 85% 15%, rgba(var(--accent-rgb),.25), transparent 45%), radial-gradient(circle at 10% 90%, rgba(var(--secondary-rgb),.16), transparent 50%); pointer-events:none;}
+  .hero-badge{position:absolute; top:14px; right:14px; background:rgba(var(--accent-rgb),.18); border:1px solid rgba(var(--accent-rgb),.4); color:var(--accent-soft); padding:4px 11px; border-radius:16px; font-size:10px; font-weight:700; z-index:3;}
+  .hero-content{position:relative; z-index:3; padding:20px 18px 24px;}
+  .hero-slide h1{font-weight:900; font-size:22px; line-height:1.3; color:#fff; margin-bottom:6px;}
+  .hero-slide p{color:#c7cbd6; font-size:11.5px; line-height:1.6; margin-bottom:14px; max-width:290px;}
+  .cta-row{display:flex; gap:10px; align-items:center;}
+  .btn{padding:10px 16px; border-radius:12px; font-size:12px; font-weight:700; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:6px;}
+  .btn svg{width:13px;height:13px;}
+  .btn-primary{background:var(--accent); color:var(--on-accent);}
+  .btn-ghost{background:rgba(255,255,255,.08); color:#fff; border:1px solid rgba(255,255,255,.2);}
+  .hero-dots{position:absolute; bottom:10px; left:50%; transform:translateX(-50%); display:flex; gap:6px; z-index:4;}
+  .hero-dot{width:5px; height:5px; border-radius:50%; background:rgba(255,255,255,.3);}
+  .hero-dot.active{background:var(--accent); width:16px; border-radius:4px;}
+
+  .genre-tabs{display:flex; gap:8px; margin-top:18px; overflow-x:auto; padding-bottom:4px;}
+  .g-tab{padding:7px 14px; border-radius:12px; font-size:11.5px; background:var(--card); border:1px solid var(--line); color:var(--text-dim); white-space:nowrap; cursor:pointer;}
+  .g-tab.active{background:var(--secondary); color:var(--on-accent); font-weight:700; border-color:var(--secondary);}
+
+  .section{margin-top:22px;}
+  .section-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;}
+  .section-head h2{font-weight:800; font-size:16.5px; color:var(--text);}
+  .section-head .seeall{font-size:11.5px; color:var(--accent); cursor:pointer;}
+
+  .rowscroll{display:flex; gap:12px; overflow-x:auto; padding-bottom:4px; margin:0 -16px; padding-inline:16px; scroll-snap-type:x proximity;}
+  .card{flex:0 0 128px; border-radius:14px; overflow:hidden; position:relative; border:1px solid var(--line); background:var(--card); scroll-snap-align:start; cursor:pointer;}
+  .card:active{transform:scale(.97);}
+  .thumb{aspect-ratio:2/3; position:relative; display:flex; align-items:center; justify-content:center; background:linear-gradient(160deg, rgba(var(--accent-rgb),.10), var(--card2) 75%);}
+  .poster-icon{width:46px; height:46px; border-radius:14px; background:rgba(var(--accent-rgb),.12); border:1px solid rgba(var(--accent-rgb),.3); display:flex; align-items:center; justify-content:center;}
+  .poster-icon svg{width:21px;height:21px;stroke:var(--accent);fill:none;stroke-width:1.6;}
+  .badge{position:absolute; top:7px; right:7px; background:var(--secondary); color:var(--on-accent); font-size:9px; font-weight:800; padding:3px 7px; border-radius:8px; z-index:2;}
+  .fav-toggle{position:absolute; top:7px; left:7px; width:24px; height:24px; border-radius:8px; background:rgba(0,0,0,.5); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; z-index:2;}
+  .fav-toggle svg{width:13px;height:13px;stroke:#fff;fill:none;stroke-width:1.8;}
+  .fav-toggle.on svg{fill:var(--heart);stroke:var(--heart);}
+  .status-pill{position:absolute; bottom:0; right:0; left:0; background:rgba(0,0,0,.65); color:var(--accent-soft); font-size:8.5px; font-weight:700; text-align:center; padding:2px 0; z-index:2;}
+  .card-info{padding:8px 9px 10px;}
+  .card-info .t{font-size:11.5px; font-weight:700; color:var(--text); margin-bottom:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .card-info .sub{font-size:10px; color:var(--text-dim); display:flex; justify-content:space-between; align-items:center;}
+  .card-info .sub svg{width:10px;height:10px;fill:var(--star);stroke:none;}
+  .grid-cards{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
+  .grid-cards .card{flex:none; width:100%;}
+
+  .drawer-overlay{position:fixed; inset:0; z-index:100; background:rgba(0,0,0,.75); opacity:0; pointer-events:none; transition:opacity .3s ease;}
+  .drawer-overlay.open{opacity:1; pointer-events:auto;}
+  .drawer{position:fixed; top:0; bottom:0; right:0; width:82%; max-width:320px; z-index:101; background:var(--bg-alt); border-left:1px solid var(--line); padding:calc(16px + var(--safe-top)) 16px calc(20px + var(--safe-bottom)); display:flex; flex-direction:column; transform:translateX(100%); transition:transform .32s cubic-bezier(.22,.9,.32,1); overflow-y:auto;}
+  .drawer.open{transform:translateX(0);}
+  .drawer-header{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;}
+  .drawer-close{width:32px; height:32px; border-radius:10px; background:var(--card); display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--text-dim);}
+  .drawer-close svg{width:14px;height:14px;}
+  .user-card{background:linear-gradient(135deg, rgba(var(--accent-rgb),.16), rgba(var(--secondary-rgb),.1)); border:1px solid var(--line-strong); border-radius:16px; padding:14px; margin-bottom:16px; cursor:pointer;}
+  .user-profile-info{display:flex; align-items:center; gap:12px;}
+  .avatar{width:50px; height:50px; border-radius:14px; border:2px solid var(--accent); background:var(--card); display:flex; align-items:center; justify-content:center;}
+  .avatar svg{width:22px;height:22px;stroke:var(--accent);fill:none;stroke-width:1.6;}
+  .user-details .u-name{font-size:14.5px; font-weight:800; color:var(--text);}
+  .user-details .u-role{font-size:10px; color:var(--accent-soft); font-weight:700;}
+  .drawer-section-title{font-size:10.5px; font-weight:700; color:var(--text-dim); letter-spacing:.5px; margin:14px 6px 8px; text-transform:uppercase;}
+  .drawer-menu{display:flex; flex-direction:column; gap:6px;}
+  .drawer-item{display:flex; align-items:center; justify-content:space-between; padding:11px 14px; border-radius:12px; font-size:12.5px; color:var(--text); background:var(--card); border:1px solid transparent; cursor:pointer;}
+  .drawer-item .left-part{display:flex; align-items:center; gap:10px;}
+  .drawer-item svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.7;}
+  .drawer-item:active, .drawer-item.active{background:rgba(var(--accent-rgb),.14); border-color:rgba(var(--accent-rgb),.35); color:var(--accent-soft);}
+  .tag-highlight{font-size:9px; padding:2px 7px; border-radius:8px; background:var(--heart); color:#fff; font-weight:700;}
+  .tag-gold{font-size:9px; padding:2px 7px; border-radius:8px; background:var(--accent); color:var(--on-accent); font-weight:700;}
+
+  .modal-overlay{position:fixed; inset:0; z-index:150; background:rgba(0,0,0,.78); backdrop-filter:blur(8px); opacity:0; pointer-events:none; transition:opacity .3s;}
+  .modal-overlay.open{opacity:1; pointer-events:auto;}
+  .modal-window{
+    position:fixed; inset:0; background:var(--bg-alt);
+    padding:calc(16px + var(--safe-top)) 20px calc(24px + var(--safe-bottom)); overflow-y:auto;
+    display:flex; flex-direction:column; max-width:480px; margin:0 auto; left:0; right:0;
+    visibility:hidden; pointer-events:none; transform:translateX(100%);
+    transition:transform .34s cubic-bezier(.22,.9,.32,1), visibility 0s linear .34s;
+  }
+  .modal-window.open{visibility:visible; pointer-events:auto; transform:translateX(0); transition:transform .34s cubic-bezier(.22,.9,.32,1);}
+  .modal-window.sheet{top:auto; inset:auto; left:0; right:0; bottom:0; background:transparent; padding:0; transform:translateY(100%);}
+  .modal-window.sheet.open{transform:translateY(0);}
+  .modal-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; border-bottom:1px solid var(--line); padding-bottom:12px;}
+  .modal-head h3{font-weight:800; font-size:18px; color:var(--text); display:flex; align-items:center; gap:8px;}
+  .modal-head h3 svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:1.7;}
+  .modal-close{width:34px; height:34px; border-radius:10px; background:var(--card); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--text); cursor:pointer; flex-shrink:0;}
+  .modal-close svg{width:14px;height:14px;}
+  .form-group{margin-bottom:14px;}
+  .form-group label{font-size:12px; color:var(--text-dim); margin-bottom:6px; display:block;}
+  .form-input{width:100%; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px 14px; color:var(--text); outline:none; font-size:13px;}
+  .form-input:focus{border-color:var(--accent);}
+
+  .fav-tabs{display:flex; gap:8px; overflow-x:auto; margin-bottom:16px; padding-bottom:4px;}
+  .fav-tab-btn{padding:7px 13px; border-radius:10px; font-size:11.5px; font-weight:700; white-space:nowrap; background:var(--card); border:1px solid var(--line); color:var(--text-dim); cursor:pointer;}
+  .fav-tab-btn.active{background:var(--accent); color:var(--on-accent); border-color:var(--accent);}
+  .fav-item-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; display:flex; gap:12px; align-items:center; margin-bottom:10px;}
+  .fav-item-cover{width:58px; height:78px; border-radius:10px; background:var(--card2); display:flex; align-items:center; justify-content:center; flex-shrink:0; border:1px solid var(--line);}
+  .fav-item-cover svg{width:22px;height:22px;stroke:var(--accent);fill:none;stroke-width:1.5;}
+  .fav-item-details{flex:1; min-width:0;}
+  .fav-item-title{font-size:13px; font-weight:700; color:var(--text); margin-bottom:4px;}
+  .fav-item-sub{font-size:10.5px; color:var(--text-dim); margin-bottom:8px; display:flex; align-items:center; gap:6px;}
+  .progress-bar-bg{width:100%; height:5px; background:var(--line); border-radius:10px; overflow:hidden;}
+  .progress-bar-fill{height:100%; background:var(--accent); border-radius:10px;}
+  .fav-remove{width:28px; height:28px; border-radius:9px; background:var(--card2); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--heart); flex-shrink:0; cursor:pointer;}
+  .fav-remove svg{width:12px;height:12px;}
+
+  .anime-details-header{display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;}
+  .anime-top-icons{display:flex; gap:10px;}
+  .anime-top-icons span{cursor:pointer; width:34px;height:34px;border-radius:10px;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;}
+  .anime-top-icons svg{width:15px;height:15px;stroke:var(--text);fill:none;stroke-width:1.7;}
+  .anime-top-icons .fav-on svg{fill:var(--heart);stroke:var(--heart);}
+  .anime-subtabs{display:flex; gap:16px; border-bottom:1px solid var(--line); margin-bottom:16px;}
+  .anime-subtab{font-size:12.5px; color:var(--text-dim); padding-bottom:8px; cursor:pointer; white-space:nowrap;}
+  .anime-subtab.active{color:var(--accent); font-weight:700; border-bottom:2px solid var(--accent);}
+  .anime-panel{display:none;} .anime-panel.active{display:block;}
+  .anime-hero-card{display:flex; gap:14px; margin-bottom:16px; align-items:center; background:var(--card); padding:12px; border-radius:14px; border:1px solid var(--line);}
+  .anime-poster-lg{width:86px; height:114px; border-radius:12px; background:var(--card2); display:flex; align-items:center; justify-content:center; flex-shrink:0; border:1px solid var(--line-strong);}
+  .anime-poster-lg svg{width:34px;height:34px;stroke:var(--accent);fill:none;stroke-width:1.4;}
+  .anime-poster-info h4{font-size:15px; font-weight:800; color:var(--text); margin-bottom:4px;}
+  .anime-poster-info p{font-size:10.5px; color:var(--text-dim); line-height:1.5;}
+  .status-select{margin-top:8px; width:100%; background:var(--card2); border:1px solid var(--line-strong); border-radius:10px; padding:7px 10px; color:var(--accent-soft); font-size:11px; font-weight:700; outline:none;}
+  .anime-ratings-row{display:flex; justify-content:space-around; background:var(--card); border-radius:14px; padding:12px; margin-bottom:12px; border:1px solid var(--line); text-align:center;}
+  .rate-box .num{font-size:15px; font-weight:800; color:var(--accent);}
+  .rate-box .count{font-size:9.5px; color:var(--text-dim); margin-top:2px;}
+  .countdown-strip{display:flex; align-items:center; gap:8px; background:rgba(var(--secondary-rgb),.08); border:1px solid rgba(var(--secondary-rgb),.35); border-radius:12px; padding:10px 12px; margin-bottom:16px; font-size:11.5px; color:var(--secondary);}
+  .countdown-strip svg{width:15px;height:15px;stroke:var(--secondary);fill:none;stroke-width:1.7;flex-shrink:0;}
+  .anime-action-buttons{display:flex; gap:10px; margin-bottom:16px;}
+  .action-pill{flex:1; background:var(--card); border:1px solid var(--line); padding:10px; border-radius:12px; text-align:center; font-size:11px; font-weight:700; color:var(--text); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;}
+  .action-pill svg{width:14px;height:14px;}
+  .action-pill.on{background:var(--accent); color:var(--on-accent); border-color:var(--accent);}
+  .watch-btn{width:100%; background:var(--accent); color:var(--on-accent); border:none; padding:13px; border-radius:14px; font-size:13px; font-weight:900; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer; margin-bottom:12px;}
+  .watch-btn svg{width:15px;height:15px;fill:var(--on-accent);stroke:none;}
+  .anime-desc-box{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; font-size:11.5px; color:var(--text-dim); line-height:1.7; margin-bottom:16px;}
+  .anime-info-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;}
+  .info-cell{background:var(--card); padding:10px 12px; border-radius:10px; border:1px solid var(--line);}
+  .info-cell .label{font-size:9.5px; color:var(--text-dim); margin-bottom:2px;}
+  .info-cell .val{font-size:11.5px; font-weight:700; color:var(--text);}
+  .episodes-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(80px, 1fr)); gap:8px; max-height:280px; overflow-y:auto; padding-right:2px;}
+  .ep-btn{background:var(--card); border:1px solid var(--line); padding:10px 6px; border-radius:12px; text-align:center; font-size:11px; color:var(--text); cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:4px;}
+  .ep-btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.8;}
+  .ep-btn.watched{background:var(--accent); color:var(--on-accent); font-weight:700; border-color:var(--accent);}
+  .ep-btn.watched svg{fill:var(--on-accent);stroke:none;}
+  .my-rate-inline{display:flex; align-items:center; gap:10px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 14px; margin-bottom:16px;}
+  .my-rate-inline .lbl{font-size:11px; color:var(--text-dim); flex-shrink:0;}
+  .star-pick{font-size:20px; color:var(--line-strong); cursor:pointer;}
+  .star-pick.on{color:var(--star);}
+
+  .comments-inline{border-top:1px solid var(--line); padding-top:14px; margin-top:4px;}
+  .comments-inline .ttl{font-size:12.5px; font-weight:700; color:var(--text); margin-bottom:12px; display:flex; align-items:center; gap:6px;}
+  .comments-inline .ttl svg{width:15px;height:15px;stroke:var(--accent);fill:none;stroke-width:1.7;}
+  .chat-box{display:flex; flex-direction:column; gap:10px; margin-bottom:12px;}
+  .chat-msg{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px; position:relative;}
+  .chat-user{font-size:10.5px; font-weight:700; color:var(--accent-soft); margin-bottom:2px; display:flex; justify-content:space-between;}
+  .chat-text{font-size:11.5px; color:var(--text); line-height:1.6;}
+  .chat-report{position:absolute; left:8px; top:8px; font-size:9.5px; color:var(--text-dim); cursor:pointer; display:flex; align-items:center; gap:3px;}
+  .chat-report svg{width:10px;height:10px;}
+  .chat-input-row{display:flex; gap:8px; align-items:center;}
+  .chat-send{width:40px; height:40px; border-radius:12px; background:var(--accent); color:var(--on-accent); border:none; flex-shrink:0; cursor:pointer; display:flex; align-items:center; justify-content:center;}
+  .chat-send svg{width:16px;height:16px;fill:var(--on-accent);stroke:none;}
+
+  .acc-cover{height:90px; border-radius:16px; background:linear-gradient(120deg, rgba(var(--accent-rgb),.25), var(--card2) 70%); position:relative; margin-bottom:44px; border:1px solid var(--line);}
+  .acc-avatar-wrap{position:absolute; bottom:-32px; right:16px; width:66px; height:66px; border-radius:18px; background:var(--card); border:3px solid var(--bg-alt); display:flex; align-items:center; justify-content:center;}
+  .acc-avatar-wrap svg{width:28px;height:28px;stroke:var(--accent);fill:none;stroke-width:1.6;}
+  .acc-lvl-badge{position:absolute; bottom:-32px; left:16px; background:var(--card); border:1px solid var(--line-strong); border-radius:12px; padding:8px 12px; text-align:center;}
+  .acc-lvl-badge .n{font-size:14px; font-weight:900; color:var(--star);}
+  .acc-lvl-badge .l{font-size:8px; color:var(--text-dim);}
+  .acc-name-block{text-align:right; padding-right:16px; margin-bottom:16px;}
+  .acc-name-block .nm{font-size:17px; font-weight:900; color:var(--text);}
+  .acc-name-block .rl{font-size:10.5px; color:var(--accent-soft); font-weight:700; margin-top:2px;}
+  .acc-name-block .since{font-size:9.5px; color:var(--text-dim); margin-top:3px;}
+  .acc-level-bar{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin-bottom:16px;}
+  .acc-level-bar .row{display:flex; justify-content:space-between; font-size:10.5px; color:var(--text-dim); margin-bottom:6px;}
+  .acc-tabs{display:flex; gap:8px; margin-bottom:16px;}
+  .acc-tab{flex:1; text-align:center; padding:9px; border-radius:11px; font-size:11.5px; font-weight:700; background:var(--card); border:1px solid var(--line); color:var(--text-dim); cursor:pointer;}
+  .acc-tab.active{background:var(--accent); color:var(--on-accent); border-color:var(--accent);}
+  .acc-panel{display:none;} .acc-panel.active{display:block;}
+  .account-stats{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;}
+  .stat-cell2{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; text-align:center;}
+  .stat-cell2 svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:1.6;margin-bottom:6px;}
+  .stat-cell2 .num{font-size:19px; font-weight:900; color:var(--text);}
+  .stat-cell2 .lbl{font-size:9.5px; color:var(--text-dim); margin-top:3px;}
+  .badges-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px;}
+  .badge-cell{text-align:center; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 4px;}
+  .badge-cell.locked{opacity:.3;}
+  .badge-cell svg{width:19px;height:19px;stroke:var(--star);fill:none;stroke-width:1.5;margin-bottom:5px;}
+  .badge-cell .lbl{font-size:8px; color:var(--text-dim);}
+
+  .empty-state{text-align:center; padding:40px 10px; color:var(--text-dim);}
+  .empty-state svg{width:34px;height:34px;stroke:var(--text-dim);fill:none;stroke-width:1.4;margin-bottom:10px;}
+  .empty-state .txt{font-size:12px;}
+
+  .bottom-nav{position:fixed; bottom:14px; left:50%; transform:translateX(-50%); width:calc(100% - 32px); max-width:448px; background:rgba(var(--card-rgb),.95); backdrop-filter:blur(16px); border:1px solid var(--line-strong); border-radius:20px; display:flex; justify-content:space-around; padding:9px 6px; box-shadow:0 14px 34px rgba(0,0,0,.35); z-index:60;}
+  .nav-btn{background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--text-dim); font-size:9px; cursor:pointer; padding:6px 12px; border-radius:13px;}
+  .nav-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.7;}
+  .nav-btn.active{color:var(--accent); background:rgba(var(--accent-rgb),.14);}
+
+  .switch-row{display:flex; justify-content:space-between; align-items:center; padding:12px 14px; background:var(--card); border:1px solid var(--line); border-radius:12px; margin-bottom:8px;}
+  .switch-row .lbl{font-size:12px; color:var(--text);}
+  .switch-row .sub{font-size:9.5px; color:var(--text-dim); margin-top:2px;}
+  .switch{position:relative; width:40px; height:23px; flex-shrink:0;}
+  .switch input{opacity:0; width:0; height:0;}
+  .slider-tg{position:absolute; cursor:pointer; inset:0; background:var(--line-strong); border-radius:24px; transition:.2s;}
+  .slider-tg:before{content:''; position:absolute; height:17px; width:17px; right:3px; bottom:3px; background:#fff; border-radius:50%; transition:.2s;}
+  input:checked + .slider-tg{background:var(--accent);}
+  input:checked + .slider-tg:before{transform:translateX(17px);}
+
+  .theme-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:6px;}
+  .theme-card{border-radius:14px; padding:12px; cursor:pointer; border:2px solid var(--line); position:relative; overflow:hidden;}
+  .theme-card.active{border-color:var(--accent);}
+  .theme-swatch{display:flex; gap:5px; margin-bottom:8px;}
+  .theme-swatch i{width:16px;height:16px;border-radius:5px;display:block;}
+  .theme-card .tn{font-size:11px; font-weight:700;}
+  .theme-check{position:absolute; top:8px; left:8px; width:18px; height:18px; border-radius:50%; background:var(--accent); display:none; align-items:center; justify-content:center;}
+  .theme-card.active .theme-check{display:flex;}
+  .theme-check svg{width:10px;height:10px;stroke:var(--on-accent);fill:none;stroke-width:3;}
+
+  .player-screen{background:var(--card2); border-radius:16px; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; position:relative; margin-bottom:14px; border:1px solid var(--line); overflow:hidden;}
+  .player-screen svg.bgic{width:60px;height:60px;stroke:var(--line-strong);fill:none;stroke-width:1.2;}
+  .play-fab{position:absolute; width:56px; height:56px; border-radius:50%; background:rgba(0,0,0,.4); backdrop-filter:blur(6px); border:1.5px solid rgba(255,255,255,.35); display:flex; align-items:center; justify-content:center; cursor:pointer;}
+  .play-fab svg{width:21px;height:21px;fill:#fff;stroke:none;}
+  .player-time-row{display:flex; justify-content:space-between; font-size:10px; color:var(--text-dim); margin-top:6px;}
+  .player-controls{display:flex; align-items:center; justify-content:center; gap:24px; margin:14px 0;}
+  .player-controls span{cursor:pointer; width:38px;height:38px;border-radius:12px;background:var(--card);color:var(--text);display:flex;align-items:center;justify-content:center;}
+  .player-controls svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;}
+  .player-controls .mid{background:var(--accent); color:var(--on-accent);}
+  .player-controls .mid svg{width:19px;height:19px;fill:var(--on-accent);stroke:none;}
+  .quality-row{display:flex; gap:8px; margin-bottom:16px;}
+  .quality-chip{padding:6px 12px; border-radius:10px; font-size:11px; background:var(--card); border:1px solid var(--line); color:var(--text-dim); cursor:pointer;}
+  .quality-chip.active{background:var(--accent); color:var(--on-accent); border-color:var(--accent); font-weight:700;}
+
+  .share-sheet{background:var(--bg-alt); border:1px solid var(--line-strong); border-radius:18px 18px 0 0; padding:16px;}
+  .share-icons{display:flex; justify-content:space-around; margin:14px 0;}
+  .share-ic{display:flex; flex-direction:column; align-items:center; gap:6px; font-size:10px; color:var(--text-dim); cursor:pointer;}
+  .share-ic .circ{width:42px; height:42px; border-radius:13px; background:var(--card); border:1px solid var(--line); display:flex; align-items:center; justify-content:center;}
+  .share-ic svg{width:17px;height:17px;stroke:var(--text);fill:none;stroke-width:1.6;}
+  .copy-row{display:flex; gap:8px; align-items:center; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:8px 10px;}
+  .copy-row span{flex:1; font-size:11px; color:var(--text-dim); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .copy-btn{background:var(--accent); color:var(--on-accent); border:none; border-radius:8px; padding:7px 14px; font-size:11px; font-weight:700; cursor:pointer;}
+
+  .team-card{display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; margin-bottom:10px;}
+  .team-ic{width:44px; height:44px; border-radius:12px; background:var(--card2); border:1px solid var(--line-strong); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .team-ic svg{width:19px;height:19px;stroke:var(--accent);fill:none;stroke-width:1.5;}
+  .team-info{flex:1;}
+  .team-name{font-size:12.5px; font-weight:700; color:var(--text);}
+  .team-sub{font-size:10px; color:var(--text-dim); margin-top:2px;}
+  .follow-btn{padding:7px 13px; border-radius:10px; font-size:10.5px; font-weight:700; background:var(--card2); border:1px solid var(--line); color:var(--text); cursor:pointer;}
+  .follow-btn.on{background:var(--accent); color:var(--on-accent); border-color:var(--accent);}
+
+  .upcoming-item{display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; margin-bottom:10px; cursor:pointer;}
+  .upcoming-ic{width:44px; height:44px; border-radius:12px; background:var(--card2); border:1px solid var(--line-strong); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .upcoming-ic svg{width:19px;height:19px;stroke:var(--accent);fill:none;stroke-width:1.5;}
+  .upcoming-info{flex:1;}
+  .upcoming-info .t{font-size:12.5px; font-weight:700; color:var(--text);}
+  .upcoming-info .s{font-size:10px; color:var(--text-dim); margin-top:2px;}
+  .upcoming-count{font-size:12px; font-weight:900; color:var(--secondary); background:rgba(var(--secondary-rgb),.1); border:1px solid rgba(var(--secondary-rgb),.35); border-radius:10px; padding:6px 10px; text-align:center; min-width:64px;}
+
+  .search-chip-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;}
+  .search-chip{padding:7px 13px; border-radius:11px; font-size:11px; background:var(--card); border:1px solid var(--line); color:var(--text-dim); cursor:pointer;}
+  .search-chip.active{background:var(--accent); color:var(--on-accent); border-color:var(--accent);}
+  .search-tabs-row{display:flex; gap:8px; margin-bottom:12px;}
+  .search-sort{margin-bottom:14px;}
+  .preset-card{border-radius:14px; padding:12px; cursor:pointer; border:2px solid var(--line); position:relative; overflow:hidden;}
+  .preset-swatch{height:38px; border-radius:9px; margin-bottom:8px;}
+  .preset-card .pn{font-size:10.5px; font-weight:700; color:var(--text);}
+  .auth-tabs{display:flex; gap:8px; margin-bottom:16px;}
+  .auth-tab{flex:1; text-align:center; padding:10px; border-radius:12px; font-size:12px; font-weight:700; background:var(--card); border:1px solid var(--line); color:var(--text-dim); cursor:pointer;}
+  .auth-tab.active{background:var(--accent); color:var(--on-accent); border-color:var(--accent);}
+  .auth-msg{font-size:11.5px; padding:10px 12px; border-radius:10px; margin-bottom:12px; display:none;}
+  .auth-msg.err{background:rgba(239,81,100,.12); border:1px solid rgba(239,81,100,.4); color:var(--heart); display:block;}
+  .auth-msg.ok{background:rgba(var(--secondary-rgb),.12); border:1px solid rgba(var(--secondary-rgb),.4); color:var(--secondary); display:block;}
+
+  /* ===== layout styles (structural, not color) ===== */
+  .layout-card{border-radius:14px; padding:12px; cursor:pointer; border:2px solid var(--line); background:var(--card);}
+  .layout-card.active{border-color:var(--accent);}
+  .layout-card .ln{font-size:11px; font-weight:700; margin-top:8px;}
+  .layout-preview{height:44px; border-radius:8px; background:var(--card2); display:flex; align-items:center; gap:4px; padding:6px; overflow:hidden;}
+  .layout-preview i{background:var(--accent); border-radius:3px; flex-shrink:0;}
+  .lp-grid i{width:14px;height:32px;}
+  .lp-list i{width:100%;height:9px;}
+  .lp-list{flex-direction:column; justify-content:center; gap:4px;}
+  .lp-cards i{width:44px;height:32px;}
+
+  /* List layout: minimal compact header + single static hero, no carousel + vertical rows */
+  body.layout-list .hero-slide:not(:first-child){display:none;}
+  body.layout-list .hero-dots{display:none;}
+  body.layout-list .hero-carousel{border-radius:12px;}
+  body.layout-list .hero-slide{min-height:150px;}
+  body.layout-list .hero-content{padding:14px 16px 16px;}
+  body.layout-list .hero-slide h1{font-size:17px;}
+  body.layout-list .hero-slide p{display:none;}
+  body.layout-list .quick-filters{display:none;}
+  body.layout-list .topbar{padding-bottom:8px;}
+  body.layout-list .section-head h2{font-size:13.5px; text-transform:uppercase; letter-spacing:.5px; color:var(--text-dim);}
+  body.layout-list .genre-tabs{margin-top:12px;}
+  body.layout-list .rowscroll{flex-direction:column; overflow-x:visible; margin:0; padding-inline:0;}
+  body.layout-list .card{flex-direction:row; flex:none; width:100%; display:flex; height:96px;}
+  body.layout-list .card .thumb{width:96px; aspect-ratio:auto; height:96px; flex-shrink:0;}
+  body.layout-list .card .card-info{flex:1; display:flex; flex-direction:column; justify-content:center; padding:10px 12px;}
+  body.layout-list .card .card-info .t{font-size:13px; white-space:normal;}
+  body.layout-list .poster-icon{width:38px;height:38px;}
+
+  /* Cards layout: bold poster-magazine feel — taller hero, big pills, 2-col grid */
+  body.layout-cards .hero-slide{min-height:280px;}
+  body.layout-cards .hero-slide h1{font-size:27px;}
+  body.layout-cards .genre-tabs .g-tab{padding:10px 20px; font-size:13px; font-weight:700;}
+  body.layout-cards .section-head h2{font-size:19px; font-weight:900;}
+  body.layout-cards .rowscroll{display:grid; grid-template-columns:1fr 1fr; overflow-x:visible; margin:0; padding-inline:0;}
+  body.layout-cards .card{flex:none; width:100%; border-radius:18px;}
+  body.layout-cards .thumb{aspect-ratio:16/10;}
+  body.layout-cards .poster-icon{width:56px;height:56px; border-radius:18px;}
+  body.layout-cards .card-info{padding:12px;}
+  body.layout-cards .card-info .t{font-size:13px;}
+  .views-badge{position:absolute; bottom:6px; right:6px; z-index:2; background:rgba(0,0,0,.6); color:#fff; font-size:8.5px; font-weight:700; padding:2px 6px; border-radius:7px; display:flex; align-items:center; gap:3px;}
+  .views-badge svg{width:9px;height:9px;stroke:#fff;fill:none;stroke-width:2;}
+  .excl-ribbon{position:absolute; top:0; left:0; z-index:3; background:linear-gradient(90deg, var(--accent), var(--secondary)); color:var(--on-accent); font-size:8px; font-weight:900; padding:3px 9px 3px 7px; border-radius:0 0 10px 0;}
+  .dl-item{display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; margin-bottom:10px;}
+  .dl-ic{width:44px; height:44px; border-radius:12px; background:var(--card2); border:1px solid var(--line-strong); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .dl-ic svg{width:19px;height:19px;stroke:var(--accent);fill:none;stroke-width:1.5;}
+  .dl-info{flex:1;}
+  .dl-info .t{font-size:12.5px; font-weight:700; color:var(--text);}
+  .dl-info .s{font-size:10px; color:var(--text-dim); margin-top:2px;}
+
+  /* responsive banner — fits any uploaded image size automatically */
+  .acc-cover{overflow:hidden;}
+  .acc-cover img{width:100%; height:100%; object-fit:cover; object-position:center; display:block;}
+  .banner-upload-btn{position:absolute; bottom:8px; left:8px; z-index:2; background:rgba(0,0,0,.55); color:#fff; border:1px solid rgba(255,255,255,.3); border-radius:9px; padding:6px 10px; font-size:10px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:5px;}
+  .banner-upload-btn svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:1.8;}
+
+  /* admin distinguishing */
+  .admin-badge{display:inline-flex; align-items:center; gap:4px; background:linear-gradient(90deg,#ffd76a,#ff9f43); color:#2a1500; font-size:9px; font-weight:900; padding:3px 9px; border-radius:9px; margin-right:6px;}
+  .admin-badge svg{width:10px;height:10px;fill:#2a1500;stroke:none;}
+  .is-admin .acc-avatar-wrap{border-color:#ffd76a; box-shadow:0 0 0 3px rgba(255,215,106,.25);}
+  .is-admin .acc-name-block .nm{background:linear-gradient(90deg,#ffd76a,#ff9f43); -webkit-background-clip:text; background-clip:text; color:transparent;}
+
+  /* admin panel */
+  .admin-tabs{display:flex; gap:8px; overflow-x:auto; margin-bottom:16px;}
+  .admin-tab{padding:8px 14px; border-radius:11px; font-size:11.5px; font-weight:700; white-space:nowrap; background:var(--card); border:1px solid var(--line); color:var(--text-dim); cursor:pointer;}
+  .admin-tab.active{background:var(--accent); color:var(--on-accent); border-color:var(--accent);}
+  .admin-panel2{display:none;} .admin-panel2.active{display:block;}
+  .sub-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; margin-bottom:10px;}
+  .sub-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+  .sub-title{font-size:12.5px; font-weight:700; color:var(--text);}
+  .sub-meta{font-size:10px; color:var(--text-dim); margin-bottom:8px;}
+  .sub-actions{display:flex; gap:8px;}
+  .sub-btn{flex:1; padding:8px; border-radius:9px; font-size:11px; font-weight:700; border:none; cursor:pointer;}
+  .sub-btn.approve{background:var(--secondary); color:var(--on-accent);}
+  .sub-btn.reject{background:var(--heart); color:#fff;}
+  .sub-btn.ban{background:var(--heart); color:#fff;}
+  .sub-btn.resolve{background:var(--accent); color:var(--on-accent);}
+
+  /* store */
+  .points-strip{display:flex; align-items:center; justify-content:space-between; background:linear-gradient(90deg, rgba(var(--accent-rgb),.15), rgba(var(--secondary-rgb),.1)); border:1px solid var(--line-strong); border-radius:14px; padding:12px 14px; margin-bottom:16px;}
+  .points-strip .pn{font-size:18px; font-weight:900; color:var(--accent);}
+  .points-strip .pl{font-size:10px; color:var(--text-dim);}
+  .store-cats{display:flex; gap:8px; overflow-x:auto; margin-bottom:14px;}
+  .store-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
+  .store-item{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; text-align:center;}
+  .store-item .icwrap{width:100%; aspect-ratio:1/1; border-radius:12px; display:flex; align-items:center; justify-content:center; margin-bottom:8px;}
+  .store-item .icwrap svg{width:26px;height:26px;}
+  .store-item .nm{font-size:10.5px; font-weight:700; color:var(--text); margin-bottom:6px; min-height:26px;}
+  .store-item .buy{width:100%; padding:7px; border-radius:9px; font-size:10.5px; font-weight:800; border:none; cursor:pointer; background:var(--accent); color:var(--on-accent);}
+  .store-item .buy.owned{background:var(--secondary);}
+  .store-item .buy.free{background:linear-gradient(90deg,#ffd76a,#ff9f43); color:#2a1500;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand-row">
+    <div style="display:flex; gap:8px;">
+      <div class="icon-btn" onclick="openDrawer()"><svg viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></div>
+      <div class="icon-btn" onclick="openModal('upcomingModal')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><span class="dot"></span></div>
+    </div>
+    <div class="brand">
+      <div><div class="name">Anime Pure</div><div class="tag" style="text-align:left;">عالم الأنمي والمانجا بين يديك</div></div>
+      <div class="mark"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></div>
+    </div>
+  </div>
+  <div class="search-wrap">
+    <div class="searchbox" onclick="openModal('searchModal')"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="20" y1="20" x2="15.3" y2="15.3"/></svg><input type="text" placeholder="ابحث عن أنمي، مانجا، أو فريق..." readonly></div>
+    <div class="quick-filters">
+      <span class="q-tag active">الكل</span>
+      <span class="q-tag" onclick="openGuide('latest')">أنمي</span>
+      <span class="q-tag" onclick="openModal('mangaModal')">مانجا / مانوا</span>
+      <span class="q-tag" onclick="openModal('teamsModal')">الفرق المميزة</span>
+      <span class="q-tag" onclick="scrollToTop()">الأعلى تقييمًا</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="hero-carousel">
+    <div class="hero-track" id="heroTrack">
+      <div class="hero-slide hs1">
+        <div class="hero-bg-glow"></div>
+        <div class="hero-badge">الأكثر مشاهدة</div>
+        <div class="hero-content">
+          <h1>Solo Leveling<br>الموسم الثاني متوفر الآن</h1>
+          <p>شاهد وتابع الحلقات الحصرية بأعلى جودة ترجمة من الفرق المميزة.</p>
+          <div class="cta-row"><button class="btn btn-primary" onclick="openAnimeDetails('solo')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M6 4l14 8-14 8V4z"/></svg>شاهد الآن</button><button class="btn btn-ghost" onclick="openDrawer()">تصفح القائمة</button></div>
+        </div>
+      </div>
+      <div class="hero-slide hs2">
+        <div class="hero-bg-glow"></div>
+        <div class="hero-badge">إضافة جديدة</div>
+        <div class="hero-content">
+          <h1>القديسة الغافلة<br>حلقة جديدة كل أسبوع</h1>
+          <p>فتاة تُنقل لعالم آخر دون أن تدرك أنها تحمل قوة القديسة المنتظرة.</p>
+          <div class="cta-row"><button class="btn btn-primary" onclick="openAnimeDetails('qadisa')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M6 4l14 8-14 8V4z"/></svg>شاهد الآن</button></div>
+        </div>
+      </div>
+      <div class="hero-slide hs3">
+        <div class="hero-bg-glow"></div>
+        <div class="hero-badge">تصدر التقييمات</div>
+        <div class="hero-content">
+          <h1>عائلة تحت شجرة التوت<br>تقييم ٨٫٣ من المشاهدين</h1>
+          <p>عائلة تعيد ترتيب حياتها بعد غياب طويل وسط قرية تخفي أسرارًا قديمة.</p>
+          <div class="cta-row"><button class="btn btn-primary" onclick="scrollToTop()"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>الأعلى تقييمًا</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-dots" id="heroDots"></div>
+  </div>
+
+  <div class="genre-tabs">
+    <span class="g-tab active">الشائع</span><span class="g-tab">أكشن</span><span class="g-tab">خيال</span><span class="g-tab">رومانسي</span><span class="g-tab">غموض</span>
+  </div>
+
+  <section class="section" id="continueSection" style="display:none;">
+    <div class="section-head"><h2>تابع المشاهدة</h2></div>
+    <div class="rowscroll" id="continueRow"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>أحدث الحلقات</h2><span class="seeall" onclick="openGuide('season')">عرض الكل ‹</span></div>
+    <div class="rowscroll" id="season"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>حصريات المنصة</h2></div>
+    <div class="rowscroll" id="exclusiveRow"></div>
+  </section>
+
+  <section class="section" id="topRatedSection">
+    <div class="section-head"><h2>الأعلى تقييمًا</h2></div>
+    <div class="rowscroll" id="topRated"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>الأكثر مشاهدة</h2></div>
+    <div class="rowscroll" id="mostViewed"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>الأعمال المضافة</h2><span class="seeall" onclick="openGuide('latest')">عرض الكل ‹</span></div>
+    <div class="rowscroll" id="latest"></div>
+  </section>
+</main>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" id="navHome" onclick="goHome()"><svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7"/><path d="M6 10v10h12V10"/></svg>الرئيسية</button>
+  <button class="nav-btn" onclick="openModal('searchModal')"><svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="20" y1="20" x2="15.3" y2="15.3"/></svg>بحث</button>
+  <button class="nav-btn" onclick="openModal('favoritesModal')"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.35-9.5-8.5C.8 8.2 2.3 4.3 6.2 4.3c2 0 3.5 1.4 5.8 4 2.3-2.6 3.8-4 5.8-4 3.9 0 5.4 3.9 3.7 8.2C19 16.65 12 21 12 21z"/></svg>المفضلة</button>
+  <button class="nav-btn" onclick="currentUser ? openModal('accountModal') : openModal('authModal')"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>حسابي</button>
+</div>
+
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-header"><span style="font-weight:900; font-size:19px; color:var(--accent);">Anime Pure</span><div class="drawer-close" onclick="closeDrawer()"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div class="user-card" onclick="closeDrawer(); currentUser ? openModal('accountModal') : openModal('authModal')"><div class="user-profile-info"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div><div class="user-details"><div class="u-name" id="drawerUserName">زائر</div><div class="u-role" id="drawerUserRole">اضغط لتسجيل الدخول</div></div></div></div>
+  <div class="drawer-section-title">القائمة الرئيسية</div>
+  <div class="drawer-menu">
+    <div class="drawer-item active"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7"/><path d="M6 10v10h12V10"/></svg>الرئيسية</span></div>
+    <div class="drawer-item" onclick="closeDrawer(); openModal('favoritesModal')"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.35-9.5-8.5C.8 8.2 2.3 4.3 6.2 4.3c2 0 3.5 1.4 5.8 4 2.3-2.6 3.8-4 5.8-4 3.9 0 5.4 3.9 3.7 8.2C19 16.65 12 21 12 21z"/></svg>المفضلة</span><span class="tag-gold" id="favCountTag">0</span></div>
+    <div class="drawer-item" onclick="closeDrawer(); openModal('upcomingModal')"><span class="left-part"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>عد تنازلي للحلقات</span></div>
+    <div class="drawer-item" onclick="closeDrawer(); openModal('downloadsModal')"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>تنزيلاتي</span><span class="tag-gold" id="dlCountTag">0</span></div>
+    <div class="drawer-item" onclick="closeDrawer(); openModal('storeModal')"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v10h16V9"/><path d="M9 13a3 3 0 0 0 6 0"/></svg>المتجر</span></div>
+    <div class="drawer-item" onclick="closeDrawer(); openModal('accountModal')"><span class="left-part"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>الحساب</span></div>
+  </div>
+  <div class="drawer-section-title">الأقسام</div>
+  <div class="drawer-menu">
+    <div class="drawer-item" onclick="closeDrawer(); openGuide('latest')"><span class="left-part"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/></svg>أنمي</span></div>
+    <div class="drawer-item" onclick="closeDrawer(); openModal('mangaModal')"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M3 5c3-2 6-2 9 0v14c-3-2-6-2-9 0V5z"/><path d="M21 5c-3-2-6-2-9 0v14c3-2 6-2 9 0V5z"/></svg>مانجا / مانوا</span></div>
+    <div class="drawer-item" onclick="closeDrawer(); scrollToTop()"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>الأعلى تقييمًا</span></div>
+    <div class="drawer-item" onclick="closeDrawer(); openModal('teamsModal')"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3z"/></svg>الفرق المميزة</span></div>
+  </div>
+  <div class="drawer-section-title">عام</div>
+  <div class="drawer-menu">
+    <div class="drawer-item" onclick="closeDrawer(); openModal('settingsModal')"><span class="left-part"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12h2M3 12h2M12 3v2M12 19v2"/></svg>الإعدادات</span></div>
+    <div class="drawer-item"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>تسجيل الخروج</span></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="authModalOverlay" onclick="closeModal('authModal')"></div>
+<div class="modal-window" id="authModal">
+  <div class="modal-head"><h3>الحساب</h3><div class="modal-close" onclick="closeModal('authModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div class="auth-tabs">
+    <div class="auth-tab active" data-a="signin" onclick="switchAuthTab('signin')">تسجيل الدخول</div>
+    <div class="auth-tab" data-a="signup" onclick="switchAuthTab('signup')">حساب جديد</div>
+  </div>
+  <div class="auth-msg" id="authMsg"></div>
+  <div class="form-group"><label>البريد الإلكتروني</label><input class="form-input" id="authEmail" type="email" placeholder="you@example.com"></div>
+  <div class="form-group"><label>كلمة المرور</label><input class="form-input" id="authPass" type="password" placeholder="••••••••"></div>
+  <button class="watch-btn" id="authSubmitBtn" onclick="submitAuth()">تسجيل الدخول</button>
+  <div style="display:flex; align-items:center; gap:10px; margin:16px 0; color:var(--text-dim); font-size:10.5px;"><div style="flex:1;height:1px;background:var(--line);"></div>أو<div style="flex:1;height:1px;background:var(--line);"></div></div>
+  <div class="share-icons" style="margin:0 0 8px;">
+    <div class="share-ic" onclick="oauthSignIn('google')"><div class="circ" style="background:#fff;"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.99.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>Google</div>
+    <div class="share-ic" onclick="oauthSignIn('facebook')"><div class="circ" style="background:#1877F2;"><svg viewBox="0 0 24 24"><path fill="#fff" d="M13.5 21v-7h2.4l.4-3H13.5V9c0-.9.25-1.5 1.55-1.5H16V4.8C15.7 4.76 14.8 4.7 13.7 4.7c-2.3 0-3.9 1.4-3.9 4V11H7.4v3h2.4v7h3.7z"/></svg></div>فيسبوك</div>
+    <div class="share-ic" onclick="oauthSignIn('github')"><div class="circ" style="background:#171515;"><svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2C6.48 2 2 6.58 2 12.2c0 4.5 2.87 8.3 6.84 9.65.5.1.68-.22.68-.5 0-.24-.01-1.05-.01-1.9-2.78.62-3.37-1.2-3.37-1.2-.45-1.18-1.11-1.5-1.11-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.9 1.56 2.36 1.11 2.94.85.09-.66.35-1.11.63-1.36-2.22-.26-4.56-1.14-4.56-5.05 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.92-2.34 4.78-4.57 5.04.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.61.69.5A10.02 10.02 0 0 0 22 12.2C22 6.58 17.52 2 12 2z"/></svg></div>GitHub</div>
+  </div>
+  <p style="font-size:10px; color:var(--text-dim); text-align:center; margin-top:4px;">بيانات حسابك تُحفظ عبر Supabase بشكل آمن</p>
+  <p style="font-size:9.5px; color:var(--text-dim); text-align:center; margin-top:4px;">ملاحظة: تسجيل الدخول عبر Google/فيسبوك/GitHub يحتاج تفعيلها أول من Supabase Dashboard → Authentication → Providers</p>
+</div>
+
+<div class="modal-overlay" id="storeModalOverlay" onclick="closeModal('storeModal')"></div>
+<div class="modal-window" id="storeModal">
+  <div class="modal-head"><h3><svg viewBox="0 0 24 24"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v10h16V9"/></svg>متجر التزيين</h3><div class="modal-close" onclick="closeModal('storeModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div class="points-strip"><div><div class="pn" id="pointsNum">0</div><div class="pl">نقطة (حلقة مشاهدة = ١٠ نقاط)</div></div><div style="font-size:24px;">💠</div></div>
+  <div class="store-cats" id="storeCats"></div>
+  <div class="store-grid" id="storeGrid"></div>
+</div>
+
+<div class="modal-overlay" id="adminModalOverlay" onclick="closeModal('adminModal')"></div>
+<div class="modal-window" id="adminModal">
+  <div class="modal-head"><h3><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3z"/></svg>لوحة الإدارة</h3><div class="modal-close" onclick="closeModal('adminModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div class="admin-tabs">
+    <div class="admin-tab active" data-at="subs" onclick="switchAdminTab('subs')">الطلبات</div>
+    <div class="admin-tab" data-at="reports" onclick="switchAdminTab('reports')">البلاغات</div>
+    <div class="admin-tab" data-at="ban" onclick="switchAdminTab('ban')">حظر مستخدم</div>
+  </div>
+  <div class="admin-panel2 active" data-ap="subs">
+    <div class="drawer-section-title">طلبات أنمي ومانجا معلّقة</div>
+    <div id="adminSubsList"></div>
+  </div>
+  <div class="admin-panel2" data-ap="reports">
+    <div class="drawer-section-title">بلاغات مفتوحة</div>
+    <div id="adminReportsList"></div>
+  </div>
+  <div class="admin-panel2" data-ap="ban">
+    <div class="form-group"><label>بريد المستخدم المراد حظره</label><input class="form-input" id="banEmailInput" placeholder="user@example.com"></div>
+    <button class="watch-btn" onclick="banUserByEmail()">حظر هذا المستخدم</button>
+    <p style="font-size:10px;color:var(--text-dim);margin-top:8px;">الحظر يمنع المستخدم من التفاعل عبر سياسات RLS، لإدارة كاملة للمستخدمين استخدم لوحة Supabase مباشرة.</p>
+  </div>
+</div>
+
+<div class="modal-overlay" id="teamRoomModalOverlay" onclick="closeModal('teamRoomModal')"></div>
+<div class="modal-window" id="teamRoomModal">
+  <div class="modal-head"><h3 id="teamRoomName">روم الفريق</h3><div class="modal-close" onclick="closeModal('teamRoomModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div class="anime-ratings-row">
+    <div class="rate-box"><div class="num" id="teamMemberCount">0</div><div class="count">الأعضاء</div></div>
+    <div class="rate-box"><div class="num" id="teamPublishedCount">0</div><div class="count">منشورة</div></div>
+    <div class="rate-box"><div class="num" id="teamPendingCount">0</div><div class="count">قيد المراجعة</div></div>
+  </div>
+  <div class="anime-desc-box" id="teamRoomDesc">—</div>
+  <div class="anime-action-buttons">
+    <div class="action-pill on" onclick="openSubmitForm('anime')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><rect x="3" y="4" width="18" height="14" rx="2"/></svg>إرسال أنمي جديد</div>
+    <div class="action-pill" onclick="openSubmitForm('manga')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M3 5c3-2 6-2 9 0v14c-3-2-6-2-9 0V5z"/></svg>إرسال مانجا جديدة</div>
+  </div>
+  <div class="drawer-section-title">إصدارات الفريق</div>
+  <div id="teamSubsList"></div>
+</div>
+
+<div class="modal-overlay" id="submitFormModalOverlay" onclick="closeModal('submitFormModal')"></div>
+<div class="modal-window sheet" id="submitFormModal">
+  <div class="share-sheet">
+    <div class="modal-head" style="border:none;"><h3 id="submitFormTitle" style="font-size:15px;">إرسال عمل جديد</h3><div class="modal-close" onclick="closeModal('submitFormModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+    <div class="form-group"><label>العنوان</label><input class="form-input" id="subTitle"></div>
+    <div class="form-group"><label>النوع/التصنيف</label><input class="form-input" id="subGenre" placeholder="أكشن، فانتازيا..."></div>
+    <div class="form-group"><label>الوصف</label><input class="form-input" id="subDesc"></div>
+    <button class="watch-btn" onclick="sendSubmission()">إرسال للإدارة للمراجعة</button>
+    <div id="submitMsg" class="auth-msg"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="downloadsModalOverlay" onclick="closeModal('downloadsModal')"></div>
+<div class="modal-window" id="downloadsModal">
+  <div class="modal-head"><h3><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>تنزيلاتي</h3><div class="modal-close" onclick="closeModal('downloadsModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div id="downloadsList"></div>
+</div>
+
+<div class="modal-overlay" id="guideModalOverlay" onclick="closeModal('guideModal')"></div>
+<div class="modal-window" id="guideModal">
+  <div class="modal-head"><h3 id="guideTitle">كل الأعمال</h3><div class="modal-close" onclick="closeModal('guideModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div class="grid-cards" id="guideGrid"></div>
+</div>
+
+<div class="modal-overlay" id="upcomingModalOverlay" onclick="closeModal('upcomingModal')"></div>
+<div class="modal-window" id="upcomingModal">
+  <div class="modal-head"><h3><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>عد تنازلي للحلقات القادمة</h3><div class="modal-close" onclick="closeModal('upcomingModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div id="upcomingList"></div>
+</div>
+
+<div class="modal-overlay" id="favoritesModalOverlay" onclick="closeModal('favoritesModal')"></div>
+<div class="modal-window" id="favoritesModal">
+  <div class="modal-head"><h3>المفضلة</h3><div class="modal-close" onclick="closeModal('favoritesModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div class="fav-tabs"><span class="fav-tab-btn active">الكل</span><span class="fav-tab-btn">أنمي</span><span class="fav-tab-btn">مانجا</span><span class="fav-tab-btn">أفلام</span></div>
+  <div id="favList"></div>
+</div>
+
+<div class="modal-overlay" id="searchModalOverlay" onclick="closeModal('searchModal')"></div>
+<div class="modal-window" id="searchModal">
+  <div class="modal-head"><h3>بحث</h3><div class="modal-close" onclick="closeModal('searchModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <input type="text" class="form-input" id="liveSearchInput" placeholder="اكتب اسم الأنمي..." oninput="liveSearch()" style="margin-bottom:12px;">
+  <div class="search-tabs-row" id="searchCatTabs">
+    <span class="search-chip active" data-c="all">الكل</span>
+    <span class="search-chip" data-c="anime">أنمي</span>
+    <span class="search-chip" data-c="manga">مانجا</span>
+    <span class="search-chip" data-c="teams">فرق</span>
+  </div>
+  <div class="search-sort"><select class="form-input" id="sortSelect" onchange="liveSearch()"><option value="rel">الأكثر صلة</option><option value="rating">الأعلى تقييمًا</option><option value="name">الاسم أبجديًا</option></select></div>
+  <div id="searchDefault">
+    <div class="drawer-section-title">عمليات بحث رائجة</div>
+    <div class="search-chip-row">
+      <span class="search-chip" onclick="quickSearch('Solo Leveling')">Solo Leveling</span>
+      <span class="search-chip" onclick="quickSearch('القديسة')">القديسة الغافلة</span>
+      <span class="search-chip" onclick="quickSearch('نهر')">نهر السماء القرمزي</span>
+    </div>
+    <div class="drawer-section-title" style="display:flex; justify-content:space-between; align-items:center;"><span>بحث سابق</span><span style="color:var(--accent); cursor:pointer; text-transform:none; font-weight:700;" onclick="clearRecent()">مسح الكل</span></div>
+    <div class="search-chip-row" id="recentChips"><span style="font-size:11px;color:var(--text-dim);">لا يوجد بحث سابق بعد</span></div>
+  </div>
+  <div id="searchResults"></div>
+</div>
+
+<div class="modal-overlay" id="mangaModalOverlay" onclick="closeModal('mangaModal')"></div>
+<div class="modal-window" id="mangaModal">
+  <div class="modal-head"><h3>مانجا / مانوا</h3><div class="modal-close" onclick="closeModal('mangaModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div id="mangaList"></div>
+</div>
+
+<div class="modal-overlay" id="teamsModalOverlay" onclick="closeModal('teamsModal')"></div>
+<div class="modal-window" id="teamsModal">
+  <div class="modal-head"><h3>الفرق المميزة</h3><div class="modal-close" onclick="closeModal('teamsModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div id="teamsList"></div>
+</div>
+
+<div class="modal-overlay" id="settingsModalOverlay" onclick="closeModal('settingsModal')"></div>
+<div class="modal-window" id="settingsModal">
+  <div class="modal-head"><h3>الإعدادات</h3><div class="modal-close" onclick="closeModal('settingsModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+
+  <div class="drawer-section-title">٧ تصاميم جاهزة — اختر تصميمك المفضل بضغطة وحدة</div>
+  <div class="theme-grid" id="presetGrid" style="grid-template-columns:repeat(2,1fr);"></div>
+
+  <div class="drawer-section-title">طراز العرض — شكل هيكلة الصفحات (تخصيص يدوي)</div>
+  <div class="theme-grid" id="layoutGrid">
+    <div class="layout-card" id="layoutCard-grid" onclick="setLayout('grid')"><div class="layout-preview lp-grid"><i></i><i></i><i></i></div><div class="ln">شرائط أفقية</div></div>
+    <div class="layout-card" id="layoutCard-list" onclick="setLayout('list')"><div class="layout-preview lp-list"><i></i><i></i><i></i></div><div class="ln">قائمة عريضة</div></div>
+    <div class="layout-card" id="layoutCard-cards" onclick="setLayout('cards')"><div class="layout-preview lp-cards"><i></i><i></i></div><div class="ln">بطاقات كبيرة</div></div>
+  </div>
+
+  <div class="drawer-section-title">المظهر — اختر لون التطبيق</div>
+  <div class="theme-grid" id="themeGrid"></div>
+
+  <div class="drawer-section-title">الحساب</div>
+  <div class="form-group"><label>البريد الإلكتروني</label><input class="form-input" value="kodi@animepure.app"></div>
+  <div class="form-group"><label>كلمة المرور</label><input class="form-input" type="password" value="********"></div>
+  <div class="switch-row"><div class="lbl">حساب عام</div><label class="switch"><input type="checkbox" checked><span class="slider-tg"></span></label></div>
+  <div class="drawer-section-title">الإشعارات</div>
+  <div class="switch-row"><div><div class="lbl">حلقات جديدة</div><div class="sub">تنبيه فوري عند صدور حلقة</div></div><label class="switch"><input type="checkbox" checked><span class="slider-tg"></span></label></div>
+  <div class="switch-row"><div><div class="lbl">ردود التعليقات</div></div><label class="switch"><input type="checkbox" checked><span class="slider-tg"></span></label></div>
+  <div class="switch-row"><div><div class="lbl">فصول المانجا الجديدة</div></div><label class="switch"><input type="checkbox" checked><span class="slider-tg"></span></label></div>
+  <div class="drawer-section-title">التشغيل</div>
+  <div class="switch-row"><div><div class="lbl">تشغيل تلقائي للحلقة التالية</div></div><label class="switch"><input type="checkbox" checked><span class="slider-tg"></span></label></div>
+  <div class="switch-row"><div><div class="lbl">تخطي المقدمة تلقائيًا</div></div><label class="switch"><input type="checkbox" checked><span class="slider-tg"></span></label></div>
+  <div class="switch-row"><div><div class="lbl">توفير البيانات</div><div class="sub">جودة أقل عند البيانات الخلوية</div></div><label class="switch"><input type="checkbox"><span class="slider-tg"></span></label></div>
+  <div class="form-group"><label>لغة الترجمة</label><select class="form-input"><option>عربي</option><option>إنجليزي</option><option>بدون ترجمة</option></select></div>
+  <div class="form-group"><label>الجودة الافتراضية</label><select class="form-input"><option>تلقائي</option><option>1080p</option><option>720p</option><option>480p</option></select></div>
+  <div class="drawer-section-title">الخصوصية</div>
+  <div class="switch-row"><div><div class="lbl">إظهار نشاطي للمتابعين</div></div><label class="switch"><input type="checkbox" checked><span class="slider-tg"></span></label></div>
+  <div class="switch-row"><div><div class="lbl">السماح بالرسائل من الجميع</div></div><label class="switch"><input type="checkbox"><span class="slider-tg"></span></label></div>
+  <div class="drawer-section-title">عام</div>
+  <div class="form-group"><label>لغة التطبيق</label><select class="form-input"><option>العربية</option><option>English</option></select></div>
+  <div class="drawer-menu">
+    <div class="drawer-item"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4V5z"/></svg>تواصل معنا</span></div>
+    <div class="drawer-item"><span class="left-part"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9l-6.2 3.5 1.6-6.8L2.2 9l6.9-.7z"/></svg>قيّم التطبيق</span></div>
+    <div class="drawer-item" style="color:var(--heart);"><span class="left-part"><svg viewBox="0 0 24 24" stroke="var(--heart)"><path d="M4 7h16M9 7V5h6v2M7 7l1 13h8l1-13"/></svg>حذف الحساب</span></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="playerModalOverlay" onclick="closeModal('playerModal')"></div>
+<div class="modal-window" id="playerModal">
+  <div class="modal-head"><h3 id="playerTitle" style="font-size:15px;">تشغيل</h3><div class="modal-close" onclick="closeModal('playerModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div class="player-screen"><svg class="bgic" id="playerBgIcon" viewBox="0 0 24 24"></svg><div class="play-fab" id="playFab" onclick="togglePlay()"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></div></div>
+  <div class="player-time-row"><span id="playerTimeNow">٠٠:١٤</span><span id="playerTimeTotal">٢٣:٤٠</span></div>
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="playerProgress" style="width:4%"></div></div>
+  <div class="player-controls">
+    <span onclick="skipEp(-1)"><svg viewBox="0 0 24 24"><path d="M19 5v14L8 12z"/><line x1="6" y1="5" x2="6" y2="19"/></svg></span>
+    <span class="mid" id="playFab2" onclick="togglePlay()"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg></span>
+    <span onclick="skipEp(1)"><svg viewBox="0 0 24 24"><path d="M5 5v14l11-7z"/><line x1="18" y1="5" x2="18" y2="19"/></svg></span>
+  </div>
+  <div class="quality-row"><span class="quality-chip active">تلقائي</span><span class="quality-chip">1080p</span><span class="quality-chip">720p</span></div>
+  <div class="comments-inline">
+    <div class="ttl"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4V5z"/></svg>تعليقات الحلقة</div>
+    <div class="chat-box" id="epChatBox"><div class="chat-msg"><div class="chat-user">متابع_دائم <span>قبل ٣ د</span></div><div class="chat-text">نهاية الحلقة صادمة</div></div></div>
+    <div class="chat-input-row"><input type="text" class="form-input" id="epCommentInput" placeholder="علّق على الحلقة..."><button class="chat-send" onclick="sendEpComment()"><svg viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg></button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="shareModalOverlay" onclick="closeModal('shareModal')"></div>
+<div class="modal-window sheet" id="shareModal">
+  <div class="share-sheet">
+    <div class="modal-head" style="border:none; margin-bottom:8px;"><h3 style="font-size:15px;">مشاركة العمل</h3><div class="modal-close" onclick="closeModal('shareModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+    <div class="share-icons">
+      <div class="share-ic"><div class="circ"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4V5z"/></svg></div>دردشة</div>
+      <div class="share-ic"><div class="circ"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><line x1="8.2" y1="10.8" x2="15.8" y2="7.2"/><line x1="8.2" y1="13.2" x2="15.8" y2="16.8"/></svg></div>مشاركة</div>
+      <div class="share-ic"><div class="circ"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></div>حفظ</div>
+      <div class="share-ic"><div class="circ"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 9h6v6H9z"/></svg></div>رمز</div>
+    </div>
+    <div class="copy-row"><span id="shareLink">animepure.app/anime/solo-leveling</span><button class="copy-btn" onclick="copyShareLink()">نسخ</button></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="animeDetailsModalOverlay" onclick="closeModal('animeDetailsModal')"></div>
+<div class="modal-window" id="animeDetailsModal">
+  <div class="anime-details-header">
+    <div class="modal-close" onclick="closeModal('animeDetailsModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div>
+    <div class="anime-top-icons">
+      <span id="animeFavIcon" onclick="toggleCurrentFav()"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.35-9.5-8.5C.8 8.2 2.3 4.3 6.2 4.3c2 0 3.5 1.4 5.8 4 2.3-2.6 3.8-4 5.8-4 3.9 0 5.4 3.9 3.7 8.2C19 16.65 12 21 12 21z"/></svg></span>
+      <span onclick="openShare()"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><line x1="8.2" y1="10.8" x2="15.8" y2="7.2"/><line x1="8.2" y1="13.2" x2="15.8" y2="16.8"/></svg></span>
+    </div>
+  </div>
+  <div class="anime-hero-card">
+    <div class="anime-poster-lg" id="animeGlyphLg"></div>
+    <div class="anime-poster-info">
+      <h4 id="animeTitleLg">—</h4><p id="animeMetaLg">—</p>
+      <select class="status-select" id="statusSelect" onchange="setStatus(this.value)">
+        <option value="none">+ أضف لقائمتي</option><option value="plan">أخطط لمشاهدته</option><option value="watching">أشاهده الآن</option><option value="done">أكملته</option><option value="dropped">متروك</option>
+      </select>
+    </div>
+  </div>
+  <div class="anime-subtabs">
+    <div class="anime-subtab active" data-tab="overview" onclick="switchAnimeTab('overview')">نظرة عامة</div>
+    <div class="anime-subtab" data-tab="episodes" onclick="switchAnimeTab('episodes')">الحلقات</div>
+    <div class="anime-subtab" data-tab="similar" onclick="switchAnimeTab('similar')">أعمال مشابهة</div>
+  </div>
+  <div class="anime-panel active" data-panel="overview">
+    <div class="anime-ratings-row">
+      <div class="rate-box"><div class="num" id="ovRating">8.7</div><div class="count">التقييم</div></div>
+      <div class="rate-box"><div class="num" id="ovEpCount">14</div><div class="count">الحلقات</div></div>
+      <div class="rate-box"><div class="num" id="ovRank">#٣</div><div class="count">الترتيب</div></div>
+    </div>
+    <div class="countdown-strip" id="detailsCountdown"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><span id="detailsCountdownText">—</span></div>
+    <button class="watch-btn" onclick="watchNext()"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg>شاهد الآن</button>
+    <div class="anime-action-buttons">
+      <div class="action-pill on" id="followPill" onclick="toggleFollow()">أتابعه</div>
+      <div class="action-pill" onclick="downloadNext()"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>تحميل</div>
+      <div class="action-pill" onclick="openShare()"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><circle cx="6" cy="12" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="18" cy="18" r="2"/></svg>مشاركة</div>
+    </div>
+    <div class="anime-desc-box" id="animeDesc">—</div>
+    <div class="anime-info-grid">
+      <div class="info-cell"><div class="label">النوع</div><div class="val" id="infoGenre">—</div></div>
+      <div class="info-cell"><div class="label">الحالة</div><div class="val" id="infoStatus">مستمر</div></div>
+      <div class="info-cell"><div class="label">الاستوديو</div><div class="val" id="infoStudio">—</div></div>
+      <div class="info-cell"><div class="label">الموسم</div><div class="val" id="infoSeason">—</div></div>
+    </div>
+    <div class="my-rate-inline"><span class="lbl">تقييمك:</span><div id="starPicker"><span class="star-pick" data-v="1">★</span><span class="star-pick" data-v="2">★</span><span class="star-pick" data-v="3">★</span><span class="star-pick" data-v="4">★</span><span class="star-pick" data-v="5">★</span></div></div>
+    <div class="comments-inline">
+      <div class="ttl"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4V5z"/></svg>التعليقات</div>
+      <div class="chat-box" id="chatBox">
+        <div class="chat-msg"><span class="chat-report" onclick="reportItem()"><svg viewBox="0 0 24 24"><path d="M5 3v18"/><path d="M5 4h11l-3 4 3 4H5"/></svg>إبلاغ</span><div class="chat-user">نجم_الليل <span>قبل ٥ د</span></div><div class="chat-text">هذا العمل قلب موازين كل شي</div></div>
+        <div class="chat-msg"><span class="chat-report" onclick="reportItem()"><svg viewBox="0 0 24 24"><path d="M5 3v18"/><path d="M5 4h11l-3 4 3 4H5"/></svg>إبلاغ</span><div class="chat-user">هدوء_الروح <span>قبل ٢٠ د</span></div><div class="chat-text">حابب اسلوب الفريق بالترجمة، شغل نظيف</div></div>
+      </div>
+      <div class="chat-input-row"><input type="text" class="form-input" id="commentInput" placeholder="اكتب تعليقك..."><button class="chat-send" onclick="sendComment()"><svg viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg></button></div>
+    </div>
+  </div>
+  <div class="anime-panel" data-panel="episodes"><div class="episodes-grid" id="epGrid"></div></div>
+  <div class="anime-panel" data-panel="similar"><div class="grid-cards" id="similarGrid"></div></div>
+</div>
+
+<div class="modal-overlay" id="accountModalOverlay" onclick="closeModal('accountModal')"></div>
+<div class="modal-window" id="accountModal">
+  <div class="modal-head"><h3>الحساب</h3><div class="modal-close" onclick="closeModal('accountModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div class="acc-cover" id="accCoverBox">
+    <img id="bannerImg" style="display:none;">
+    <label class="banner-upload-btn"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>تغيير البنر<input type="file" accept="image/*" id="bannerInput" style="display:none;" onchange="onBannerPick(event)"></label>
+    <div class="acc-lvl-badge"><div class="n">Lv.٧</div><div class="l">المستوى</div></div>
+    <div class="acc-avatar-wrap"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+  </div>
+  <div class="acc-name-block"><div class="nm" id="accNameText">كودي</div><div class="rl" id="accRoleText">عضو · @kodi_anime</div><div class="since" id="sinceText">—</div></div>
+  <div class="acc-level-bar"><div class="row"><span>التقدم للمستوى القادم</span><span>٦٤٪</span></div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:64%"></div></div></div>
+  <div class="acc-tabs" id="accTabsRow">
+    <div class="acc-tab active" data-t="overview" onclick="switchAccTab('overview')">نظرة عامة</div>
+    <div class="acc-tab" data-t="badges" onclick="switchAccTab('badges')">الأوسمة</div>
+    <div class="acc-tab" data-t="edit" onclick="switchAccTab('edit')">تعديل</div>
+    <div class="acc-tab" data-t="team" onclick="switchAccTab('team')">الفرق</div>
+  </div>
+  <div class="acc-panel active" data-p="overview">
+    <div class="account-stats">
+      <div class="stat-cell2"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg><div class="num" id="statEpisodes">0</div><div class="lbl">حلقة شاهدتها</div></div>
+      <div class="stat-cell2"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><div class="num" id="statHours">0</div><div class="lbl">ساعة مشاهدة</div></div>
+      <div class="stat-cell2"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.35-9.5-8.5C.8 8.2 2.3 4.3 6.2 4.3c2 0 3.5 1.4 5.8 4 2.3-2.6 3.8-4 5.8-4 3.9 0 5.4 3.9 3.7 8.2C19 16.65 12 21 12 21z"/></svg><div class="num" id="statFav">0</div><div class="lbl">في المفضلة</div></div>
+      <div class="stat-cell2"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4V5z"/></svg><div class="num">12</div><div class="lbl">تعليق</div></div>
+    </div>
+  </div>
+  <div class="acc-panel" data-p="badges">
+    <div class="badges-grid">
+      <div class="badge-cell"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M4 8l3 3 5-6 5 6 3-3-2 10H6L4 8z"/></svg><div class="lbl">عضو ذهبي</div></div>
+      <div class="badge-cell"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2l2.9 6.3 6.9.7-5.2 4.6 1.6 6.8L12 16.9l-6.2 3.5 1.6-6.8L2.2 9l6.9-.7z"/></svg><div class="lbl">مشاهد نشط</div></div>
+      <div class="badge-cell locked"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg><div class="lbl">ناقد محترف</div></div>
+      <div class="badge-cell locked"><svg viewBox="0 0 24 24"><path d="M8 4h8v4a4 4 0 0 1-8 0V4z"/><path d="M6 6H4v2a4 4 0 0 0 4 4"/><path d="M18 6h2v2a4 4 0 0 1-4 4"/><path d="M10 15h4v3h-4z"/><path d="M8 21h8"/></svg><div class="lbl">١٠٠ حلقة</div></div>
+    </div>
+  </div>
+  <div class="acc-panel" data-p="edit">
+    <div class="form-group"><label>الاسم</label><input class="form-input" id="editName" value="كودي"></div>
+    <div class="form-group"><label>الاسم المستعار</label><input class="form-input" id="editUsername" value="@kodi_anime"></div>
+    <button class="watch-btn" onclick="saveProfile()">حفظ التعديلات</button>
+    <div id="editSaveMsg" class="auth-msg"></div>
+    <div class="drawer-menu" style="margin-top:6px;">
+      <div class="drawer-item" onclick="closeModal('accountModal'); openModal('settingsModal')"><span class="left-part"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12h2M3 12h2M12 3v2M12 19v2"/></svg>الإعدادات</span></div>
+      <div class="drawer-item" id="adminEntryBtn" style="display:none;" onclick="closeModal('accountModal'); openModal('adminModal')"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3z"/></svg>لوحة الإدارة</span></div>
+      <div class="drawer-item" onclick="doSignOut()"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>تسجيل الخروج</span></div>
+    </div>
+  </div>
+  <div class="acc-panel" data-p="team">
+    <div id="teamPanelBox"></div>
+  </div>
+</div>
+
+<script>
+const IC = {
+  sword:'<path d="M4 20 L16 8"/><path d="M14 6l4 4"/><path d="M6 18l2 2"/>',
+  shield:'<path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3z"/>',
+  crown:'<path d="M4 8l3 3 5-6 5 6 3-3-2 10H6L4 8z"/>',
+  tree:'<path d="M12 3l4 6H8l4-6z"/><path d="M12 8l5 7H7l5-7z"/><line x1="12" y1="15" x2="12" y2="21"/>',
+  sparkle:'<path d="M12 2l2.2 6.8L21 11l-6.8 2.2L12 20l-2.2-6.8L3 11l6.8-2.2z"/>',
+  heartf:'<path d="M12 21s-7-4.35-9.5-8.5C.8 8.2 2.3 4.3 6.2 4.3c2 0 3.5 1.4 5.8 4 2.3-2.6 3.8-4 5.8-4 3.9 0 5.4 3.9 3.7 8.2C19 16.65 12 21 12 21z"/>',
+  wave:'<path d="M2 15c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 10c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>',
+  trending:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>'
+};
+const THEMES = {
+  royal:{name:"ملكي", bg:"#0f1442", bgRgb:"15,20,66", bgAlt:"#171f5e", card:"#1a2468", cardRgb:"26,36,104", card2:"#212c78", text:"#f1efff", textDim:"#a7b0e0", line:"rgba(207,216,245,.20)", lineStrong:"rgba(232,200,118,.35)", accent:"#e8c876", accentRgb:"232,200,118", accentSoft:"#f0d9a0", onAccent:"#1a1300", secondary:"#b79cf0", secondaryRgb:"183,156,240", star:"#e8c876", heart:"#e3b3da"},
+  modern:{name:"حديث", bg:"#0a0c11", bgRgb:"10,12,17", bgAlt:"#12151c", card:"#181c24", cardRgb:"24,28,36", card2:"#1f242e", text:"#f2f3f6", textDim:"#8b93a5", line:"rgba(255,255,255,.08)", lineStrong:"rgba(255,255,255,.14)", accent:"#ff7a45", accentRgb:"255,122,69", accentSoft:"#ffb08a", onAccent:"#1a0d05", secondary:"#4fd1c5", secondaryRgb:"79,209,197", star:"#ffc247", heart:"#ef5164"},
+  kawaii:{name:"كيوت باستيل", bg:"#fff5f8", bgRgb:"255,245,248", bgAlt:"#ffeef3", card:"#ffffff", cardRgb:"255,255,255", card2:"#fff0f5", text:"#5a3d4a", textDim:"#b98a9c", line:"#f3d4de", lineStrong:"#f0b8cb", accent:"#ff9ec4", accentRgb:"255,158,196", accentSoft:"#ffc4dd", onAccent:"#5a2038", secondary:"#7ecbe0", secondaryRgb:"126,203,224", star:"#ffb84d", heart:"#ff6f91"},
+  neon:{name:"نيون مظلم", bg:"#050507", bgRgb:"5,5,7", bgAlt:"#0a0a0f", card:"#0f0f16", cardRgb:"15,15,22", card2:"#15151f", text:"#f0f0ff", textDim:"#8888a8", line:"rgba(255,0,200,.15)", lineStrong:"rgba(0,255,220,.3)", accent:"#ff2fd6", accentRgb:"255,47,214", accentSoft:"#ff8ae8", onAccent:"#0a0006", secondary:"#00e5ff", secondaryRgb:"0,229,255", star:"#ffe600", heart:"#ff2f6d"},
+  minimal:{name:"مينمال أبيض", bg:"#fafafa", bgRgb:"250,250,250", bgAlt:"#f2f2f4", card:"#ffffff", cardRgb:"255,255,255", card2:"#f5f5f7", text:"#1a1a1e", textDim:"#8a8a92", line:"#e5e5ea", lineStrong:"#d5d5dc", accent:"#3d7bfd", accentRgb:"61,123,253", accentSoft:"#7aa5ff", onAccent:"#ffffff", secondary:"#20c997", secondaryRgb:"32,201,151", star:"#ffb800", heart:"#ff4d6d"}
+};
+let currentTheme = "modern";
+let currentLayout = "grid";
+const PRESETS = [
+  {name:"الافتراضي", theme:"modern", layout:"grid"},
+  {name:"الملكي الفخم", theme:"royal", layout:"list"},
+  {name:"الكيوت الناعم", theme:"kawaii", layout:"cards"},
+  {name:"النيون الليلي", theme:"neon", layout:"grid"},
+  {name:"المينمال الهادئ", theme:"minimal", layout:"list"},
+  {name:"الملكي المضغوط", theme:"royal", layout:"grid"},
+  {name:"النيون الموسّع", theme:"neon", layout:"cards"}
+];
+function renderPresetGrid(){
+  const box = document.getElementById('presetGrid'); if(!box) return;
+  box.innerHTML = PRESETS.map((p,i)=>{
+    const t = THEMES[p.theme];
+    const active = currentTheme===p.theme && currentLayout===p.layout;
+    return `<div class="preset-card ${active?'active':''}" onclick="applyPreset(${i})">
+      <div class="preset-swatch" style="background:linear-gradient(135deg, ${t.bg}, ${t.accent})"></div>
+      <div class="pn">${p.name}</div>
+    </div>`;
+  }).join('');
+}
+function applyPreset(i){
+  const p = PRESETS[i];
+  applyTheme(p.theme);
+  setLayout(p.layout);
+  renderPresetGrid();
+}
+function setLayout(name){
+  document.body.classList.remove('layout-grid','layout-list','layout-cards');
+  document.body.classList.add('layout-'+name);
+  currentLayout = name;
+  ['grid','list','cards'].forEach(n=>document.getElementById('layoutCard-'+n).classList.toggle('active', n===name));
+  renderPresetGrid();
+  const ht = document.getElementById('heroTrack'); if(ht) ht.scrollTo({left:0});
+}
+function applyTheme(name){
+  const t = THEMES[name]; if(!t) return;
+  const r = document.documentElement.style;
+  r.setProperty('--bg', t.bg); r.setProperty('--bg-rgb', t.bgRgb); r.setProperty('--bg-alt', t.bgAlt);
+  r.setProperty('--card', t.card); r.setProperty('--card-rgb', t.cardRgb); r.setProperty('--card2', t.card2);
+  r.setProperty('--text', t.text); r.setProperty('--text-dim', t.textDim);
+  r.setProperty('--line', t.line); r.setProperty('--line-strong', t.lineStrong);
+  r.setProperty('--accent', t.accent); r.setProperty('--accent-rgb', t.accentRgb); r.setProperty('--accent-soft', t.accentSoft); r.setProperty('--on-accent', t.onAccent);
+  r.setProperty('--secondary', t.secondary); r.setProperty('--secondary-rgb', t.secondaryRgb);
+  r.setProperty('--star', t.star); r.setProperty('--heart', t.heart);
+  currentTheme = name;
+  renderThemeGrid();
+  renderPresetGrid();
+}
+function renderThemeGrid(){
+  const box = document.getElementById('themeGrid'); if(!box) return;
+  box.innerHTML = Object.keys(THEMES).map(k=>{
+    const t = THEMES[k];
+    return `<div class="theme-card ${k===currentTheme?'active':''}" onclick="applyTheme('${k}')">
+      <div class="theme-check"><svg viewBox="0 0 24 24"><path d="M4 12l5 5 11-11"/></svg></div>
+      <div class="theme-swatch"><i style="background:${t.bg}"></i><i style="background:${t.accent}"></i><i style="background:${t.secondary}"></i></div>
+      <div class="tn">${t.name}</div>
+    </div>`;
+  }).join('');
+}
+const ANIME = {
+  solo:{exclusive:true, views:"2.4M", title:"Solo Leveling", icon:"sword", genre:"أكشن · خيال", status:"مستمر", studio:"A-1 Pictures", season:"صيف ٢٠٢٦", rating:8.7, rank:"#٣", eps:14, nextH:26, desc:"صياد من أضعف الرتب يحصل على فرصة نادرة لإعادة صقل قوته بعد نجاته من زنزانة غامضة، ليبدأ رحلة تحوّل تقلب كل موازين عالم الصيادين."},
+  senki:{views:"890K", title:"مذكرات الجندي الصغيرة", icon:"shield", genre:"حربي · خيال", status:"مستمر", studio:"NUT", season:"ربيع ٢٠٢٦", rating:8.1, rank:"#٩", eps:6, nextH:74, desc:"ضابطة شابة تقاد بحكمة باردة وسط حرب لا تنتهي، بينما تتصارع مع قوة غامضة تراقب كل قراراتها."},
+  nahr:{views:"640K", title:"نهر السماء القرمزي", icon:"crown", genre:"مغامرة · تاريخي", status:"مستمر", studio:"Silver Link", season:"صيف ٢٠٢٦", rating:8.08, rank:"#١١", eps:6, nextH:8, desc:"فتاة تُنقل فجأة إلى زمن آخر، لتجد نفسها وسط صراع عروش يهدد بإعادة رسم خريطة مملكة كاملة."},
+  aila:{exclusive:true, views:"1.1M", title:"عائلة تحت شجرة التوت", icon:"tree", genre:"دراما · شريحة حياة", status:"مستمر", studio:"P.A. Works", season:"صيف ٢٠٢٦", rating:8.3, rank:"#٧", eps:6, nextH:50, desc:"عائلة تعيد ترتيب حياتها بعد غياب طويل، وسط قرية هادئة تخفي أسرارًا قديمة بين جدرانها."},
+  qadisa:{exclusive:true, views:"1.7M", title:"القديسة الغافلة", icon:"sparkle", genre:"فانتازيا · إيزيكاي", status:"مستمر", studio:"Studio Deen", season:"صيف ٢٠٢٦", rating:8.2, rank:"#٥", eps:7, nextH:5, desc:"فتاة تُنقل لعالم آخر دون أن تدرك أنها تحمل قوة القديسة المنتظرة، وسط بلاط ملكي مليء بالدسائس."},
+  darb:{views:"520K", title:"درب الحيّ القديم", icon:"heartf", genre:"رومانسي · شريحة حياة", status:"مستمر", studio:"Doga Kobo", season:"صيف ٢٠٢٦", rating:8.1, rank:"#١٠", eps:6, nextH:98, desc:"صديقان منذ الطفولة يعيدان اكتشاف مشاعرهما وسط حي هادئ يحمل ذكريات لا تُنسى."},
+  shati:{views:"410K", title:"شاطئ الصيف الثالث", icon:"wave", genre:"شريحة حياة · كوميدي", status:"مستمر", studio:"CloverWorks", season:"صيف ٢٠٢٦", rating:7.9, rank:"#١٤", eps:6, nextH:122, desc:"مجموعة أصدقاء تقضي صيفًا أخيرًا معًا قبل تفرقهم للجامعات، بين ضحك وحنين."},
+  amir:{views:"760K", title:"أمير التيه الأقوى", icon:"crown", genre:"فانتازيا · أكشن", status:"مستمر", studio:"J.C.Staff", season:"صيف ٢٠٢٦", rating:8.0, rank:"#١٢", eps:6, nextH:32, desc:"أمير منبوذ يُخفي قوة هائلة خلف مظهر هادئ، ويخوض تيهًا خطيرًا لإثبات جدارته."},
+  faris:{views:"330K", title:"فارس العظام الثاني", icon:"trending", genre:"فانتازيا · إيزيكاي", status:"مستمر", studio:"C2C", season:"صيف ٢٠٢٦", rating:7.8, rank:"#١٦", eps:6, nextH:146, desc:"فارس عظمي يستمر بمغامراته في عالم آخر، يواجه تنانين وأسرارًا أقدم مما توقع."}
+};
+const MANGA = [
+  {title:"ظل الوريث المنسي", icon:"sword", ch:"الفصل ١٢٤", prog:60},
+  {title:"همسات القمر السابع", icon:"sparkle", ch:"الفصل ٨٩", prog:35},
+  {title:"سيف بلا اسم", icon:"shield", ch:"الفصل ٢٠٣", prog:80}
+];
+const TEAMS = [
+  {name:"فريق الفانوس", icon:"shield", sub:"١٢٠ عمل مترجم · ترجمة عربية"},
+  {name:"ظل الترجمة", icon:"sword", sub:"٨٥ عمل مترجم · جودة عالية"},
+  {name:"نجوم الأنمي", icon:"sparkle", sub:"٦٠ عمل مترجم · سرعة إصدار"}
+];
+const statusLabels = {plan:"مخطط", watching:"يُشاهد", done:"مكتمل", dropped:"متروك"};
+function svgIcon(name, cls){ return `<svg class="${cls||''}" viewBox="0 0 24 24">${IC[name]||IC.sparkle}</svg>`; }
+const nextEpAt = {}; Object.keys(ANIME).forEach(k=>{ nextEpAt[k] = Date.now() + ANIME[k].nextH*3600000; });
+function fmtCountdown(ms){
+  if(ms<=0) return 'متاحة الآن';
+  const h = Math.floor(ms/3600000), d=Math.floor(h/24), rh=h%24, m=Math.floor((ms%3600000)/60000);
+  if(d>0) return `خلال ${d} يوم ${rh} س`;
+  if(h>0) return `خلال ${h} س ${m} د`;
+  return `خلال ${m} دقيقة`;
+}
+
+let currentAnimeKey="solo", currentEpNum=1, isPlaying=false;
+const favorites=new Set(), followed=new Set(["solo"]), watchedEps={}, animeStatus={}, recentSearches=[], downloads=[];
+const JOIN_DATE = new Date('2026-01-15T00:00:00');
+
+function renderCard(key){
+  const a=ANIME[key], isFav=favorites.has(key), st=animeStatus[key];
+  return `<div class="card" onclick="openAnimeDetails('${key}')">
+    <div class="thumb">
+      <div class="fav-toggle ${isFav?'on':''}" onclick="event.stopPropagation(); toggleFav('${key}')">${svgIcon('heartf')}</div>
+      <span class="badge">الحلقة ${a.eps}</span>
+      <div class="poster-icon">${svgIcon(a.icon)}</div>
+      <span class="views-badge"><svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>${a.views}</span>
+      ${a.exclusive?'<span class="excl-ribbon">حصري</span>':''}
+      ${st?`<span class="status-pill">${statusLabels[st]}</span>`:''}
+    </div>
+    <div class="card-info"><div class="t">${a.title}</div><div class="sub"><span>${a.status}</span><span><svg viewBox="0 0 20 20"><path d="M10 1l2.6 6.3 6.9.5-5.3 4.4 1.7 6.7L10 15.8l-6 3.1 1.7-6.7L.4 7.8l6.9-.5z"/></svg> ${a.rating}</span></div></div>
+  </div>`;
+}
+function viewsToNum(v){ const n=parseFloat(v); return v.includes('M')?n*1e6:v.includes('K')?n*1e3:n; }
+function renderRows(){
+  document.getElementById('season').innerHTML = ["solo","senki","nahr","qadisa"].map(renderCard).join('');
+  document.getElementById('latest').innerHTML = Object.keys(ANIME).map(renderCard).join('');
+  document.getElementById('topRated').innerHTML = Object.keys(ANIME).sort((a,b)=>ANIME[b].rating-ANIME[a].rating).slice(0,6).map(renderCard).join('');
+  document.getElementById('mostViewed').innerHTML = Object.keys(ANIME).sort((a,b)=>viewsToNum(ANIME[b].views)-viewsToNum(ANIME[a].views)).slice(0,6).map(renderCard).join('');
+  document.getElementById('exclusiveRow').innerHTML = Object.keys(ANIME).filter(k=>ANIME[k].exclusive).map(renderCard).join('');
+  renderContinue();
+}
+function renderContinue(){
+  const keys = Object.keys(watchedEps).filter(k=>watchedEps[k].size>0);
+  const sec = document.getElementById('continueSection');
+  if(keys.length===0){sec.style.display='none'; return;}
+  sec.style.display='block';
+  document.getElementById('continueRow').innerHTML = keys.map(key=>{
+    const a=ANIME[key]; const done=watchedEps[key].size; const pct=Math.round(done/a.eps*100);
+    return `<div class="card" onclick="openAnimeDetails('${key}')">
+      <div class="thumb"><span class="badge">${done}/${a.eps}</span><div class="poster-icon">${svgIcon(a.icon)}</div></div>
+      <div class="card-info"><div class="t">${a.title}</div><div class="progress-bar-bg" style="margin-top:4px;"><div class="progress-bar-fill" style="width:${pct}%"></div></div></div>
+    </div>`;
+  }).join('');
+}
+renderRows();
+function scrollToTop(){ document.getElementById('topRatedSection').scrollIntoView({behavior:'smooth', block:'start'}); }
+
+function openGuide(which){
+  document.getElementById('guideTitle').textContent = which==='season' ? 'أحدث الحلقات' : 'كل الأعمال';
+  const keys = which==='season' ? ["solo","senki","nahr","qadisa"] : Object.keys(ANIME);
+  document.getElementById('guideGrid').innerHTML = keys.map(renderCard).join('');
+  openModal('guideModal');
+}
+function renderUpcoming(){
+  const keys = Object.keys(ANIME).sort((a,b)=>nextEpAt[a]-nextEpAt[b]);
+  document.getElementById('upcomingList').innerHTML = keys.map(k=>{
+    const a=ANIME[k];
+    return `<div class="upcoming-item" onclick="closeModal('upcomingModal'); openAnimeDetails('${k}')"><div class="upcoming-ic">${svgIcon(a.icon)}</div><div class="upcoming-info"><div class="t">${a.title}</div><div class="s">${a.genre}</div></div><div class="upcoming-count" data-key="${k}">${fmtCountdown(nextEpAt[k]-Date.now())}</div></div>`;
+  }).join('');
+}
+setInterval(()=>{
+  if(document.getElementById('upcomingModal').classList.contains('open')){
+    document.querySelectorAll('#upcomingList .upcoming-count').forEach(el=>{ el.textContent = fmtCountdown(nextEpAt[el.dataset.key]-Date.now()); });
+  }
+}, 30000);
+
+let zTop = 200;
+function openDrawer(){document.getElementById('drawer').classList.add('open');document.getElementById('drawerOverlay').classList.add('open');}
+function closeDrawer(){document.getElementById('drawer').classList.remove('open');document.getElementById('drawerOverlay').classList.remove('open');}
+function openModal(id){
+  const el=document.getElementById(id), ov=document.getElementById(id+'Overlay');
+  zTop+=2; ov.style.zIndex=zTop; el.style.zIndex=zTop+1;
+  el.classList.add('open'); ov.classList.add('open');
+  if(id==='favoritesModal') renderFavorites();
+  if(id==='accountModal') renderAccountStats();
+  if(id==='mangaModal') renderManga();
+  if(id==='teamsModal') renderTeams();
+  if(id==='upcomingModal') renderUpcoming();
+  if(id==='downloadsModal') renderDownloads();
+  if(id==='storeModal'){ currentStoreCat='all'; renderStoreCats(); renderStoreGrid('all'); document.getElementById('pointsNum').textContent = isAdmin()?'∞':userPoints; }
+  if(id==='adminModal'){ if(!isAdmin()){ closeModal('adminModal'); alert('هذا القسم للإدارة فقط'); return; } loadAdminSubs(); }
+  if(id==='accountModal' && currentUser) loadMyProfile();
+  if(id==='settingsModal'){ renderThemeGrid(); setLayout(currentLayout); renderPresetGrid(); }
+  if(id==='accountModal' && !currentUser){ closeModal('accountModal'); openModal('authModal'); return; }
+  if(id==='searchModal'){document.getElementById('liveSearchInput').value=''; document.getElementById('searchResults').innerHTML=''; document.getElementById('searchDefault').style.display='block'; renderRecentChips();}
+  updateNav();
+}
+function closeModal(id){document.getElementById(id).classList.remove('open'); const ov=document.getElementById(id+'Overlay'); if(ov) ov.classList.remove('open'); updateNav();}
+function updateNav(){ document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active', i===0)); }
+function goHome(){
+  ['drawer','guideModal','upcomingModal','downloadsModal','favoritesModal','searchModal','mangaModal','teamsModal','settingsModal','playerModal','shareModal','animeDetailsModal','accountModal','authModal'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.classList.remove('open');
+    const ov=document.getElementById(id+'Overlay'); if(ov) ov.classList.remove('open');
+  });
+  document.getElementById('drawerOverlay').classList.remove('open');
+  window.scrollTo({top:0, behavior:'smooth'});
+  updateNav();
+}
+
+function toggleFav(key){
+  if(favorites.has(key)) favorites.delete(key); else favorites.add(key);
+  document.getElementById('favCountTag').textContent = favorites.size;
+  renderRows();
+  if(document.getElementById('animeDetailsModal').classList.contains('open') && currentAnimeKey===key){
+    document.getElementById('animeFavIcon').classList.toggle('fav-on', favorites.has(key));
+  }
+}
+function toggleCurrentFav(){ toggleFav(currentAnimeKey); }
+function renderFavorites(){
+  const list=document.getElementById('favList');
+  if(favorites.size===0){ list.innerHTML=`<div class="empty-state">${svgIcon('heartf')}<div class="txt">ما ضفت أي عمل للمفضلة بعد<br>اضغط على القلب على أي بطاقة لإضافتها</div></div>`; return; }
+  list.innerHTML=[...favorites].map(key=>{
+    const a=ANIME[key]; const prog=watchedEps[key]?Math.round(watchedEps[key].size/a.eps*100):0;
+    return `<div class="fav-item-card"><div class="fav-item-cover">${svgIcon(a.icon)}</div><div class="fav-item-details"><div class="fav-item-title">${a.title}</div><div class="fav-item-sub">${a.genre} · ★ ${a.rating}</div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${prog}%"></div></div></div><div class="fav-remove" onclick="toggleFav('${key}')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>`;
+  }).join('');
+}
+function renderAccountStats(){
+  document.getElementById('statFav').textContent = favorites.size;
+  let epTotal=0; Object.values(watchedEps).forEach(s=>epTotal+=s.size);
+  document.getElementById('statEpisodes').textContent = epTotal;
+  document.getElementById('statHours').textContent = Math.round(epTotal*24/60*10)/10;
+  const days = Math.max(1, Math.round((Date.now()-JOIN_DATE.getTime())/86400000));
+  document.getElementById('sinceText').textContent = `منضم منذ ${days} يوم`;
+}
+function switchAccTab(tab){
+  document.querySelectorAll('.acc-tab').forEach(t=>t.classList.toggle('active', t.dataset.t===tab));
+  document.querySelectorAll('.acc-panel').forEach(p=>p.classList.toggle('active', p.dataset.p===tab));
+}
+
+function setStatus(val){
+  if(val==='none') delete animeStatus[currentAnimeKey]; else animeStatus[currentAnimeKey]=val;
+  renderRows();
+}
+
+function openAnimeDetails(key){
+  currentAnimeKey=key; const a=ANIME[key];
+  document.getElementById('animeGlyphLg').innerHTML = svgIcon(a.icon);
+  document.getElementById('animeTitleLg').textContent=a.title;
+  document.getElementById('animeMetaLg').textContent=`${a.genre} · ${a.status}`;
+  document.getElementById('statusSelect').value = animeStatus[key] || 'none';
+  document.getElementById('ovRating').textContent=a.rating;
+  document.getElementById('ovEpCount').textContent=a.eps;
+  document.getElementById('ovRank').textContent=a.rank;
+  document.getElementById('animeDesc').textContent=a.desc;
+  document.getElementById('infoGenre').textContent=a.genre;
+  document.getElementById('infoStatus').textContent=a.status;
+  document.getElementById('infoStudio').textContent=a.studio;
+  document.getElementById('infoSeason').textContent=a.season;
+  document.getElementById('detailsCountdownText').textContent = 'الحلقة القادمة ' + fmtCountdown(nextEpAt[key]-Date.now());
+  document.getElementById('animeFavIcon').classList.toggle('fav-on', favorites.has(key));
+  document.querySelectorAll('#starPicker .star-pick').forEach(s=>s.classList.remove('on'));
+  if(!watchedEps[key]) watchedEps[key]=new Set();
+  refreshEpGrid();
+  const sim = Object.keys(ANIME).filter(k=>k!==key).slice(0,6);
+  document.getElementById('similarGrid').innerHTML = sim.map(renderCard).join('');
+  switchAnimeTab('overview');
+  openModal('animeDetailsModal');
+}
+function refreshEpGrid(){
+  const a=ANIME[currentAnimeKey];
+  document.getElementById('epGrid').innerHTML = Array.from({length:a.eps},(_,i)=>i+1).map(n=>{
+    const w=watchedEps[currentAnimeKey].has(n);
+    return `<div class="ep-btn ${w?'watched':''}" onclick="openPlayer(${n})"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg>الحلقة ${n}</div>`;
+  }).join('');
+}
+function watchNext(){
+  const a = ANIME[currentAnimeKey];
+  const w = watchedEps[currentAnimeKey] || new Set();
+  let n = 1; while(w.has(n) && n<a.eps) n++;
+  openPlayer(n);
+}
+function downloadNext(){
+  const a = ANIME[currentAnimeKey];
+  const done = downloads.filter(d=>d.key===currentAnimeKey).length;
+  if(done>=a.eps){ alert('كل حلقات هذا العمل محمّلة بالفعل'); return; }
+  const n = done+1;
+  downloads.push({key:currentAnimeKey, ep:n});
+  document.getElementById('dlCountTag').textContent = downloads.length;
+  alert(`جاري تحميل الحلقة ${n} من ${a.title}`);
+}
+function renderDownloads(){
+  const box = document.getElementById('downloadsList');
+  if(downloads.length===0){ box.innerHTML = `<div class="empty-state">${svgIcon('sparkle')}<div class="txt">ماكو حلقات محمّلة بعد<br>اضغط "تحميل" داخل أي عمل لإضافته هنا</div></div>`; return; }
+  box.innerHTML = downloads.map((d,i)=>{
+    const a = ANIME[d.key];
+    return `<div class="dl-item"><div class="dl-ic">${svgIcon(a.icon)}</div><div class="dl-info"><div class="t">${a.title}</div><div class="s">الحلقة ${d.ep} · محمّلة</div></div><div class="fav-remove" onclick="removeDownload(${i})"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>`;
+  }).join('');
+}
+function removeDownload(i){ downloads.splice(i,1); document.getElementById('dlCountTag').textContent = downloads.length; renderDownloads(); }
+function toggleFollow(){
+  if(followed.has(currentAnimeKey)) followed.delete(currentAnimeKey); else followed.add(currentAnimeKey);
+  document.getElementById('followPill').classList.toggle('on', followed.has(currentAnimeKey));
+  document.getElementById('followPill').textContent = followed.has(currentAnimeKey) ? 'أتابعه' : '+ متابعة';
+}
+function switchAnimeTab(tab){
+  document.querySelectorAll('.anime-subtab').forEach(t=>t.classList.toggle('active', t.dataset.tab===tab));
+  document.querySelectorAll('.anime-panel').forEach(p=>p.classList.toggle('active', p.dataset.panel===tab));
+}
+document.getElementById('starPicker').addEventListener('click', e=>{
+  const el=e.target.closest('.star-pick'); if(!el) return;
+  const v=+el.dataset.v;
+  document.querySelectorAll('#starPicker .star-pick').forEach(s=>s.classList.toggle('on', +s.dataset.v<=v));
+});
+
+function sendComment(){
+  const input=document.getElementById('commentInput'); const val=input.value.trim(); if(!val) return;
+  const box=document.getElementById('chatBox');
+  box.insertAdjacentHTML('beforeend', `<div class="chat-msg"><span class="chat-report" onclick="reportItem()"><svg viewBox="0 0 24 24"><path d="M5 3v18"/><path d="M5 4h11l-3 4 3 4H5"/></svg>إبلاغ</span><div class="chat-user">كودي <span>الآن</span></div><div class="chat-text">${val.replace(/</g,'&lt;')}</div></div>`);
+  input.value=''; box.scrollTop=box.scrollHeight;
+}
+document.getElementById('commentInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendComment(); });
+function sendEpComment(){
+  const input=document.getElementById('epCommentInput'); const val=input.value.trim(); if(!val) return;
+  const box=document.getElementById('epChatBox');
+  box.insertAdjacentHTML('beforeend', `<div class="chat-msg"><div class="chat-user">كودي <span>الآن</span></div><div class="chat-text">${val.replace(/</g,'&lt;')}</div></div>`);
+  input.value=''; box.scrollTop=box.scrollHeight;
+}
+document.getElementById('epCommentInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendEpComment(); });
+function reportItem(){ alert('تم إرسال بلاغك، شكرًا لمساعدتك بالحفاظ على المجتمع.'); }
+
+function openPlayer(n){
+  currentEpNum=n; isPlaying=false;
+  const a=ANIME[currentAnimeKey];
+  if(!watchedEps[currentAnimeKey]) watchedEps[currentAnimeKey]=new Set();
+  watchedEps[currentAnimeKey].add(n);
+  document.getElementById('playerTitle').textContent = `${a.title} — الحلقة ${n}`;
+  document.getElementById('playerBgIcon').innerHTML = IC[a.icon];
+  setPlayIcons(false);
+  document.getElementById('playerProgress').style.width='4%';
+  renderRows();
+  if(document.getElementById('animeDetailsModal').classList.contains('open')) refreshEpGrid();
+  openModal('playerModal');
+}
+function setPlayIcons(playing){
+  const icon = playing ? '<path d="M6 5h4v14H6zM14 5h4v14h-4z"/>' : '<path d="M6 4l14 8-14 8V4z"/>';
+  document.getElementById('playFab').innerHTML = `<svg viewBox="0 0 24 24">${icon}</svg>`;
+  document.getElementById('playFab2').innerHTML = `<svg viewBox="0 0 24 24">${icon}</svg>`;
+}
+function togglePlay(){ isPlaying=!isPlaying; setPlayIcons(isPlaying); document.getElementById('playerProgress').style.width = isPlaying ? '46%' : '4%'; }
+function skipEp(dir){ const a=ANIME[currentAnimeKey]; let n=currentEpNum+dir; if(n<1) n=1; if(n>a.eps) n=a.eps; openPlayer(n); }
+document.querySelectorAll('.quality-chip').forEach(c=>c.addEventListener('click', ()=>{ document.querySelectorAll('.quality-chip').forEach(x=>x.classList.remove('active')); c.classList.add('active'); }));
+
+function openShare(){ document.getElementById('shareLink').textContent = `animepure.app/anime/${currentAnimeKey}`; openModal('shareModal'); }
+function copyShareLink(){
+  const txt=document.getElementById('shareLink').textContent;
+  if(navigator.clipboard) navigator.clipboard.writeText(txt);
+  const btn=event.target; const old=btn.textContent; btn.textContent='تم'; setTimeout(()=>btn.textContent=old, 1200);
+}
+
+function renderManga(){
+  document.getElementById('mangaList').innerHTML = MANGA.map(m=>`
+    <div class="fav-item-card"><div class="fav-item-cover">${svgIcon(m.icon)}</div>
+      <div class="fav-item-details"><div class="fav-item-title">${m.title}</div><div class="fav-item-sub">${m.ch}</div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${m.prog}%"></div></div></div>
+      <button class="follow-btn on">اقرأ</button>
+    </div>`).join('');
+}
+function renderTeams(){
+  document.getElementById('teamsList').innerHTML = TEAMS.map((t,i)=>`
+    <div class="team-card"><div class="team-ic">${svgIcon(t.icon)}</div>
+      <div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.sub}</div></div>
+      <button class="follow-btn" id="teamBtn${i}" onclick="toggleTeam(${i})">متابعة</button>
+    </div>`).join('');
+}
+function toggleTeam(i){ const btn=document.getElementById('teamBtn'+i); const on=btn.classList.toggle('on'); btn.textContent = on ? 'متابَع' : 'متابعة'; }
+
+function renderRecentChips(){
+  const box=document.getElementById('recentChips');
+  if(recentSearches.length===0){ box.innerHTML='<span style="font-size:11px;color:var(--text-dim);">لا يوجد بحث سابق بعد</span>'; return; }
+  box.innerHTML = recentSearches.slice(-5).reverse().map(q=>`<span class="search-chip" onclick="quickSearch('${q}')">${q}</span>`).join('');
+}
+function clearRecent(){ recentSearches.length=0; renderRecentChips(); }
+function quickSearch(q){ document.getElementById('liveSearchInput').value=q; liveSearch(); }
+document.querySelectorAll('#searchCatTabs .search-chip').forEach(c=>c.addEventListener('click', ()=>{ document.querySelectorAll('#searchCatTabs .search-chip').forEach(x=>x.classList.remove('active')); c.classList.add('active'); liveSearch(); }));
+function liveSearch(){
+  const q=document.getElementById('liveSearchInput').value.trim();
+  const box=document.getElementById('searchResults');
+  const def=document.getElementById('searchDefault');
+  const cat = document.querySelector('#searchCatTabs .search-chip.active').dataset.c;
+  const sort = document.getElementById('sortSelect').value;
+  if(!q){box.innerHTML=''; def.style.display='block'; return;}
+  def.style.display='none';
+  if(!recentSearches.includes(q)) recentSearches.push(q);
+  let keys=[];
+  if(cat==='all' || cat==='anime') keys = Object.keys(ANIME).filter(k=>ANIME[k].title.includes(q));
+  if(sort==='rating') keys.sort((a,b)=>ANIME[b].rating-ANIME[a].rating);
+  if(sort==='name') keys.sort((a,b)=>ANIME[a].title.localeCompare(ANIME[b].title,'ar'));
+  let mangaHtml='', teamHtml='';
+  if(cat==='all' || cat==='manga'){ const mm=MANGA.filter(m=>m.title.includes(q)); if(mm.length) mangaHtml = mm.map(m=>`<div class="fav-item-card"><div class="fav-item-cover">${svgIcon(m.icon)}</div><div class="fav-item-details"><div class="fav-item-title">${m.title}</div><div class="fav-item-sub">${m.ch}</div></div></div>`).join(''); }
+  if(cat==='all' || cat==='teams'){ const tt=TEAMS.filter(t=>t.name.includes(q)); if(tt.length) teamHtml = tt.map(t=>`<div class="team-card"><div class="team-ic">${svgIcon(t.icon)}</div><div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.sub}</div></div></div>`).join(''); }
+  const animeHtml = keys.length ? `<div class="grid-cards">${keys.map(renderCard).join('')}</div>` : '';
+  const combined = animeHtml + mangaHtml + teamHtml;
+  box.innerHTML = combined || `<div class="empty-state">${svgIcon('sparkle')}<div class="txt">ما لقينا نتائج لـ"${q}"</div></div>`;
+}
+
+document.querySelectorAll('.genre-tabs .g-tab').forEach(t=>t.addEventListener('click', ()=>{document.querySelectorAll('.genre-tabs .g-tab').forEach(x=>x.classList.remove('active')); t.classList.add('active');}));
+document.querySelectorAll('.quick-filters .q-tag').forEach(t=>t.addEventListener('click', ()=>{document.querySelectorAll('.quick-filters .q-tag').forEach(x=>x.classList.remove('active')); t.classList.add('active');}));
+document.querySelectorAll('.fav-tabs .fav-tab-btn').forEach(t=>t.addEventListener('click', ()=>{document.querySelectorAll('.fav-tabs .fav-tab-btn').forEach(x=>x.classList.remove('active')); t.classList.add('active');}));
+
+const heroTrack = document.getElementById('heroTrack');
+const heroDots = document.getElementById('heroDots');
+const slideCount = document.querySelectorAll('.hero-slide').length;
+for(let i=0;i<slideCount;i++){ const d=document.createElement('div'); d.className='hero-dot'+(i===0?' active':''); heroDots.appendChild(d); }
+function updateDots(){ const idx = Math.round(heroTrack.scrollLeft / heroTrack.clientWidth); [...heroDots.children].forEach((d,i)=>d.classList.toggle('active', i===idx)); }
+heroTrack.addEventListener('scroll', ()=>{ clearTimeout(window._hs); window._hs=setTimeout(updateDots,80); });
+let heroAuto = setInterval(()=>{
+  const max = heroTrack.scrollWidth - heroTrack.clientWidth;
+  let next = heroTrack.scrollLeft + heroTrack.clientWidth;
+  if(next > max + 5) next = 0;
+  heroTrack.scrollTo({left:next, behavior:'smooth'});
+}, 5000);
+heroTrack.addEventListener('touchstart', ()=>clearInterval(heroAuto));
+
+renderThemeGrid();
+setLayout('grid');
+renderPresetGrid();
+
+/* ===== Supabase auth — initialized last, wrapped safely so a network/CDN
+   hiccup can never break the rest of the app. Uses the standard anon JWT
+   key (works with every supabase-js version) instead of the newer
+   sb_publishable_ format for maximum compatibility. ===== */
+let currentUser = null, authMode = "signin", sbClient = null;
+try{
+  const SUPABASE_URL = "https://glwbaqvqwotynddjpoif.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdsd2JhcXZxd290eW5kZGpwb2lmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwMDU3NDMsImV4cCI6MjEwMTU4MTc0M30.mVpJg9WPgJk3i9CF3-ia9HlvmZIqdG0G-9qwJQzg2Lo";
+  sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}catch(e){ console.error('تعذر تهيئة Supabase:', e); }
+
+function switchAuthTab(mode){
+  authMode = mode;
+  document.querySelectorAll('.auth-tab').forEach(t=>t.classList.toggle('active', t.dataset.a===mode));
+  document.getElementById('authSubmitBtn').textContent = mode==='signin' ? 'تسجيل الدخول' : 'إنشاء الحساب';
+  document.getElementById('authMsg').className = 'auth-msg';
+}
+function showAuthMsg(text, ok){ const el=document.getElementById('authMsg'); el.textContent=text; el.className = 'auth-msg ' + (ok?'ok':'err'); }
+async function submitAuth(){
+  if(!sbClient){ showAuthMsg('تعذر الاتصال بخادم الحسابات، تحقق من اتصال الإنترنت وحدّث الصفحة'); return; }
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPass').value;
+  if(!email || !password){ showAuthMsg('عبّي البريد وكلمة المرور'); return; }
+  const btn = document.getElementById('authSubmitBtn'); const oldTxt=btn.textContent; btn.textContent='...'; btn.disabled=true;
+  try{
+    if(authMode==='signup'){
+      const {data, error} = await sbClient.auth.signUp({email, password});
+      if(error) throw error;
+      showAuthMsg('تم إنشاء الحساب! تحقق من بريدك لتأكيده إذا كان مطلوبًا.', true);
+      if(data.session) onAuthSuccess(data.user);
+    } else {
+      const {data, error} = await sbClient.auth.signInWithPassword({email, password});
+      if(error) throw error;
+      onAuthSuccess(data.user);
+    }
+  }catch(err){
+    showAuthMsg(err.message || 'صار خطأ، حاول مرة ثانية');
+  }
+  btn.textContent = oldTxt; btn.disabled=false;
+}
+function onAuthSuccess(user){
+  currentUser = user;
+  updateAuthUI();
+  closeModal('authModal');
+}
+async function doSignOut(){
+  if(sbClient){ try{ await sbClient.auth.signOut(); }catch(e){ console.error(e); } }
+  currentUser = null;
+  updateAuthUI();
+  closeModal('accountModal'); closeDrawer();
+}
+function updateAuthUI(){
+  const nameEl = document.getElementById('drawerUserName'), roleEl = document.getElementById('drawerUserRole');
+  if(!nameEl || !roleEl) return;
+  if(currentUser){
+    nameEl.textContent = currentUser.email.split('@')[0];
+    roleEl.textContent = currentUser.email;
+  } else {
+    nameEl.textContent = 'زائر'; roleEl.textContent = 'اضغط لتسجيل الدخول';
+  }
+}
+if(sbClient){
+  sbClient.auth.getSession().then(({data})=>{ if(data.session){ currentUser = data.session.user; updateAuthUI(); loadMyProfile(); } }).catch(e=>console.error(e));
+  sbClient.auth.onAuthStateChange((event, session)=>{ currentUser = session ? session.user : null; updateAuthUI(); if(currentUser) loadMyProfile(); });
+}
+
+/* ===== OAuth ===== */
+async function oauthSignIn(provider){
+  if(!sbClient){ showAuthMsg('تعذر الاتصال بالخادم'); return; }
+  const {error} = await sbClient.auth.signInWithOAuth({provider});
+  if(error) showAuthMsg(error.message);
+}
+
+/* ===== Admin ===== */
+const ADMIN_EMAIL = "sksnsjsj8@gmail.com";
+function isAdmin(){ return currentUser && currentUser.email === ADMIN_EMAIL; }
+function updateAdminUI(){
+  const admin = isAdmin();
+  document.getElementById('adminEntryBtn').style.display = admin ? 'flex' : 'none';
+  const coverBox = document.getElementById('accCoverBox');
+  const nameBlock = document.querySelector('.acc-name-block');
+  if(coverBox) coverBox.parentElement.classList.toggle('is-admin', admin);
+  const roleEl = document.getElementById('accRoleText');
+  if(roleEl){
+    roleEl.innerHTML = admin ? '<span class="admin-badge"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3z"/></svg>حساب إداري</span>' : (currentUser ? currentUser.email : '@kodi_anime');
+  }
+}
+
+/* ===== profile: banner + name/username (Supabase) ===== */
+function onBannerPick(ev){
+  const file = ev.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e=>{
+    const img = document.getElementById('bannerImg');
+    img.src = e.target.result; img.style.display='block';
+    if(currentUser && sbClient){ sbClient.from('profiles').update({banner_url:e.target.result}).eq('id', currentUser.id).then(()=>{}); }
+  };
+  reader.readAsDataURL(file);
+}
+async function loadMyProfile(){
+  if(!sbClient || !currentUser) return;
+  const {data} = await sbClient.from('profiles').select('*').eq('id', currentUser.id).maybeSingle();
+  if(data){
+    if(data.banner_url){ const img=document.getElementById('bannerImg'); img.src=data.banner_url; img.style.display='block'; }
+    if(data.display_name) document.getElementById('accNameText').textContent = data.display_name;
+    userPoints = data.points || (computeWatchedTotal()*10);
+  } else {
+    await sbClient.from('profiles').upsert({id: currentUser.id, username: currentUser.email.split('@')[0], display_name: currentUser.email.split('@')[0], points: computeWatchedTotal()*10});
+  }
+  updateAdminUI();
+  document.getElementById('pointsNum').textContent = isAdmin() ? '∞' : userPoints;
+}
+async function saveProfile(){
+  const name = document.getElementById('editName').value.trim();
+  const uname = document.getElementById('editUsername').value.trim();
+  document.getElementById('accNameText').textContent = name || 'كودي';
+  const msg = document.getElementById('editSaveMsg');
+  if(!currentUser || !sbClient){ msg.className='auth-msg err'; msg.textContent='سجّل الدخول أول عشان يحفظ فعليًا'; return; }
+  const {error} = await sbClient.from('profiles').upsert({id: currentUser.id, display_name:name, username:uname});
+  msg.className = 'auth-msg ' + (error ? 'err':'ok');
+  msg.textContent = error ? error.message : 'تم الحفظ بنجاح';
+}
+function computeWatchedTotal(){ let n=0; Object.values(watchedEps).forEach(s=>n+=s.size); return n; }
+
+/* ===== store: 170 procedurally generated cosmetic items ===== */
+let userPoints = 0;
+const ownedItems = new Set();
+const STORE_CATS = [
+  {id:'frame', name:'إطارات الصورة', icon:'shield'},
+  {id:'title', name:'ألقاب مميزة', icon:'crown'},
+  {id:'nameColor', name:'ألوان الاسم', icon:'sparkle'},
+  {id:'bannerFx', name:'تأثيرات البنر', icon:'wave'},
+  {id:'badge', name:'شارات خاصة', icon:'trending'}
+];
+const STORE_COLORS = ['#ff7a45','#4fd1c5','#ffc247','#ef5164','#b79cf0','#8fb4e8','#ff9ec4','#20c997','#ffd76a','#7ecbe0','#e2586a','#3d7bfd','#a8e6cf','#ffb347','#c99bff','#5fd4a8'];
+let STORE_ITEMS = [];
+function buildStoreItems(){
+  STORE_ITEMS = [];
+  let id=0;
+  STORE_CATS.forEach(cat=>{
+    for(let i=0;i<34;i++){
+      id++;
+      const color = STORE_COLORS[i % STORE_COLORS.length];
+      const price = 50 + (i*15) + (STORE_CATS.indexOf(cat)*40);
+      STORE_ITEMS.push({id:'item_'+id, cat:cat.id, icon:cat.icon, color, price, name: cat.name + ' #' + (i+1)});
+    }
+  });
+}
+buildStoreItems();
+function renderStoreCats(){
+  document.getElementById('storeCats').innerHTML = ['all'].concat(STORE_CATS.map(c=>c.id)).map(c=>{
+    const label = c==='all' ? 'الكل' : STORE_CATS.find(x=>x.id===c).name;
+    return `<span class="search-chip ${c==='all'?'active':''}" data-cat="${c}" onclick="filterStore('${c}')">${label}</span>`;
+  }).join('');
+}
+function filterStore(cat){
+  document.querySelectorAll('#storeCats .search-chip').forEach(c=>c.classList.toggle('active', c.dataset.cat===cat));
+  renderStoreGrid(cat);
+}
+function renderStoreGrid(cat){
+  cat = cat || 'all';
+  const items = cat==='all' ? STORE_ITEMS : STORE_ITEMS.filter(i=>i.cat===cat);
+  const admin = isAdmin();
+  document.getElementById('storeGrid').innerHTML = items.map(it=>{
+    const owned = ownedItems.has(it.id) || admin;
+    return `<div class="store-item">
+      <div class="icwrap" style="background:${it.color}22; border:1px solid ${it.color}55;">${svgIcon(it.icon).replace('<svg ','<svg style="stroke:'+it.color+'" ')}</div>
+      <div class="nm">${it.name}</div>
+      <button class="buy ${owned?(admin?'free':'owned'):''}" onclick="buyItem('${it.id}', ${it.price})" ${owned?'disabled':''}>${admin?'مجاني (إداري)': owned?'مملوك ✓' : it.price+' نقطة'}</button>
+    </div>`;
+  }).join('');
+}
+function buyItem(id, price){
+  if(isAdmin()){ ownedItems.add(id); renderStoreGrid(currentStoreCat); return; }
+  if(userPoints < price){ alert('نقاطك ما تكفي — شاهد المزيد من الحلقات لتجمع نقاط'); return; }
+  userPoints -= price; ownedItems.add(id);
+  document.getElementById('pointsNum').textContent = userPoints;
+  if(currentUser && sbClient){
+    sbClient.from('user_items').insert({user_id: currentUser.id, item_id:id}).then(()=>{});
+    sbClient.from('profiles').update({points:userPoints}).eq('id', currentUser.id).then(()=>{});
+  }
+  renderStoreGrid(currentStoreCat);
+}
+let currentStoreCat = 'all';
+
+/* ===== teams ===== */
+let myTeams = [];
+async function loadTeamPanel(){
+  const box = document.getElementById('teamPanelBox');
+  if(!currentUser || !sbClient){ box.innerHTML = `<div class="empty-state">${svgIcon('shield')}<div class="txt">سجّل الدخول عشان تنشئ أو تنضم لفريق</div></div>`; return; }
+  const {data: owned} = await sbClient.from('teams').select('*').eq('owner', currentUser.id);
+  const {data: memberships} = await sbClient.from('team_members').select('team_id, teams(*)').eq('user_id', currentUser.id);
+  const {data: allTeams} = await sbClient.from('teams').select('*').limit(20);
+  let html = `<div class="form-group"><label>اسم الفريق الجديد</label><input class="form-input" id="newTeamName" placeholder="مثال: فريق الفانوس"></div>
+  <div class="form-group"><label>وصف مختصر</label><input class="form-input" id="newTeamDesc"></div>
+  <button class="watch-btn" onclick="createTeam()">إنشاء فريق</button>
+  <div id="teamCreateMsg" class="auth-msg"></div>
+  <div class="drawer-section-title">فرقي</div>`;
+  const mine = [...(owned||[]), ...((memberships||[]).map(m=>m.teams))].filter(Boolean);
+  html += mine.length ? mine.map(t=>`<div class="team-card" onclick="openTeamRoom('${t.id}','${(t.name||'').replace(/'/g,"")}','${(t.description||'').replace(/'/g,"")}')"><div class="team-ic">${svgIcon('shield')}</div><div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.description||''}</div></div></div>`).join('') : `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو فرق لك بعد</div></div>`;
+  html += `<div class="drawer-section-title">فرق يمكن الانضمام لها</div>`;
+  html += (allTeams||[]).filter(t=>!mine.find(m=>m.id===t.id)).map(t=>`<div class="team-card"><div class="team-ic">${svgIcon('shield')}</div><div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.description||''}</div></div><button class="follow-btn" onclick="joinTeam('${t.id}')">انضمام</button></div>`).join('') || '';
+  box.innerHTML = html;
+}
+async function createTeam(){
+  const name = document.getElementById('newTeamName').value.trim();
+  const desc = document.getElementById('newTeamDesc').value.trim();
+  const msg = document.getElementById('teamCreateMsg');
+  if(!name){ msg.className='auth-msg err'; msg.textContent='اكتب اسم الفريق'; return; }
+  const {data, error} = await sbClient.from('teams').insert({name, description:desc, owner:currentUser.id}).select().single();
+  if(error){ msg.className='auth-msg err'; msg.textContent=error.message; return; }
+  await sbClient.from('team_members').insert({team_id:data.id, user_id:currentUser.id});
+  msg.className='auth-msg ok'; msg.textContent='تم إنشاء الفريق!';
+  loadTeamPanel();
+}
+async function joinTeam(id){
+  const {error} = await sbClient.from('team_members').insert({team_id:id, user_id:currentUser.id});
+  if(error) alert(error.message); else loadTeamPanel();
+}
+let currentTeamId = null;
+async function openTeamRoom(id, name, desc){
+  currentTeamId = id;
+  document.getElementById('teamRoomName').textContent = name;
+  document.getElementById('teamRoomDesc').textContent = desc || 'ماكو وصف بعد';
+  const {count: memberCount} = await sbClient.from('team_members').select('*', {count:'exact', head:true}).eq('team_id', id);
+  const {data: subs} = await sbClient.from('submissions').select('*').eq('team_id', id);
+  const published = (subs||[]).filter(s=>s.status==='approved').length;
+  const pending = (subs||[]).filter(s=>s.status==='pending').length;
+  document.getElementById('teamMemberCount').textContent = memberCount||0;
+  document.getElementById('teamPublishedCount').textContent = published;
+  document.getElementById('teamPendingCount').textContent = pending;
+  document.getElementById('teamSubsList').innerHTML = (subs||[]).map(s=>`<div class="sub-card"><div class="sub-head"><div class="sub-title">${s.title}</div><span class="tag-gold">${s.status==='approved'?'منشور':s.status==='pending'?'قيد المراجعة':'مرفوض'}</span></div><div class="sub-meta">${s.type==='anime'?'أنمي':'مانجا'} · ${s.genre||''}</div></div>`).join('') || `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو إصدارات بعد</div></div>`;
+  openModal('teamRoomModal');
+}
+let submitType = 'anime';
+function openSubmitForm(type){
+  submitType = type;
+  document.getElementById('submitFormTitle').textContent = type==='anime' ? 'إرسال أنمي جديد' : 'إرسال مانجا جديدة';
+  document.getElementById('subTitle').value=''; document.getElementById('subGenre').value=''; document.getElementById('subDesc').value='';
+  document.getElementById('submitMsg').className='auth-msg';
+  openModal('submitFormModal');
+}
+async function sendSubmission(){
+  const title = document.getElementById('subTitle').value.trim();
+  const genre = document.getElementById('subGenre').value.trim();
+  const desc = document.getElementById('subDesc').value.trim();
+  const msg = document.getElementById('submitMsg');
+  if(!title){ msg.className='auth-msg err'; msg.textContent='اكتب العنوان'; return; }
+  const {error} = await sbClient.from('submissions').insert({type:submitType, title, genre, description:desc, team_id:currentTeamId, submitted_by:currentUser.id});
+  msg.className = 'auth-msg ' + (error?'err':'ok');
+  msg.textContent = error ? error.message : 'تم الإرسال! بانتظار موافقة الإدارة';
+  if(!error) setTimeout(()=>{ closeModal('submitFormModal'); openTeamRoom(currentTeamId, document.getElementById('teamRoomName').textContent, document.getElementById('teamRoomDesc').textContent); }, 1200);
+}
+
+/* ===== admin panel logic ===== */
+function switchAdminTab(tab){
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.toggle('active', t.dataset.at===tab));
+  document.querySelectorAll('.admin-panel2').forEach(p=>p.classList.toggle('active', p.dataset.ap===tab));
+  if(tab==='subs') loadAdminSubs();
+  if(tab==='reports') loadAdminReports();
+}
+async function loadAdminSubs(){
+  if(!isAdmin()) return;
+  const {data} = await sbClient.from('submissions').select('*').eq('status','pending');
+  document.getElementById('adminSubsList').innerHTML = (data||[]).map(s=>`
+    <div class="sub-card"><div class="sub-head"><div class="sub-title">${s.title}</div></div>
+    <div class="sub-meta">${s.type==='anime'?'أنمي':'مانجا'} · ${s.genre||''} · ${s.description||''}</div>
+    <div class="sub-actions"><button class="sub-btn approve" onclick="reviewSub('${s.id}','approved')">قبول</button><button class="sub-btn reject" onclick="reviewSub('${s.id}','rejected')">رفض</button></div></div>
+  `).join('') || `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو طلبات معلّقة</div></div>`;
+}
+async function reviewSub(id, status){
+  const {error} = await sbClient.from('submissions').update({status}).eq('id', id);
+  if(error) alert(error.message); else loadAdminSubs();
+}
+async function loadAdminReports(){
+  if(!isAdmin()) return;
+  const {data} = await sbClient.from('reports').select('*').eq('status','open');
+  document.getElementById('adminReportsList').innerHTML = (data||[]).map(r=>`
+    <div class="sub-card"><div class="sub-title">بلاغ ضد مستخدم</div><div class="sub-meta">${r.reason||'بدون سبب مذكور'}</div>
+    <div class="sub-actions"><button class="sub-btn resolve" onclick="resolveReport('${r.id}')">إغلاق البلاغ</button></div></div>
+  `).join('') || `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو بلاغات مفتوحة</div></div>`;
+}
+async function resolveReport(id){
+  const {error} = await sbClient.from('reports').update({status:'resolved'}).eq('id', id);
+  if(error) alert(error.message); else loadAdminReports();
+}
+async function banUserByEmail(){
+  alert('حظر حساب معيّن ببريده يحتاج صلاحية Admin API من السيرفر (ما تنعمل من المتصفح بأمان). الطريقة الآمنة: افتح Supabase Dashboard → Authentication → ابحث عن المستخدم → Ban User. لو تبي أظبطلك Edge Function تسوي هذا من داخل التطبيق قلي.');
+}
+
+/* wire tabs that need data loading */
+document.addEventListener('click', e=>{
+  const t = e.target.closest('.acc-tab');
+  if(t && t.dataset.t==='team') loadTeamPanel();
+});
+</script>
+</body>
+</html>
