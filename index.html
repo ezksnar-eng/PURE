@@ -6,7 +6,43 @@
 <title>بيور | مانجا · مانهوا · روايات · كومكس</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+  import {
+    getAuth, GoogleAuthProvider, FacebookAuthProvider, GithubAuthProvider,
+    signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+    signOut, onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+  import {
+    getFirestore, collection, collectionGroup, doc, getDoc, getDocs, addDoc, setDoc,
+    updateDoc, deleteDoc, query, where, orderBy, limit, serverTimestamp, increment
+  } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAx0HEZ8wrfY-kWPL_cKOohM8rzjXPN-X4",
+    authDomain: "pure-manga-b9542.firebaseapp.com",
+    projectId: "pure-manga-b9542",
+    storageBucket: "pure-manga-b9542.firebasestorage.app",
+    messagingSenderId: "891502895380",
+    appId: "1:891502895380:web:6bb8d79ea64cad92aa6201"
+  };
+  const app = initializeApp(firebaseConfig);
+
+  // نعرّض كل شي يحتاجه السكربت الرئيسي (غير module) عبر window
+  window.fbAuth = getAuth(app);
+  window.fbDb = getFirestore(app);
+  window.fbProviders = {
+    google: new GoogleAuthProvider(),
+    facebook: new FacebookAuthProvider(),
+    github: new GithubAuthProvider()
+  };
+  window.fb = {
+    signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged,
+    collection, collectionGroup, doc, getDoc, getDocs, addDoc, setDoc, updateDoc, deleteDoc,
+    query, where, orderBy, limit, serverTimestamp, increment
+  };
+  window.dispatchEvent(new Event('firebase-ready'));
+</script>
 <style>
   :root{
     --bg:#0a0c11; --bg-rgb:10,12,17; --bg-alt:#12151c; --card:#181c24; --card-rgb:24,28,36; --card2:#1f242e;
@@ -573,8 +609,8 @@
     <div class="share-ic" onclick="oauthSignIn('facebook')"><div class="circ" style="background:#1877F2;"><svg viewBox="0 0 24 24"><path fill="#fff" d="M13.5 21v-7h2.4l.4-3H13.5V9c0-.9.25-1.5 1.55-1.5H16V4.8C15.7 4.76 14.8 4.7 13.7 4.7c-2.3 0-3.9 1.4-3.9 4V11H7.4v3h2.4v7h3.7z"/></svg></div>فيسبوك</div>
     <div class="share-ic" onclick="oauthSignIn('github')"><div class="circ" style="background:#171515;"><svg viewBox="0 0 24 24"><path fill="#fff" d="M12 2C6.48 2 2 6.58 2 12.2c0 4.5 2.87 8.3 6.84 9.65.5.1.68-.22.68-.5 0-.24-.01-1.05-.01-1.9-2.78.62-3.37-1.2-3.37-1.2-.45-1.18-1.11-1.5-1.11-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.9 1.56 2.36 1.11 2.94.85.09-.66.35-1.11.63-1.36-2.22-.26-4.56-1.14-4.56-5.05 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.3.1-2.7 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.33 2.75-1.05 2.75-1.05.55 1.4.2 2.44.1 2.7.64.72 1.03 1.63 1.03 2.75 0 3.92-2.34 4.78-4.57 5.04.36.32.68.94.68 1.9 0 1.37-.01 2.47-.01 2.81 0 .28.18.61.69.5A10.02 10.02 0 0 0 22 12.2C22 6.58 17.52 2 12 2z"/></svg></div>GitHub</div>
   </div>
-  <p style="font-size:10px; color:var(--text-dim); text-align:center; margin-top:4px;">بيانات حسابك تُحفظ عبر Supabase بشكل آمن</p>
-  <p style="font-size:9.5px; color:var(--text-dim); text-align:center; margin-top:4px;">ملاحظة: تسجيل الدخول عبر Google/فيسبوك/GitHub يحتاج تفعيلها أول من Supabase Dashboard → Authentication → Providers</p>
+  <p style="font-size:10px; color:var(--text-dim); text-align:center; margin-top:4px;">بيانات حسابك تُحفظ عبر Firebase بشكل آمن</p>
+  <p style="font-size:9.5px; color:var(--text-dim); text-align:center; margin-top:4px;">ملاحظة: تسجيل الدخول عبر Google/فيسبوك/GitHub يحتاج تفعيلها أول من Firebase Console → Authentication → Sign-in method</p>
 </div>
 
 <div class="modal-overlay" id="storeModalOverlay" onclick="closeModal('storeModal')"></div>
@@ -604,7 +640,7 @@
   <div class="admin-panel2" data-ap="ban">
     <div class="form-group"><label>بريد المستخدم المراد حظره</label><input class="form-input" id="banEmailInput" placeholder="user@example.com"></div>
     <button class="watch-btn" onclick="banUserByEmail()">حظر هذا المستخدم</button>
-    <p style="font-size:10px;color:var(--text-dim);margin-top:8px;">الحظر يمنع المستخدم من التفاعل عبر سياسات RLS، لإدارة كاملة للمستخدمين استخدم لوحة Supabase مباشرة.</p>
+    <p style="font-size:10px;color:var(--text-dim);margin-top:8px;">الحظر يمنع المستخدم من التفاعل عبر سياسات RLS، لإدارة كاملة للمستخدمين استخدم لوحة Firebase مباشرة.</p>
   </div>
 </div>
 
@@ -889,6 +925,29 @@
 </div>
 
 <script>
+let currentUser = null, authMode = "signin", fbReady = false;
+function normalizeUser(u){
+  if(!u) return null;
+  return { id:u.uid, uid:u.uid, email:u.email || '', displayName:u.displayName || '' };
+}
+window.addEventListener('firebase-ready', ()=>{
+  fbReady = true;
+  window.fb.onAuthStateChanged(window.fbAuth, (user)=>{
+    currentUser = normalizeUser(user);
+    updateAuthUI();
+    if(currentUser) loadMyProfile();
+  });
+});
+// لو موديول Firebase خلص التحميل وأطلق الحدث قبل لا يوصل هذا السطر (نادر لكن ممكن)، نتأكد يدويًا
+if(window.fbAuth && window.fb && !fbReady){
+  fbReady = true;
+  window.fb.onAuthStateChanged(window.fbAuth, (user)=>{
+    currentUser = normalizeUser(user);
+    updateAuthUI();
+    if(currentUser) loadMyProfile();
+  });
+}
+
 const IC = {
   sword:'<path d="M4 20 L16 8"/><path d="M14 6l4 4"/><path d="M6 18l2 2"/>',
   shield:'<path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3z"/>',
@@ -1011,7 +1070,7 @@ function renderCard(key){
       <div class="fav-toggle ${isFav?'on':''}" onclick="event.stopPropagation(); toggleFav('${key}')">${svgIcon('heartf')}</div>
       <span class="badge">فصل ${a.eps}</span>
       <span class="badge" style="top:32px; background:var(--accent); color:var(--on-accent);">${TYPE_LABELS[a.type]||''}</span>
-      <div class="poster-icon">${svgIcon(a.icon)}</div>
+      ${a.cover ? `<img src="${a.cover}" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;">` : `<div class="poster-icon">${svgIcon(a.icon)}</div>`}
       <span class="views-badge"><svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>${a.views}</span>
       ${a.exclusive?'<span class="excl-ribbon">حصري</span>':''}
       ${st?`<span class="status-pill">${statusLabels[st]}</span>`:''}
@@ -1042,6 +1101,33 @@ function renderContinue(){
   }).join('');
 }
 renderRows();
+
+/* ===== تحميل المانهاوا الحقيقية من Firestore (collection "mangas")
+   لو الكولكشن فاضي (ما رفع محتوى بعد) نبقي البيانات التجريبية كما هي ===== */
+async function loadMangasFromFirestore(){
+  if(!fbReady) return;
+  try{
+    const {collection, getDocs} = window.fb;
+    const snap = await getDocs(collection(window.fbDb, 'mangas'));
+    if(snap.empty) return; // ماكو بيانات مرفوعة بعد — نخلي البيانات التجريبية
+    Object.keys(ANIME).forEach(k=>delete ANIME[k]); // نفرّغ البيانات التجريبية
+    snap.forEach(docSnap=>{
+      const d = docSnap.data();
+      ANIME[docSnap.id] = {
+        title: d.title || 'بدون عنوان', type: d.type || 'manhwa', icon: d.icon || 'sparkle',
+        cover: d.cover || d.cover_url || null, genre: d.genre || '', status: d.status || 'مستمر',
+        studio: d.studio || d.team || '', season: d.season || '', rating: d.rating || 0,
+        rank: d.rank || '-', eps: d.chaptersCount || d.eps || 1, views: d.views || '0',
+        exclusive: !!d.exclusive, nextH: d.nextH ?? 999999, desc: d.desc || d.description || ''
+      };
+    });
+    Object.keys(ANIME).forEach(k=>{ nextEpAt[k] = Date.now() + ANIME[k].nextH*3600000; });
+    renderRows();
+  }catch(e){ console.error('تعذر تحميل المانهاوا من Firestore:', e); }
+}
+if(fbReady) loadMangasFromFirestore();
+else window.addEventListener('firebase-ready', loadMangasFromFirestore, {once:true});
+
 function scrollToTop(){ document.getElementById('topRatedSection').scrollIntoView({behavior:'smooth', block:'start'}); }
 function filterByType(type){
   document.getElementById('guideTitle').textContent = 'أعمال ' + TYPE_LABELS[type];
@@ -1159,6 +1245,7 @@ function openAnimeDetails(key){
   const sim = Object.keys(ANIME).filter(k=>k!==key).slice(0,6);
   document.getElementById('similarGrid').innerHTML = sim.map(renderCard).join('');
   switchAnimeTab('overview');
+  loadComments(key);
   openModal('animeDetailsModal');
 }
 function refreshEpGrid(){
@@ -1207,18 +1294,61 @@ document.getElementById('starPicker').addEventListener('click', e=>{
   document.querySelectorAll('#starPicker .star-pick').forEach(s=>s.classList.toggle('on', +s.dataset.v<=v));
 });
 
-function sendComment(){
+/* ===== تعليقات حقيقية عبر Firestore (collection "comments") ===== */
+function renderCommentRow(c, withReport){
+  const name = c.displayName || (c.uid ? 'قارئ' : 'زائر');
+  return `<div class="chat-msg">${withReport?`<span class="chat-report" onclick="reportItem()"><svg viewBox="0 0 24 24"><path d="M5 3v18"/><path d="M5 4h11l-3 4 3 4H5"/></svg>إبلاغ</span>`:''}<div class="chat-user">${name} <span>الآن</span></div><div class="chat-text">${(c.text||'').replace(/</g,'&lt;')}</div></div>`;
+}
+async function loadComments(mangaKey){
+  const box = document.getElementById('chatBox'); if(!box || !fbReady) return;
+  try{
+    const {collection, query, where, orderBy, limit, getDocs} = window.fb;
+    const snap = await getDocs(query(collection(window.fbDb,'comments'), where('mangaId','==',mangaKey), where('chapterNum','==',null), orderBy('createdAt','desc'), limit(30)));
+    const rows = snap.docs.map(d=>d.data()).reverse();
+    box.innerHTML = rows.length ? rows.map(c=>renderCommentRow(c,true)).join('') : `<div class="chat-msg"><div class="chat-text" style="color:var(--text-dim);">كن أول من يعلّق على هذا العمل</div></div>`;
+    box.scrollTop = box.scrollHeight;
+  }catch(e){ console.error('تعذر تحميل التعليقات:', e); }
+}
+async function loadEpComments(mangaKey, n){
+  const box = document.getElementById('epChatBox'); if(!box || !fbReady) return;
+  try{
+    const {collection, query, where, orderBy, limit, getDocs} = window.fb;
+    const snap = await getDocs(query(collection(window.fbDb,'comments'), where('mangaId','==',mangaKey), where('chapterNum','==',n), orderBy('createdAt','desc'), limit(30)));
+    const rows = snap.docs.map(d=>d.data()).reverse();
+    box.innerHTML = rows.length ? rows.map(c=>renderCommentRow(c,false)).join('') : '';
+    box.scrollTop = box.scrollHeight;
+  }catch(e){ console.error('تعذر تحميل تعليقات الفصل:', e); }
+}
+async function sendComment(){
   const input=document.getElementById('commentInput'); const val=input.value.trim(); if(!val) return;
   const box=document.getElementById('chatBox');
-  box.insertAdjacentHTML('beforeend', `<div class="chat-msg"><span class="chat-report" onclick="reportItem()"><svg viewBox="0 0 24 24"><path d="M5 3v18"/><path d="M5 4h11l-3 4 3 4H5"/></svg>إبلاغ</span><div class="chat-user">كودي <span>الآن</span></div><div class="chat-text">${val.replace(/</g,'&lt;')}</div></div>`);
+  const displayName = currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : 'زائر';
+  box.insertAdjacentHTML('beforeend', renderCommentRow({text:val, displayName}, true));
   input.value=''; box.scrollTop=box.scrollHeight;
+  if(fbReady){
+    try{
+      await window.fb.addDoc(window.fb.collection(window.fbDb,'comments'), {
+        mangaId: currentAnimeKey, chapterNum: null, text: val, uid: currentUser?currentUser.id:null,
+        displayName, createdAt: window.fb.serverTimestamp()
+      });
+    }catch(e){ console.error('تعذر حفظ التعليق:', e); }
+  }
 }
 document.getElementById('commentInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendComment(); });
-function sendEpComment(){
+async function sendEpComment(){
   const input=document.getElementById('epCommentInput'); const val=input.value.trim(); if(!val) return;
   const box=document.getElementById('epChatBox');
-  box.insertAdjacentHTML('beforeend', `<div class="chat-msg"><div class="chat-user">كودي <span>الآن</span></div><div class="chat-text">${val.replace(/</g,'&lt;')}</div></div>`);
+  const displayName = currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : 'زائر';
+  box.insertAdjacentHTML('beforeend', renderCommentRow({text:val, displayName}, false));
   input.value=''; box.scrollTop=box.scrollHeight;
+  if(fbReady){
+    try{
+      await window.fb.addDoc(window.fb.collection(window.fbDb,'comments'), {
+        mangaId: currentAnimeKey, chapterNum: currentEpNum, text: val, uid: currentUser?currentUser.id:null,
+        displayName, createdAt: window.fb.serverTimestamp()
+      });
+    }catch(e){ console.error('تعذر حفظ تعليق الفصل:', e); }
+  }
 }
 document.getElementById('epCommentInput').addEventListener('keydown', e=>{ if(e.key==='Enter') sendEpComment(); });
 function reportItem(){ alert('تم إرسال بلاغك، شكرًا لمساعدتك بالحفاظ على المجتمع.'); }
@@ -1246,7 +1376,19 @@ function openPlayer(n){
   openModal('playerModal');
   document.getElementById('playerModal').scrollTop = 0;
 }
-function appendChapterToStream(n){
+/* جلب فصل حقيقي من Firestore: مانهاوا/{مفتاح العمل}/chapters/{رقم الفصل} */
+async function fetchChapterData(mangaKey, n){
+  if(!fbReady) return null;
+  try{
+    const {doc, getDoc, collection, query, where, limit, getDocs} = window.fb;
+    let snap = await getDoc(doc(window.fbDb, 'mangas', mangaKey, 'chapters', String(n)));
+    if(snap.exists()) return snap.data();
+    const qSnap = await getDocs(query(collection(window.fbDb, 'mangas', mangaKey, 'chapters'), where('number','==',n), limit(1)));
+    if(!qSnap.empty) return qSnap.docs[0].data();
+  }catch(e){ console.error('تعذر تحميل الفصل:', e); }
+  return null;
+}
+async function appendChapterToStream(n){
   const a = ANIME[currentAnimeKey];
   if(n>a.eps || streamLoadedUpTo>=n) return;
   streamLoadedUpTo = n;
@@ -1255,12 +1397,20 @@ function appendChapterToStream(n){
   divider.className = 'chap-divider';
   divider.innerHTML = `<span>دخلت الفصل رقم ${n}</span>`;
   stream.appendChild(divider);
+  const chData = await fetchChapterData(currentAnimeKey, n);
   if(a.type === 'novel'){
     const p = document.createElement('div');
     p.className = 'reader-para';
     p.style.fontSize = novelFontSize+'px';
-    p.textContent = NOVEL_SAMPLE + ' ' + NOVEL_SAMPLE;
+    p.textContent = (chData && chData.text) ? chData.text : (NOVEL_SAMPLE + ' ' + NOVEL_SAMPLE);
     stream.appendChild(p);
+  } else if(chData && Array.isArray(chData.pages) && chData.pages.length){
+    chData.pages.forEach(url=>{
+      const pg = document.createElement('div');
+      pg.className = 'reader-page';
+      pg.innerHTML = `<img src="${url}" loading="lazy" style="width:100%; display:block;">`;
+      stream.appendChild(pg);
+    });
   } else {
     const pageCount = 4;
     for(let i=1;i<=pageCount;i++){
@@ -1273,6 +1423,7 @@ function appendChapterToStream(n){
   if(!watchedEps[currentAnimeKey]) watchedEps[currentAnimeKey]=new Set();
   watchedEps[currentAnimeKey].add(n);
   updateReaderProgress();
+  loadEpComments(currentAnimeKey, n);
 }
 function updateReaderProgress(){
   const a = ANIME[currentAnimeKey];
@@ -1371,16 +1522,7 @@ renderThemeGrid();
 setLayout('grid');
 renderPresetGrid();
 
-/* ===== Supabase auth — initialized last, wrapped safely so a network/CDN
-   hiccup can never break the rest of the app. Uses the standard anon JWT
-   key (works with every supabase-js version) instead of the newer
-   sb_publishable_ format for maximum compatibility. ===== */
-let currentUser = null, authMode = "signin", sbClient = null;
-try{
-  const SUPABASE_URL = "https://glwbaqvqwotynddjpoif.supabase.co";
-  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdsd2JhcXZxd290eW5kZGpwb2lmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYwMDU3NDMsImV4cCI6MjEwMTU4MTc0M30.mVpJg9WPgJk3i9CF3-ia9HlvmZIqdG0G-9qwJQzg2Lo";
-  sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-}catch(e){ console.error('تعذر تهيئة Supabase:', e); }
+/* ===== Firebase auth: باقي دوال تسجيل الدخول/الخروج (المتغيرات معرّفة بأعلى السكربت) ===== */
 
 function switchAuthTab(mode){
   authMode = mode;
@@ -1389,35 +1531,41 @@ function switchAuthTab(mode){
   document.getElementById('authMsg').className = 'auth-msg';
 }
 function showAuthMsg(text, ok){ const el=document.getElementById('authMsg'); el.textContent=text; el.className = 'auth-msg ' + (ok?'ok':'err'); }
+function authErrorMsg(err){
+  const map = {
+    'auth/invalid-email':'صيغة البريد غير صحيحة', 'auth/user-not-found':'ماكو حساب بهذا البريد',
+    'auth/wrong-password':'كلمة المرور غير صحيحة', 'auth/invalid-credential':'بيانات الدخول غير صحيحة',
+    'auth/email-already-in-use':'هذا البريد مستخدم من قبل', 'auth/weak-password':'كلمة المرور لازم تكون ٦ أحرف أو أكثر',
+    'auth/popup-closed-by-user':'تم إغلاق نافذة تسجيل الدخول'
+  };
+  return map[err.code] || err.message || 'صار خطأ، حاول مرة ثانية';
+}
 async function submitAuth(){
-  if(!sbClient){ showAuthMsg('تعذر الاتصال بخادم الحسابات، تحقق من اتصال الإنترنت وحدّث الصفحة'); return; }
+  if(!fbReady){ showAuthMsg('تعذر الاتصال بخادم الحسابات، تحقق من اتصال الإنترنت وحدّث الصفحة'); return; }
   const email = document.getElementById('authEmail').value.trim();
   const password = document.getElementById('authPass').value;
   if(!email || !password){ showAuthMsg('عبّي البريد وكلمة المرور'); return; }
   const btn = document.getElementById('authSubmitBtn'); const oldTxt=btn.textContent; btn.textContent='...'; btn.disabled=true;
   try{
     if(authMode==='signup'){
-      const {data, error} = await sbClient.auth.signUp({email, password});
-      if(error) throw error;
-      showAuthMsg('تم إنشاء الحساب! تحقق من بريدك لتأكيده إذا كان مطلوبًا.', true);
-      if(data.session) onAuthSuccess(data.user);
+      const cred = await window.fb.createUserWithEmailAndPassword(window.fbAuth, email, password);
+      onAuthSuccess(cred.user);
     } else {
-      const {data, error} = await sbClient.auth.signInWithPassword({email, password});
-      if(error) throw error;
-      onAuthSuccess(data.user);
+      const cred = await window.fb.signInWithEmailAndPassword(window.fbAuth, email, password);
+      onAuthSuccess(cred.user);
     }
   }catch(err){
-    showAuthMsg(err.message || 'صار خطأ، حاول مرة ثانية');
+    showAuthMsg(authErrorMsg(err));
   }
   btn.textContent = oldTxt; btn.disabled=false;
 }
 function onAuthSuccess(user){
-  currentUser = user;
+  currentUser = normalizeUser(user);
   updateAuthUI();
   closeModal('authModal');
 }
 async function doSignOut(){
-  if(sbClient){ try{ await sbClient.auth.signOut(); }catch(e){ console.error(e); } }
+  if(fbReady){ try{ await window.fb.signOut(window.fbAuth); }catch(e){ console.error(e); } }
   currentUser = null;
   updateAuthUI();
   closeModal('accountModal'); closeDrawer();
@@ -1426,22 +1574,25 @@ function updateAuthUI(){
   const nameEl = document.getElementById('drawerUserName'), roleEl = document.getElementById('drawerUserRole');
   if(!nameEl || !roleEl) return;
   if(currentUser){
-    nameEl.textContent = currentUser.email.split('@')[0];
+    nameEl.textContent = (currentUser.displayName || currentUser.email.split('@')[0]);
     roleEl.textContent = currentUser.email;
   } else {
     nameEl.textContent = 'زائر'; roleEl.textContent = 'اضغط لتسجيل الدخول';
   }
 }
-if(sbClient){
-  sbClient.auth.getSession().then(({data})=>{ if(data.session){ currentUser = data.session.user; updateAuthUI(); loadMyProfile(); } }).catch(e=>console.error(e));
-  sbClient.auth.onAuthStateChange((event, session)=>{ currentUser = session ? session.user : null; updateAuthUI(); if(currentUser) loadMyProfile(); });
-}
 
 /* ===== OAuth ===== */
 async function oauthSignIn(provider){
-  if(!sbClient){ showAuthMsg('تعذر الاتصال بالخادم'); return; }
-  const {error} = await sbClient.auth.signInWithOAuth({provider});
-  if(error) showAuthMsg(error.message);
+  if(!fbReady){ showAuthMsg('تعذر الاتصال بالخادم'); return; }
+  const map = { google:'google', facebook:'facebook', github:'github' };
+  const p = window.fbProviders[map[provider]];
+  if(!p){ showAuthMsg('هذا المزوّد غير مفعّل'); return; }
+  try{
+    const cred = await window.fb.signInWithPopup(window.fbAuth, p);
+    onAuthSuccess(cred.user);
+  }catch(err){
+    showAuthMsg(authErrorMsg(err));
+  }
 }
 
 /* ===== Admin ===== */
@@ -1459,27 +1610,34 @@ function updateAdminUI(){
   }
 }
 
-/* ===== profile: banner + name/username (Supabase) ===== */
+/* ===== profile: banner + name/username (Firestore: collection "profiles", doc id = uid) ===== */
 function onBannerPick(ev){
   const file = ev.target.files[0]; if(!file) return;
   const reader = new FileReader();
   reader.onload = e=>{
     const img = document.getElementById('bannerImg');
     img.src = e.target.result; img.style.display='block';
-    if(currentUser && sbClient){ sbClient.from('profiles').update({banner_url:e.target.result}).eq('id', currentUser.id).then(()=>{}); }
+    if(currentUser && fbReady){
+      window.fb.setDoc(window.fb.doc(window.fbDb,'profiles',currentUser.id), {banner_url:e.target.result}, {merge:true}).catch(console.error);
+    }
   };
   reader.readAsDataURL(file);
 }
 async function loadMyProfile(){
-  if(!sbClient || !currentUser) return;
-  const {data} = await sbClient.from('profiles').select('*').eq('id', currentUser.id).maybeSingle();
-  if(data){
-    if(data.banner_url){ const img=document.getElementById('bannerImg'); img.src=data.banner_url; img.style.display='block'; }
-    if(data.display_name) document.getElementById('accNameText').textContent = data.display_name;
-    userPoints = data.points || (computeWatchedTotal()*10);
-  } else {
-    await sbClient.from('profiles').upsert({id: currentUser.id, username: currentUser.email.split('@')[0], display_name: currentUser.email.split('@')[0], points: computeWatchedTotal()*10});
-  }
+  if(!fbReady || !currentUser) return;
+  try{
+    const snap = await window.fb.getDoc(window.fb.doc(window.fbDb,'profiles',currentUser.id));
+    if(snap.exists()){
+      const data = snap.data();
+      if(data.banner_url){ const img=document.getElementById('bannerImg'); img.src=data.banner_url; img.style.display='block'; }
+      if(data.display_name) document.getElementById('accNameText').textContent = data.display_name;
+      userPoints = data.points || (computeWatchedTotal()*10);
+    } else {
+      const defaults = { username: currentUser.email.split('@')[0], display_name: currentUser.displayName || currentUser.email.split('@')[0], points: computeWatchedTotal()*10 };
+      await window.fb.setDoc(window.fb.doc(window.fbDb,'profiles',currentUser.id), defaults);
+      userPoints = defaults.points;
+    }
+  }catch(e){ console.error(e); }
   updateAdminUI();
   document.getElementById('pointsNum').textContent = isAdmin() ? '∞' : userPoints;
 }
@@ -1488,10 +1646,13 @@ async function saveProfile(){
   const uname = document.getElementById('editUsername').value.trim();
   document.getElementById('accNameText').textContent = name || 'كودي';
   const msg = document.getElementById('editSaveMsg');
-  if(!currentUser || !sbClient){ msg.className='auth-msg err'; msg.textContent='سجّل الدخول أول عشان يحفظ فعليًا'; return; }
-  const {error} = await sbClient.from('profiles').upsert({id: currentUser.id, display_name:name, username:uname});
-  msg.className = 'auth-msg ' + (error ? 'err':'ok');
-  msg.textContent = error ? error.message : 'تم الحفظ بنجاح';
+  if(!currentUser || !fbReady){ msg.className='auth-msg err'; msg.textContent='سجّل الدخول أول عشان يحفظ فعليًا'; return; }
+  try{
+    await window.fb.setDoc(window.fb.doc(window.fbDb,'profiles',currentUser.id), {display_name:name, username:uname}, {merge:true});
+    msg.className = 'auth-msg ok'; msg.textContent = 'تم الحفظ بنجاح';
+  }catch(error){
+    msg.className = 'auth-msg err'; msg.textContent = error.message;
+  }
 }
 function computeWatchedTotal(){ let n=0; Object.values(watchedEps).forEach(s=>n+=s.size); return n; }
 
@@ -1548,9 +1709,9 @@ function buyItem(id, price){
   if(userPoints < price){ alert('نقاطك ما تكفي — شاهد المزيد من الحلقات لتجمع نقاط'); return; }
   userPoints -= price; ownedItems.add(id);
   document.getElementById('pointsNum').textContent = userPoints;
-  if(currentUser && sbClient){
-    sbClient.from('user_items').insert({user_id: currentUser.id, item_id:id}).then(()=>{});
-    sbClient.from('profiles').update({points:userPoints}).eq('id', currentUser.id).then(()=>{});
+  if(currentUser && fbReady){
+    window.fb.addDoc(window.fb.collection(window.fbDb,'user_items'), {user_id: currentUser.id, item_id:id, created_at: window.fb.serverTimestamp()}).catch(console.error);
+    window.fb.setDoc(window.fb.doc(window.fbDb,'profiles',currentUser.id), {points:userPoints}, {merge:true}).catch(console.error);
   }
   renderStoreGrid(currentStoreCat);
 }
@@ -1560,19 +1721,26 @@ let currentStoreCat = 'all';
 let myTeams = [];
 async function loadTeamPanel(){
   const box = document.getElementById('teamPanelBox');
-  if(!currentUser || !sbClient){ box.innerHTML = `<div class="empty-state">${svgIcon('shield')}<div class="txt">سجّل الدخول عشان تنشئ أو تنضم لفريق</div></div>`; return; }
-  const {data: owned} = await sbClient.from('teams').select('*').eq('owner', currentUser.id);
-  const {data: memberships} = await sbClient.from('team_members').select('team_id, teams(*)').eq('user_id', currentUser.id);
-  const {data: allTeams} = await sbClient.from('teams').select('*').limit(20);
+  if(!currentUser || !fbReady){ box.innerHTML = `<div class="empty-state">${svgIcon('shield')}<div class="txt">سجّل الدخول عشان تنشئ أو تنضم لفريق</div></div>`; return; }
+  const {collection, query, where, limit, getDocs, doc, getDoc} = window.fb; const db = window.fbDb;
+  const ownedSnap = await getDocs(query(collection(db,'teams'), where('owner','==',currentUser.id)));
+  const owned = ownedSnap.docs.map(d=>({id:d.id, ...d.data()}));
+  const memberSnap = await getDocs(query(collection(db,'team_members'), where('user_id','==',currentUser.id)));
+  const memberTeamDocs = await Promise.all(memberSnap.docs.map(async m=>{
+    const tId = m.data().team_id; const tSnap = await getDoc(doc(db,'teams',tId));
+    return tSnap.exists() ? {id:tSnap.id, ...tSnap.data()} : null;
+  }));
+  const allSnap = await getDocs(query(collection(db,'teams'), limit(20)));
+  const allTeams = allSnap.docs.map(d=>({id:d.id, ...d.data()}));
   let html = `<div class="form-group"><label>اسم الفريق الجديد</label><input class="form-input" id="newTeamName" placeholder="مثال: فريق الفانوس"></div>
   <div class="form-group"><label>وصف مختصر</label><input class="form-input" id="newTeamDesc"></div>
   <button class="watch-btn" onclick="createTeam()">إنشاء فريق</button>
   <div id="teamCreateMsg" class="auth-msg"></div>
   <div class="drawer-section-title">فرقي</div>`;
-  const mine = [...(owned||[]), ...((memberships||[]).map(m=>m.teams))].filter(Boolean);
+  const mine = [...owned, ...memberTeamDocs].filter(Boolean);
   html += mine.length ? mine.map(t=>`<div class="team-card" onclick="openTeamRoom('${t.id}','${(t.name||'').replace(/'/g,"")}','${(t.description||'').replace(/'/g,"")}')"><div class="team-ic">${svgIcon('shield')}</div><div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.description||''}</div></div></div>`).join('') : `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو فرق لك بعد</div></div>`;
   html += `<div class="drawer-section-title">فرق يمكن الانضمام لها</div>`;
-  html += (allTeams||[]).filter(t=>!mine.find(m=>m.id===t.id)).map(t=>`<div class="team-card"><div class="team-ic">${svgIcon('shield')}</div><div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.description||''}</div></div><button class="follow-btn" onclick="joinTeam('${t.id}')">انضمام</button></div>`).join('') || '';
+  html += allTeams.filter(t=>!mine.find(m=>m.id===t.id)).map(t=>`<div class="team-card"><div class="team-ic">${svgIcon('shield')}</div><div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.description||''}</div></div><button class="follow-btn" onclick="joinTeam('${t.id}')">انضمام</button></div>`).join('') || '';
   box.innerHTML = html;
 }
 async function createTeam(){
@@ -1580,29 +1748,35 @@ async function createTeam(){
   const desc = document.getElementById('newTeamDesc').value.trim();
   const msg = document.getElementById('teamCreateMsg');
   if(!name){ msg.className='auth-msg err'; msg.textContent='اكتب اسم الفريق'; return; }
-  const {data, error} = await sbClient.from('teams').insert({name, description:desc, owner:currentUser.id}).select().single();
-  if(error){ msg.className='auth-msg err'; msg.textContent=error.message; return; }
-  await sbClient.from('team_members').insert({team_id:data.id, user_id:currentUser.id});
-  msg.className='auth-msg ok'; msg.textContent='تم إنشاء الفريق!';
-  loadTeamPanel();
+  try{
+    const {collection, addDoc, serverTimestamp} = window.fb; const db = window.fbDb;
+    const teamRef = await addDoc(collection(db,'teams'), {name, description:desc, owner:currentUser.id, created_at:serverTimestamp()});
+    await addDoc(collection(db,'team_members'), {team_id:teamRef.id, user_id:currentUser.id});
+    msg.className='auth-msg ok'; msg.textContent='تم إنشاء الفريق!';
+    loadTeamPanel();
+  }catch(error){ msg.className='auth-msg err'; msg.textContent=error.message; }
 }
 async function joinTeam(id){
-  const {error} = await sbClient.from('team_members').insert({team_id:id, user_id:currentUser.id});
-  if(error) alert(error.message); else loadTeamPanel();
+  try{
+    await window.fb.addDoc(window.fb.collection(window.fbDb,'team_members'), {team_id:id, user_id:currentUser.id});
+    loadTeamPanel();
+  }catch(error){ alert(error.message); }
 }
 let currentTeamId = null;
 async function openTeamRoom(id, name, desc){
   currentTeamId = id;
   document.getElementById('teamRoomName').textContent = name;
   document.getElementById('teamRoomDesc').textContent = desc || 'ماكو وصف بعد';
-  const {count: memberCount} = await sbClient.from('team_members').select('*', {count:'exact', head:true}).eq('team_id', id);
-  const {data: subs} = await sbClient.from('submissions').select('*').eq('team_id', id);
-  const published = (subs||[]).filter(s=>s.status==='approved').length;
-  const pending = (subs||[]).filter(s=>s.status==='pending').length;
-  document.getElementById('teamMemberCount').textContent = memberCount||0;
+  const {collection, query, where, getDocs} = window.fb; const db = window.fbDb;
+  const memberSnap = await getDocs(query(collection(db,'team_members'), where('team_id','==',id)));
+  const subsSnap = await getDocs(query(collection(db,'submissions'), where('team_id','==',id)));
+  const subs = subsSnap.docs.map(d=>({id:d.id, ...d.data()}));
+  const published = subs.filter(s=>s.status==='approved').length;
+  const pending = subs.filter(s=>s.status==='pending').length;
+  document.getElementById('teamMemberCount').textContent = memberSnap.size||0;
   document.getElementById('teamPublishedCount').textContent = published;
   document.getElementById('teamPendingCount').textContent = pending;
-  document.getElementById('teamSubsList').innerHTML = (subs||[]).map(s=>`<div class="sub-card"><div class="sub-head"><div class="sub-title">${s.title}</div><span class="tag-gold">${s.status==='approved'?'منشور':s.status==='pending'?'قيد المراجعة':'مرفوض'}</span></div><div class="sub-meta">${s.type==='anime'?'أنمي':'مانجا'} · ${s.genre||''}</div></div>`).join('') || `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو إصدارات بعد</div></div>`;
+  document.getElementById('teamSubsList').innerHTML = subs.map(s=>`<div class="sub-card"><div class="sub-head"><div class="sub-title">${s.title}</div><span class="tag-gold">${s.status==='approved'?'منشور':s.status==='pending'?'قيد المراجعة':'مرفوض'}</span></div><div class="sub-meta">${s.type==='anime'?'أنمي':'مانجا'} · ${s.genre||''}</div></div>`).join('') || `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو إصدارات بعد</div></div>`;
   openModal('teamRoomModal');
 }
 let submitType = 'anime';
@@ -1619,10 +1793,13 @@ async function sendSubmission(){
   const desc = document.getElementById('subDesc').value.trim();
   const msg = document.getElementById('submitMsg');
   if(!title){ msg.className='auth-msg err'; msg.textContent='اكتب العنوان'; return; }
-  const {error} = await sbClient.from('submissions').insert({type:submitType, title, genre, description:desc, team_id:currentTeamId, submitted_by:currentUser.id});
-  msg.className = 'auth-msg ' + (error?'err':'ok');
-  msg.textContent = error ? error.message : 'تم الإرسال! بانتظار موافقة الإدارة';
-  if(!error) setTimeout(()=>{ closeModal('submitFormModal'); openTeamRoom(currentTeamId, document.getElementById('teamRoomName').textContent, document.getElementById('teamRoomDesc').textContent); }, 1200);
+  try{
+    await window.fb.addDoc(window.fb.collection(window.fbDb,'submissions'), {type:submitType, title, genre, description:desc, team_id:currentTeamId, submitted_by:currentUser.id, status:'pending', created_at:window.fb.serverTimestamp()});
+    msg.className = 'auth-msg ok'; msg.textContent = 'تم الإرسال! بانتظار موافقة الإدارة';
+    setTimeout(()=>{ closeModal('submitFormModal'); openTeamRoom(currentTeamId, document.getElementById('teamRoomName').textContent, document.getElementById('teamRoomDesc').textContent); }, 1200);
+  }catch(error){
+    msg.className = 'auth-msg err'; msg.textContent = error.message;
+  }
 }
 
 /* ===== admin panel logic ===== */
@@ -1634,31 +1811,39 @@ function switchAdminTab(tab){
 }
 async function loadAdminSubs(){
   if(!isAdmin()) return;
-  const {data} = await sbClient.from('submissions').select('*').eq('status','pending');
-  document.getElementById('adminSubsList').innerHTML = (data||[]).map(s=>`
+  const {collection, query, where, getDocs} = window.fb;
+  const snap = await getDocs(query(collection(window.fbDb,'submissions'), where('status','==','pending')));
+  const data = snap.docs.map(d=>({id:d.id, ...d.data()}));
+  document.getElementById('adminSubsList').innerHTML = data.map(s=>`
     <div class="sub-card"><div class="sub-head"><div class="sub-title">${s.title}</div></div>
     <div class="sub-meta">${s.type==='anime'?'أنمي':'مانجا'} · ${s.genre||''} · ${s.description||''}</div>
     <div class="sub-actions"><button class="sub-btn approve" onclick="reviewSub('${s.id}','approved')">قبول</button><button class="sub-btn reject" onclick="reviewSub('${s.id}','rejected')">رفض</button></div></div>
   `).join('') || `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو طلبات معلّقة</div></div>`;
 }
 async function reviewSub(id, status){
-  const {error} = await sbClient.from('submissions').update({status}).eq('id', id);
-  if(error) alert(error.message); else loadAdminSubs();
+  try{
+    await window.fb.updateDoc(window.fb.doc(window.fbDb,'submissions',id), {status});
+    loadAdminSubs();
+  }catch(error){ alert(error.message); }
 }
 async function loadAdminReports(){
   if(!isAdmin()) return;
-  const {data} = await sbClient.from('reports').select('*').eq('status','open');
-  document.getElementById('adminReportsList').innerHTML = (data||[]).map(r=>`
+  const {collection, query, where, getDocs} = window.fb;
+  const snap = await getDocs(query(collection(window.fbDb,'reports'), where('status','==','open')));
+  const data = snap.docs.map(d=>({id:d.id, ...d.data()}));
+  document.getElementById('adminReportsList').innerHTML = data.map(r=>`
     <div class="sub-card"><div class="sub-title">بلاغ ضد مستخدم</div><div class="sub-meta">${r.reason||'بدون سبب مذكور'}</div>
     <div class="sub-actions"><button class="sub-btn resolve" onclick="resolveReport('${r.id}')">إغلاق البلاغ</button></div></div>
   `).join('') || `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو بلاغات مفتوحة</div></div>`;
 }
 async function resolveReport(id){
-  const {error} = await sbClient.from('reports').update({status:'resolved'}).eq('id', id);
-  if(error) alert(error.message); else loadAdminReports();
+  try{
+    await window.fb.updateDoc(window.fb.doc(window.fbDb,'reports',id), {status:'resolved'});
+    loadAdminReports();
+  }catch(error){ alert(error.message); }
 }
 async function banUserByEmail(){
-  alert('حظر حساب معيّن ببريده يحتاج صلاحية Admin API من السيرفر (ما تنعمل من المتصفح بأمان). الطريقة الآمنة: افتح Supabase Dashboard → Authentication → ابحث عن المستخدم → Ban User. لو تبي أظبطلك Edge Function تسوي هذا من داخل التطبيق قلي.');
+  alert('حظر حساب معيّن ببريده يحتاج صلاحية Admin SDK من السيرفر (ما تنعمل من المتصفح بأمان). الطريقة الآمنة: افتح Firebase Console → Authentication → ابحث عن المستخدم → Disable user. لو تبي أظبطلك Cloud Function تسوي هذا من داخل التطبيق قلي.');
 }
 
 /* wire tabs that need data loading */
