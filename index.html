@@ -432,7 +432,7 @@
 
   /* responsive banner — fits any uploaded image size automatically */
   .acc-cover{overflow:hidden;}
-  .acc-cover img{width:100%; height:100%; object-fit:cover; object-position:center; display:block;}
+  .acc-cover img{width:100%; height:100%; object-fit:contain; object-position:center; display:block; background:rgba(0,0,0,.15);}
   .banner-upload-btn{position:absolute; bottom:8px; left:8px; z-index:2; background:rgba(0,0,0,.55); color:#fff; border:1px solid rgba(255,255,255,.3); border-radius:9px; padding:6px 10px; font-size:10px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:5px;}
   .banner-upload-btn svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:1.8;}
 
@@ -599,7 +599,7 @@
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="drawer">
   <div class="drawer-header"><span style="font-weight:900; font-size:19px; color:var(--accent);">بيور</span><div class="drawer-close" onclick="closeDrawer()"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
-  <div class="user-card" onclick="closeDrawer(); currentUser ? openModal('accountModal') : openModal('authModal')"><div class="user-profile-info"><div class="avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div><div class="user-details"><div class="u-name" id="drawerUserName">زائر</div><div class="u-role" id="drawerUserRole">اضغط لتسجيل الدخول</div></div></div></div>
+  <div class="user-card" onclick="closeDrawer(); currentUser ? openModal('accountModal') : openModal('authModal')"><div class="user-profile-info"><div class="avatar"><img id="drawerAvatarImg" style="display:none; width:100%; height:100%; object-fit:cover; border-radius:50%;"><svg id="drawerAvatarIcon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div><div class="user-details"><div class="u-name" id="drawerUserName">زائر</div><div class="u-role" id="drawerUserRole">اضغط لتسجيل الدخول</div></div></div></div>
   <div class="drawer-section-title">القائمة الرئيسية</div>
   <div class="drawer-menu">
     <div class="drawer-item active"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7"/><path d="M6 10v10h12V10"/></svg>الرئيسية</span></div>
@@ -660,6 +660,8 @@
     <div class="admin-tab" data-at="ban" onclick="switchAdminTab('ban')">حظر / إيقاف</div>
     <div class="admin-tab" data-at="admins" data-needs-level="3" onclick="switchAdminTab('admins')">الإداريين</div>
     <div class="admin-tab" data-at="pureteam" data-needs-level="3" onclick="switchAdminTab('pureteam')">تيم بيور</div>
+    <div class="admin-tab" data-needs-level="3" data-at="logins" onclick="switchAdminTab('logins')">سجل الدخول</div>
+    <div class="admin-tab" data-needs-level="2" data-at="deletecontent" onclick="switchAdminTab('deletecontent')">حذف محتوى</div>
     <div class="admin-tab" data-at="tools" onclick="switchAdminTab('tools')">أدوات</div>
   </div>
   <div class="admin-panel2 active" data-ap="subs">
@@ -701,6 +703,15 @@
     <button class="watch-btn" onclick="addPureTeamMember()">إضافة لتيم بيور</button>
     <div class="drawer-section-title" style="margin-top:14px;">الأعضاء الحاليون</div>
     <div id="pureTeamList"></div>
+  </div>
+  <div class="admin-panel2" data-ap="logins">
+    <div class="drawer-section-title">سجل تسجيل الدخول — منو دخل ومتى</div>
+    <div id="loginLogsList"></div>
+  </div>
+  <div class="admin-panel2" data-ap="deletecontent">
+    <div class="drawer-section-title">حذف عمل كامل (مانجا/مانهوا/رواية/كومكس)</div>
+    <p style="font-size:10px;color:var(--text-dim);margin-bottom:8px;">حذف نهائي — يشيل العمل وكل فصوله وكل التعليقات المرتبطة به دفعة وحدة. ما ينرجع.</p>
+    <div id="deleteContentList"></div>
   </div>
   <div class="admin-panel2" data-ap="tools">
     <div class="drawer-section-title">إعدادات تشغيل الموقع</div>
@@ -995,7 +1006,6 @@
       <div class="rate-box"><div class="num" id="ovEpCount">14</div><div class="count">الفصول</div></div>
       <div class="rate-box"><div class="num" id="ovRank">#٣</div><div class="count">الترتيب</div></div>
     </div>
-    <div class="countdown-strip" id="detailsCountdown"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><span id="detailsCountdownText">—</span></div>
     <button class="watch-btn" onclick="watchNext()"><svg viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4z"/></svg>اقرأ الآن</button>
     <div style="text-align:center; margin:-6px 0 12px;"><span style="font-size:11.5px; color:var(--accent); cursor:pointer; font-weight:700;" onclick="switchAnimeTab('episodes')">كل الفصول ‹</span></div>
     <div class="anime-action-buttons">
@@ -1034,7 +1044,7 @@
     <div class="acc-lvl-badge"><div class="n">Lv.٧</div><div class="l">المستوى</div></div>
     <label class="acc-avatar-wrap"><img id="avatarImg"><svg id="avatarPlaceholderIcon" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><div class="avatar-edit-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></div><input type="file" accept="image/*" id="avatarInput" style="display:none;" onchange="onAvatarPick(event)"></label>
   </div>
-  <div class="acc-name-block"><div class="nm" id="accNameText">كودي</div><div class="rl" id="accRoleText">عضو · @kodi_anime</div><div class="since" id="sinceText">—</div></div>
+  <div class="acc-name-block"><div class="nm" id="accNameText">عضو</div><div class="rl" id="accRoleText">—</div><div class="since" id="sinceText">—</div></div>
   <div class="acc-level-bar"><div class="row"><span>التقدم للمستوى القادم</span><span>٦٤٪</span></div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:64%"></div></div></div>
   <div class="acc-tabs" id="accTabsRow">
     <div class="acc-tab active" data-t="overview" onclick="switchAccTab('overview')">نظرة عامة</div>
@@ -1058,8 +1068,8 @@
     </div>
   </div>
   <div class="acc-panel" data-p="edit">
-    <div class="form-group"><label>الاسم</label><input class="form-input" id="editName" value="كودي"></div>
-    <div class="form-group"><label>الاسم المستعار</label><input class="form-input" id="editUsername" value="@kodi_anime"></div>
+    <div class="form-group"><label>الاسم</label><input class="form-input" id="editName" placeholder="اكتب اسمك"></div>
+    <div class="form-group"><label>الاسم المستعار</label><input class="form-input" id="editUsername" placeholder="@اسمك_المستعار"></div>
     <button class="watch-btn" onclick="saveProfile()">حفظ التعديلات</button>
     <div id="editSaveMsg" class="auth-msg"></div>
     <div class="drawer-menu" style="margin-top:6px;">
@@ -1412,7 +1422,6 @@ function openAnimeDetails(key){
   document.getElementById('infoStatus').textContent=a.status;
   document.getElementById('infoStudio').textContent=a.studio;
   document.getElementById('infoSeason').textContent=a.season;
-  document.getElementById('detailsCountdownText').textContent = 'الحلقة القادمة ' + fmtCountdown(nextEpAt[key]-Date.now());
   document.getElementById('animeFavIcon').classList.toggle('fav-on', favorites.has(key));
   document.querySelectorAll('#starPicker .star-pick').forEach(s=>s.classList.remove('on'));
   if(!watchedEps[key]) watchedEps[key]=new Set();
@@ -1883,6 +1892,12 @@ function onAuthSuccess(user){
   currentUser = normalizeUser(user);
   updateAuthUI();
   closeModal('authModal');
+  if(fbReady){
+    window.fb.addDoc(window.fb.collection(window.fbDb,'login_logs'), {
+      uid: currentUser.id, email: currentUser.email, loginAt: window.fb.serverTimestamp(),
+      device: navigator.userAgent.slice(0,180)
+    }).catch(console.error);
+  }
 }
 async function doSignOut(){
   try{
@@ -1897,8 +1912,10 @@ function resetProfileUI(){
   const banner = document.getElementById('bannerImg'); if(banner){ banner.src=''; banner.style.display='none'; }
   const avatar = document.getElementById('avatarImg'); if(avatar){ avatar.src=''; avatar.style.display='none'; }
   const icon = document.getElementById('avatarPlaceholderIcon'); if(icon) icon.style.display='block';
-  const nm = document.getElementById('accNameText'); if(nm) nm.textContent = 'كودي';
-  const rl = document.getElementById('accRoleText'); if(rl) rl.textContent = 'عضو · @kodi_anime';
+  const nm = document.getElementById('accNameText'); if(nm) nm.textContent = 'عضو';
+  const rl = document.getElementById('accRoleText'); if(rl) rl.textContent = '—';
+  const dn = document.getElementById('drawerAvatarImg'); if(dn){ dn.style.display='none'; dn.src=''; }
+  const di = document.getElementById('drawerAvatarIcon'); if(di) di.style.display='block';
   ['statEpisodes','statHours','statFav'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent='0'; });
   const coverBox = document.getElementById('accCoverBox'); if(coverBox) coverBox.parentElement.classList.remove('is-admin');
   const adminBtn = document.getElementById('adminEntryBtn'); if(adminBtn) adminBtn.style.display='none';
@@ -1910,10 +1927,12 @@ function updateAuthUI(){
   const nameEl = document.getElementById('drawerUserName'), roleEl = document.getElementById('drawerUserRole');
   if(!nameEl || !roleEl) return;
   if(currentUser){
-    nameEl.textContent = (currentUser.displayName || currentUser.email.split('@')[0]);
-    roleEl.textContent = currentUser.email;
+    nameEl.textContent = currentUser.displayName || 'عضو';
+    roleEl.textContent = 'عرض الحساب';
   } else {
     nameEl.textContent = 'زائر'; roleEl.textContent = 'اضغط لتسجيل الدخول';
+    const img=document.getElementById('drawerAvatarImg'), icon=document.getElementById('drawerAvatarIcon');
+    if(img){ img.style.display='none'; img.src=''; } if(icon) icon.style.display='block';
   }
 }
 
@@ -2032,7 +2051,7 @@ function updateAdminUI(){
   const roleEl = document.getElementById('accRoleText');
   if(roleEl){
     const lvl = getAdminLevel();
-    roleEl.innerHTML = admin ? `<span class="admin-badge"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3z"/></svg>${ADMIN_LEVEL_LABELS[lvl]||'حساب إداري'}</span>` : (currentUser ? currentUser.email : '@kodi_anime');
+    roleEl.innerHTML = admin ? `<span class="admin-badge"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3z"/></svg>${ADMIN_LEVEL_LABELS[lvl]||'حساب إداري'}</span>` : 'عضو';
   }
   document.querySelectorAll('.admin-tab[data-needs-level]').forEach(t=>{
     t.style.display = (getAdminLevel() >= +t.dataset.needsLevel) ? '' : 'none';
@@ -2078,12 +2097,22 @@ async function loadMyProfile(){
     if(snap.exists()){
       const data = snap.data();
       if(data.banner_url){ const img=document.getElementById('bannerImg'); img.src=data.banner_url; img.style.display='block'; }
-      if(data.avatar_url){ const img=document.getElementById('avatarImg'); const icon=document.getElementById('avatarPlaceholderIcon'); img.src=data.avatar_url; img.style.display='block'; if(icon) icon.style.display='none'; myAvatarUrl=data.avatar_url; }
+      if(data.avatar_url){
+        const img=document.getElementById('avatarImg'); const icon=document.getElementById('avatarPlaceholderIcon'); img.src=data.avatar_url; img.style.display='block'; if(icon) icon.style.display='none'; myAvatarUrl=data.avatar_url;
+        const dImg=document.getElementById('drawerAvatarImg'), dIcon=document.getElementById('drawerAvatarIcon');
+        if(dImg){ dImg.src=data.avatar_url; dImg.style.display='block'; } if(dIcon) dIcon.style.display='none';
+      }
       if(data.last_read) lastRead = data.last_read;
       if(data.equipped) equippedItems = {...equippedItems, ...data.equipped};
       if(data.theme && THEMES[data.theme]) applyTheme(data.theme, true);
       if(data.layout) setLayout(data.layout, true);
-      if(data.display_name) document.getElementById('accNameText').textContent = data.display_name;
+      const finalName = data.display_name || currentUser.email.split('@')[0];
+      document.getElementById('accNameText').textContent = finalName;
+      document.getElementById('drawerUserName').textContent = finalName;
+      currentUser.displayName = finalName;
+      const editNameEl = document.getElementById('editName'), editUserEl = document.getElementById('editUsername');
+      if(editNameEl) editNameEl.value = finalName;
+      if(editUserEl) editUserEl.value = data.username ? ('@'+data.username.replace(/^@/,'')) : ('@'+currentUser.email.split('@')[0]);
       userPoints = data.points || (computeWatchedTotal()*10);
       currentUserBanned = !!data.banned;
       if(currentUserBanned){
@@ -2105,8 +2134,10 @@ async function loadMyProfile(){
 }
 async function saveProfile(){
   const name = document.getElementById('editName').value.trim();
-  const uname = document.getElementById('editUsername').value.trim();
-  document.getElementById('accNameText').textContent = name || 'كودي';
+  const uname = document.getElementById('editUsername').value.trim().replace(/^@/,'');
+  document.getElementById('accNameText').textContent = name || 'عضو';
+  document.getElementById('drawerUserName').textContent = name || 'عضو';
+  if(currentUser) currentUser.displayName = name;
   const msg = document.getElementById('editSaveMsg');
   if(!currentUser || !fbReady){ msg.className='auth-msg err'; msg.textContent='سجّل الدخول أول عشان يحفظ فعليًا'; return; }
   try{
@@ -2199,7 +2230,7 @@ function applyEquippedDecorations(){
   const titleIt = STORE_ITEMS.find(i=>i.id===equippedItems.title);
   const roleEl = document.getElementById('accRoleText');
   if(roleEl && !isAdmin()){
-    roleEl.textContent = titleIt ? (titleIt.name + ' · ' + (currentUser?currentUser.email:'@kodi_anime')) : (currentUser?currentUser.email:'@kodi_anime');
+    roleEl.textContent = titleIt ? titleIt.name : 'عضو';
   }
   if(coverBox){
     const fxIt = STORE_ITEMS.find(i=>i.id===equippedItems.bannerFx);
@@ -2314,6 +2345,8 @@ function switchAdminTab(tab){
   if(tab==='ban') loadBannedList();
   if(tab==='admins') loadAdminsList();
   if(tab==='pureteam') loadPureTeamList();
+  if(tab==='logins') loadLoginLogs();
+  if(tab==='deletecontent') loadDeleteContentList();
   if(tab==='tools') fillSiteSettingsForm();
 }
 async function loadAdminSubs(){
@@ -2448,6 +2481,47 @@ async function changeAdminLevel(email, level){
   if(getAdminLevel() < 3) return;
   try{ await window.fb.setDoc(window.fb.doc(window.fbDb,'admins',email), {level:+level}, {merge:true}); loadAdminRoles(); }
   catch(e){ alert('تعذر تعديل الصلاحية: '+e.message); }
+}
+/* ===== سجل الدخول: منو سجل دخول ومتى (طلب هذي الرسالة) ===== */
+async function loadLoginLogs(){
+  if(getAdminLevel() < 3) return;
+  const box = document.getElementById('loginLogsList');
+  box.innerHTML = '<div class="chat-skel"></div><div class="chat-skel"></div>';
+  try{
+    const {collection, query, orderBy, limit, getDocs} = window.fb;
+    const snap = await getDocs(query(collection(window.fbDb,'login_logs'), orderBy('loginAt','desc'), limit(50)));
+    const rows = snap.docs.map(d=>d.data());
+    box.innerHTML = rows.length ? rows.map(r=>{
+      const when = r.loginAt && r.loginAt.toDate ? r.loginAt.toDate().toLocaleString('ar-EG') : '—';
+      return `<div class="sub-card"><div class="sub-title">${r.email||'—'}</div><div class="sub-meta">${when}${r.device?(' · '+r.device.slice(0,50)):''}</div></div>`;
+    }).join('') : `<div class="empty-state" style="padding:16px;">${svgIcon('sparkle')}<div class="txt">ماكو تسجيلات دخول بعد</div></div>`;
+  }catch(e){ console.error(e); box.innerHTML = `<div class="empty-state" style="padding:16px;"><div class="txt">تعذر تحميل السجل</div></div>`; }
+}
+/* ===== حذف عمل كامل (عمل + كل فصوله + كل تعليقاته) — طلب هذي الرسالة ===== */
+async function loadDeleteContentList(){
+  if(getAdminLevel() < 2) return;
+  const box = document.getElementById('deleteContentList');
+  const keys = Object.keys(ANIME);
+  box.innerHTML = keys.length ? keys.map(k=>`
+    <div class="sub-card"><div class="sub-title">${ANIME[k].title}</div><div class="sub-meta">معرّف: ${k}</div>
+    <div class="sub-actions"><button class="sub-btn reject" onclick="cascadeDeleteManga('${k}')">حذف العمل كامل + فصوله + تعليقاته</button></div></div>
+  `).join('') : `<div class="empty-state" style="padding:16px;">${svgIcon('sparkle')}<div class="txt">ماكو أعمال حاليًا</div></div>`;
+}
+async function cascadeDeleteManga(key){
+  const title = ANIME[key] ? ANIME[key].title : key;
+  if(!confirm(`متأكد تريد تحذف "${title}" نهائيًا مع كل فصوله وتعليقاته؟ هذا الإجراء لا يُرجّع.`)) return;
+  try{
+    const {collection, query, where, getDocs, deleteDoc, doc} = window.fb;
+    const chSnap = await getDocs(collection(window.fbDb,'mangas',key,'chapters'));
+    for(const d of chSnap.docs) await deleteDoc(doc(window.fbDb,'mangas',key,'chapters',d.id));
+    const cSnap = await getDocs(query(collection(window.fbDb,'comments'), where('mangaId','==',key)));
+    for(const d of cSnap.docs) await deleteDoc(doc(window.fbDb,'comments',d.id));
+    await deleteDoc(doc(window.fbDb,'mangas',key));
+    delete ANIME[key];
+    alert('تم حذف العمل وكل فصوله وتعليقاته');
+    loadDeleteContentList();
+    renderRows();
+  }catch(e){ alert('تعذر الحذف الكامل: '+e.message); }
 }
 function loadAdminsList(){
   const box = document.getElementById('adminsList'); if(!box) return;
