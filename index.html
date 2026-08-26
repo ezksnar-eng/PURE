@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<script src="translator.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <title>بيور | مانجا · مانهوا · روايات · كومكس</title>
@@ -115,8 +114,19 @@
   .section-head .seeall{font-size:11.5px; color:var(--accent); cursor:pointer;}
 
   .rowscroll{display:flex; gap:12px; overflow-x:auto; padding-bottom:4px; margin:0 -16px; padding-inline:16px; scroll-snap-type:x proximity;}
-  .card{flex:0 0 128px; border-radius:14px; overflow:hidden; position:relative; border:1px solid var(--line); background:var(--card); scroll-snap-align:start; cursor:pointer;}
+  .card{flex:0 0 128px; border-radius:14px; overflow:hidden; position:relative; border:1px solid var(--line); background:var(--card); scroll-snap-align:start; cursor:pointer; transition:transform .15s ease;}
   .card:active{transform:scale(.97);}
+  @keyframes fadeInUp{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+  .card, .chat-msg, .sub-card, .upcoming-item, .fav-item-card, .team-card, .reader-page, .reader-para, .grid-cards>*{
+    animation:fadeInUp .38s cubic-bezier(.22,.9,.32,1) both;
+  }
+  .icon-btn{transition:transform .15s ease, background .15s ease;}
+  .btn{transition:transform .15s ease, opacity .15s ease;}
+  .btn:active{transform:scale(.96);}
+  .follow-btn{transition:transform .15s ease, background .2s ease, color .2s ease;}
+  .follow-btn:active{transform:scale(.94);}
+  .q-tag, .g-tab, .search-chip{transition:background .18s ease, color .18s ease, transform .15s ease;}
+  .q-tag:active, .g-tab:active, .search-chip:active{transform:scale(.95);}
   .thumb{aspect-ratio:2/3; position:relative; display:flex; align-items:center; justify-content:center; background:linear-gradient(160deg, rgba(var(--accent-rgb),.10), var(--card2) 75%);}
   .poster-icon{width:46px; height:46px; border-radius:14px; background:rgba(var(--accent-rgb),.12); border:1px solid rgba(var(--accent-rgb),.3); display:flex; align-items:center; justify-content:center;}
   .poster-icon svg{width:21px;height:21px;stroke:var(--accent);fill:none;stroke-width:1.6;}
@@ -244,23 +254,26 @@
   .chat-report:hover{color:var(--accent-soft); background:rgba(var(--accent-rgb),.12);}
   .chat-report svg{width:10px;height:10px;}
   .chat-avatar{width:20px; height:20px; border-radius:7px; object-fit:cover; flex-shrink:0;}
-  .chat-avatar.ph{display:flex; align-items:center; justify-content:center; background:var(--card2); border:1px solid var(--line);}
-  .chat-avatar.ph svg{width:11px;height:11px; stroke:var(--text-dim); fill:none; stroke-width:1.8;}
+  .chat-avatar.ph{display:flex; align-items:center; justify-content:center; color:#fff; font-size:10px; font-weight:800;}
+  .ttl-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;}
+  .ttl-row .ttl{margin-bottom:0;}
+  @keyframes skelPulse{0%,100%{opacity:.5;} 50%{opacity:1;}}
+  .chat-skel{height:52px; border-radius:12px; background:var(--card2); margin-bottom:8px; animation:skelPulse 1.3s ease-in-out infinite;}
   .chat-input-row{display:flex; gap:8px; align-items:center;}
   .chat-send{width:40px; height:40px; border-radius:12px; background:var(--accent); color:var(--on-accent); border:none; flex-shrink:0; cursor:pointer; display:flex; align-items:center; justify-content:center;}
   .chat-send svg{width:16px;height:16px;fill:var(--on-accent);stroke:none;}
 
   .acc-cover{height:150px; border-radius:16px; background:linear-gradient(120deg, rgba(var(--accent-rgb),.25), var(--card2) 70%); position:relative; margin-bottom:44px; border:1px solid var(--line);}
-  .acc-avatar-wrap{position:absolute; bottom:-32px; right:16px; width:66px; height:66px; border-radius:18px; background:var(--card); border:3px solid var(--bg-alt); display:flex; align-items:center; justify-content:center; overflow:hidden; cursor:pointer;}
+  .acc-avatar-wrap{position:absolute; bottom:-34px; left:50%; transform:translateX(-50%); width:76px; height:76px; border-radius:50%; background:var(--card); border:4px solid var(--bg-alt); display:flex; align-items:center; justify-content:center; overflow:hidden; cursor:pointer;}
   .acc-avatar-wrap svg{width:28px;height:28px;stroke:var(--accent);fill:none;stroke-width:1.6;}
   .acc-avatar-wrap img{width:100%; height:100%; object-fit:cover; display:none;}
   .acc-avatar-wrap .avatar-edit-mark{position:absolute; inset:0; background:rgba(0,0,0,.45); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .15s;}
   .acc-avatar-wrap:hover .avatar-edit-mark{opacity:1;}
   .acc-avatar-wrap .avatar-edit-mark svg{width:16px;height:16px;stroke:#fff;}
-  .acc-lvl-badge{position:absolute; bottom:-32px; left:16px; background:var(--card); border:1px solid var(--line-strong); border-radius:12px; padding:8px 12px; text-align:center;}
-  .acc-lvl-badge .n{font-size:14px; font-weight:900; color:var(--star);}
-  .acc-lvl-badge .l{font-size:8px; color:var(--text-dim);}
-  .acc-name-block{text-align:right; padding-right:16px; margin-bottom:16px;}
+  .acc-lvl-badge{position:absolute; top:10px; left:10px; background:rgba(0,0,0,.5); backdrop-filter:blur(4px); border:1px solid rgba(255,255,255,.15); border-radius:10px; padding:5px 10px; text-align:center;}
+  .acc-lvl-badge .n{font-size:12px; font-weight:900; color:var(--star);}
+  .acc-lvl-badge .l{font-size:7.5px; color:#fff; opacity:.8;}
+  .acc-name-block{text-align:center; padding-top:6px; margin-bottom:16px;}
   .acc-name-block .nm{font-size:17px; font-weight:900; color:var(--text);}
   .acc-name-block .rl{font-size:10.5px; color:var(--accent-soft); font-weight:700; margin-top:2px;}
   .acc-name-block .since{font-size:9.5px; color:var(--text-dim); margin-top:3px;}
@@ -269,7 +282,8 @@
   .acc-tabs{display:flex; gap:8px; margin-bottom:16px;}
   .acc-tab{flex:1; text-align:center; padding:9px; border-radius:11px; font-size:11.5px; font-weight:700; background:var(--card); border:1px solid var(--line); color:var(--text-dim); cursor:pointer;}
   .acc-tab.active{background:var(--accent); color:var(--on-accent); border-color:var(--accent);}
-  .acc-panel{display:none;} .acc-panel.active{display:block;}
+  .acc-panel{visibility:hidden; height:0; overflow:hidden; opacity:0; transform:translateY(6px); transition:opacity .22s ease, transform .22s ease, visibility 0s linear .22s;}
+  .acc-panel.active{visibility:visible; height:auto; overflow:visible; opacity:1; transform:translateY(0); transition:opacity .22s ease, transform .22s ease;}
   .account-stats{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;}
   .stat-cell2{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; text-align:center;}
   .stat-cell2 svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:1.6;margin-bottom:6px;}
@@ -432,9 +446,13 @@
   .admin-tabs{display:flex; gap:8px; overflow-x:auto; margin-bottom:16px;}
   .admin-tab{padding:8px 14px; border-radius:11px; font-size:11.5px; font-weight:700; white-space:nowrap; background:var(--card); border:1px solid var(--line); color:var(--text-dim); cursor:pointer;}
   .admin-tab.active{background:var(--accent); color:var(--on-accent); border-color:var(--accent);}
-  .admin-panel2{display:none;} .admin-panel2.active{display:block;}
+  .admin-panel2{visibility:hidden; height:0; overflow:hidden; opacity:0; transform:translateY(6px); transition:opacity .22s ease, transform .22s ease, visibility 0s linear .22s;}
+  .admin-panel2.active{visibility:visible; height:auto; overflow:visible; opacity:1; transform:translateY(0); transition:opacity .22s ease, transform .22s ease;}
   .toggle-row{display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--text); padding:9px 2px; border-bottom:1px solid var(--line); cursor:pointer;}
   .toggle-row input{width:16px; height:16px; accent-color:var(--accent); flex-shrink:0;}
+  .lang-toggle{display:flex; background:var(--card2); border:1px solid var(--line); border-radius:9px; overflow:hidden; font-size:10px; font-weight:800;}
+  .lang-toggle span{padding:5px 9px; cursor:pointer; color:var(--text-dim);}
+  .lang-toggle span.active{background:var(--accent); color:var(--on-accent);}
   .sub-card{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px; margin-bottom:10px;}
   .sub-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
   .sub-title{font-size:12.5px; font-weight:700; color:var(--text);}
@@ -507,10 +525,29 @@
     <div class="hero-track" id="heroTrack">
       <div class="hero-slide hs1">
         <div class="hero-bg-glow"></div>
+        <div class="hero-badge">الأكثر مشاهدة</div>
         <div class="hero-content">
-          <h1>أهلاً فيك بموقع بيور</h1>
-          <p>راح تظهر هنا أحدث وأبرز الأعمال أول ما يرفعها فريقنا.</p>
-          <div class="cta-row"><button class="btn btn-ghost" onclick="openDrawer()">تصفح القائمة</button></div>
+          <h1>صاعد المستوى الوحيد<br>الفصل ١١٢ متوفر الآن</h1>
+          <p>اقرأ الفصول الحصرية بأعلى جودة ترجمة من فرق السكانلايشن المميزة.</p>
+          <div class="cta-row"><button class="btn btn-primary" onclick="openAnimeDetails('solo')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M6 4l14 8-14 8V4z"/></svg>اقرأ الآن</button><button class="btn btn-ghost" onclick="openDrawer()">تصفح القائمة</button></div>
+        </div>
+      </div>
+      <div class="hero-slide hs2">
+        <div class="hero-bg-glow"></div>
+        <div class="hero-badge">إضافة جديدة</div>
+        <div class="hero-content">
+          <h1>القديسة الغافلة<br>فصل جديد كل أسبوع</h1>
+          <p>فتاة تُنقل لعالم آخر دون أن تدرك أنها تحمل قوة القديسة المنتظرة.</p>
+          <div class="cta-row"><button class="btn btn-primary" onclick="openAnimeDetails('qadisa')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M6 4l14 8-14 8V4z"/></svg>اقرأ الآن</button></div>
+        </div>
+      </div>
+      <div class="hero-slide hs3">
+        <div class="hero-bg-glow"></div>
+        <div class="hero-badge">تصدر التقييمات</div>
+        <div class="hero-content">
+          <h1>عائلة تحت شجرة التوت<br>تقييم ٨٫٣ من القرّاء</h1>
+          <p>عائلة تعيد ترتيب حياتها بعد غياب طويل وسط قرية تخفي أسرارًا قديمة.</p>
+          <div class="cta-row"><button class="btn btn-primary" onclick="scrollToTop()"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>الأعلى تقييمًا</button></div>
         </div>
       </div>
     </div>
@@ -620,9 +657,9 @@
   <div class="admin-tabs">
     <div class="admin-tab active" data-at="subs" onclick="switchAdminTab('subs')">الطلبات</div>
     <div class="admin-tab" data-at="reports" onclick="switchAdminTab('reports')">البلاغات</div>
-    <div class="admin-tab" data-at="upload" data-needs-level="2" onclick="switchAdminTab('upload')">لوحة الرفع</div>
     <div class="admin-tab" data-at="ban" onclick="switchAdminTab('ban')">حظر / إيقاف</div>
     <div class="admin-tab" data-at="admins" data-needs-level="3" onclick="switchAdminTab('admins')">الإداريين</div>
+    <div class="admin-tab" data-at="pureteam" data-needs-level="3" onclick="switchAdminTab('pureteam')">تيم بيور</div>
     <div class="admin-tab" data-at="tools" onclick="switchAdminTab('tools')">أدوات</div>
   </div>
   <div class="admin-panel2 active" data-ap="subs">
@@ -632,39 +669,6 @@
   <div class="admin-panel2" data-ap="reports">
     <div class="drawer-section-title">بلاغات مفتوحة</div>
     <div id="adminReportsList"></div>
-  </div>
-  <div class="admin-panel2" data-ap="upload">
-    <div class="drawer-section-title">إضافة / تعديل عمل</div>
-    <p style="font-size:10px;color:var(--text-dim);margin-bottom:8px;">اكتب مفتاح العمل نفسه حتى تعدّل عمل موجود، أو مفتاح جديد لإنشاء عمل جديد (حروف إنكليزية بدون مسافات، مثلاً: solo-leveling).</p>
-    <div class="form-group"><label>مفتاح العمل (key)</label><input class="form-input" id="upMangaKey" placeholder="مثال: manga-1"></div>
-    <div class="form-group"><label>العنوان</label><input class="form-input" id="upMangaTitle"></div>
-    <div class="form-group"><label>النوع</label>
-      <select class="form-input" id="upMangaType">
-        <option value="manhwa">مانهوا</option><option value="manga">مانجا</option><option value="novel">رواية</option><option value="comic">كومكس</option>
-      </select>
-    </div>
-    <div class="form-group"><label>التصنيف</label><input class="form-input" id="upMangaGenre" placeholder="أكشن · خيال"></div>
-    <div class="form-group"><label>الوصف</label><textarea class="form-input" id="upMangaDesc" rows="3"></textarea></div>
-    <div class="form-group"><label>رابط صورة الغلاف (اختياري)</label><input class="form-input" id="upMangaCover" placeholder="https://..."></div>
-    <label class="toggle-row"><input type="checkbox" id="upMangaExclusive">عمل حصري</label>
-    <button class="watch-btn" onclick="saveManga()">حفظ العمل</button>
-    <div id="upMangaMsg" class="auth-msg"></div>
-
-    <div class="drawer-section-title" style="margin-top:20px;">إضافة فصل</div>
-    <div class="form-group"><label>اختر العمل</label><select class="form-input" id="upChapterManga" onchange="onUpChapterMangaChange()"></select></div>
-    <div class="form-group"><label>رقم الفصل</label><input class="form-input" id="upChapterNum" type="number" min="1"></div>
-    <div id="upChapterTextWrap" style="display:none;">
-      <div class="form-group"><label>نص الفصل (للروايات)</label><textarea class="form-input" id="upChapterText" rows="6" placeholder="الصق نص الفصل هنا..."></textarea></div>
-      <p style="font-size:10px;color:var(--text-dim);margin-bottom:8px;">إذا عندك نص أصلي بلغة ثانية وحقوقه عندك، الصقه هنا واضغط ترجمة، بعدها انسخ الناتج فوق قبل الحفظ.</p>
-      <div class="form-group"><textarea class="form-input" id="upChapterTranslateSrc" rows="3" placeholder="نص للترجمة السريعة (اختياري)..."></textarea></div>
-      <button class="watch-btn" style="background:var(--card2); color:var(--text); border:1px solid var(--line); margin-bottom:8px;" onclick="translateForUpload()">ترجمة سريعة ← تعبئة تلقائية بالأعلى</button>
-    </div>
-    <div id="upChapterPagesWrap" style="display:none;">
-      <div class="form-group"><label>روابط صور الصفحات — عربي (رابط بكل سطر، بالترتيب)</label><textarea class="form-input" id="upChapterPages" rows="6" placeholder="https://.../page1.jpg&#10;https://.../page2.jpg"></textarea></div>
-      <div class="form-group"><label>روابط صور الصفحات — إنجليزي (اختياري، فقط إذا فريقنا سوى نسخة إنجليزية مطبّعة بنفسه)</label><textarea class="form-input" id="upChapterPagesEn" rows="6" placeholder="اتركه فاضي إذا ماكو نسخة إنجليزية بعد"></textarea></div>
-    </div>
-    <button class="watch-btn" onclick="saveChapter()">حفظ الفصل</button>
-    <div id="upChapterMsg" class="auth-msg"></div>
   </div>
   <div class="admin-panel2" data-ap="ban">
     <div class="form-group"><label>بريد العضو</label><input class="form-input" id="banEmailInput" placeholder="user@example.com"></div>
@@ -682,7 +686,7 @@
     <div class="form-group"><label>مستوى الصلاحية</label>
       <select class="form-input" id="newAdminLevel">
         <option value="1">مشرف — بلاغات وتعليقات وحظر أعضاء</option>
-        <option value="2">بيور تيم — كل صلاحيات المشرف + لوحة رفع المحتوى والفصول</option>
+        <option value="2">محرر محتوى — كل صلاحيات المشرف + الطلبات والفصول</option>
         <option value="3">مدير عام — كل الصلاحيات + إدارة الإداريين</option>
       </select>
     </div>
@@ -690,6 +694,13 @@
     <div id="addAdminMsg" class="auth-msg"></div>
     <div class="drawer-section-title" style="margin-top:18px;">الإداريون الحاليون</div>
     <div id="adminsList"></div>
+  </div>
+  <div class="admin-panel2" data-ap="pureteam">
+    <div class="drawer-section-title">رتبة "تيم بيور" — أعضاء يقدرون يرفعون محتوى مباشرة</div>
+    <div class="form-group"><label>بريد العضو</label><input class="form-input" id="newTeamEmail" placeholder="user@example.com"></div>
+    <button class="watch-btn" onclick="addPureTeamMember()">إضافة لتيم بيور</button>
+    <div class="drawer-section-title" style="margin-top:14px;">الأعضاء الحاليون</div>
+    <div id="pureTeamList"></div>
   </div>
   <div class="admin-panel2" data-ap="tools">
     <div class="drawer-section-title">إعدادات تشغيل الموقع</div>
@@ -719,6 +730,41 @@
     <button class="watch-btn" style="background:var(--card2); color:var(--text); border:1px solid var(--line);" onclick="copyTranslateOut()">نسخ الترجمة</button>
   </div>
 </div>
+
+<div class="modal-overlay" id="uploadModalOverlay" onclick="closeModal('uploadModal')"></div>
+<div class="modal-window" id="uploadModal">
+  <div class="modal-head"><h3>رفع محتوى — تيم بيور</h3><div class="modal-close" onclick="closeModal('uploadModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <p style="font-size:10px;color:var(--text-dim);margin-bottom:10px;">هذا الرفع مباشر بدون مراجعة — تأكد إن المحتوى من عملك أو عندك حق نشره.</p>
+  <div class="drawer-section-title">بيانات العمل</div>
+  <div class="form-group"><label>معرّف العمل (إنجليزي، بدون مسافات، يُستخدم كرابط دائم)</label><input class="form-input" id="upKey" placeholder="مثال: my-manga-1"></div>
+  <div class="form-group"><label>العنوان (عربي)</label><input class="form-input" id="upTitle" placeholder="عنوان العمل بالعربي"></div>
+  <div class="form-group"><label>النوع</label>
+    <select class="form-input" id="upType"><option value="manhwa">مانهوا</option><option value="manga">مانجا</option><option value="novel">رواية</option><option value="comic">كومكس</option></select>
+  </div>
+  <div class="form-group"><label>التصنيف</label><input class="form-input" id="upGenre" placeholder="أكشن · خيال"></div>
+  <div class="form-group">
+    <label>الوصف (إنجليزي)</label>
+    <textarea class="form-input" id="upDescEn" rows="2" placeholder="Description in English..."></textarea>
+    <button class="watch-btn" style="margin-top:6px; background:var(--card2); color:var(--text); border:1px solid var(--line);" onclick="translateUploadDesc()">ترجمة تلقائية ← عربي</button>
+  </div>
+  <div class="form-group"><label>الوصف (عربي)</label><textarea class="form-input" id="upDescAr" rows="2" placeholder="يظهر هنا بعد الترجمة، أو اكتبه يدويًا"></textarea></div>
+  <button class="watch-btn" onclick="publishManga()">حفظ بيانات العمل</button>
+  <div id="upMangaMsg" class="auth-msg"></div>
+
+  <div class="drawer-section-title" style="margin-top:20px;">إضافة فصل</div>
+  <div class="form-group"><label>معرّف العمل المستهدف</label><input class="form-input" id="upChKey" placeholder="نفس المعرّف أعلاه"></div>
+  <div class="form-group"><label>رقم الفصل</label><input class="form-input" id="upChNum" type="number" placeholder="1"></div>
+  <div class="form-group" id="upChTextWrap">
+    <label>نص الفصل (إنجليزي — للروايات فقط)</label>
+    <textarea class="form-input" id="upChTextEn" rows="4" placeholder="Chapter text in English..."></textarea>
+    <button class="watch-btn" style="margin-top:6px; background:var(--card2); color:var(--text); border:1px solid var(--line);" onclick="translateUploadChapter()">ترجمة تلقائية ← عربي</button>
+    <textarea class="form-input" id="upChTextAr" rows="4" style="margin-top:8px;" placeholder="النص العربي يطلع هنا، أو اكتبه يدويًا"></textarea>
+  </div>
+  <div class="form-group"><label>روابط صفحات الفصل (مانجا/مانهوا/كومكس) — رابط بكل سطر</label><textarea class="form-input" id="upChPages" rows="4" placeholder="https://.../page1.jpg&#10;https://.../page2.jpg"></textarea></div>
+  <button class="watch-btn" onclick="publishChapter()">نشر الفصل</button>
+  <div id="upChMsg" class="auth-msg"></div>
+</div>
+
 
 
 <div class="modal-overlay" id="teamRoomModalOverlay" onclick="closeModal('teamRoomModal')"></div>
@@ -835,6 +881,9 @@
 <div class="modal-window" id="settingsModal">
   <div class="modal-head"><h3>الإعدادات</h3><div class="modal-close" onclick="closeModal('settingsModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
 
+  <div class="drawer-section-title">هوية موقعك — اختر بين هويتين رئيسيتين</div>
+  <div class="theme-grid" id="identityGrid" style="grid-template-columns:repeat(2,1fr);"></div>
+
   <div class="drawer-section-title">٧ تصاميم جاهزة — اختر تصميمك المفضل بضغطة وحدة</div>
   <div class="theme-grid" id="presetGrid" style="grid-template-columns:repeat(2,1fr);"></div>
 
@@ -881,16 +930,12 @@
 
 <div class="modal-overlay" id="playerModalOverlay" onclick="closeModal('playerModal')"></div>
 <div class="modal-window" id="playerModal">
-  <div class="modal-head"><h3 id="playerTitle" style="font-size:15px;">قراءة</h3><div class="modal-close" onclick="closeModal('playerModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div class="modal-head"><h3 id="playerTitle" style="font-size:15px;">قراءة</h3><div style="display:flex; align-items:center; gap:8px;"><div class="lang-toggle" id="readerLangToggle"><span data-l="ar" class="active" onclick="setReaderLang('ar')">عربي</span><span data-l="en" onclick="setReaderLang('en')">EN</span></div><div class="modal-close" onclick="closeModal('playerModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div></div>
 
-  <div id="fontControlsRow" style="display:none; gap:8px; margin-bottom:8px; align-items:center; flex-wrap:wrap;">
+  <div id="fontControlsRow" style="display:none; gap:8px; margin-bottom:12px;">
     <span class="quality-chip" onclick="changeFontSize(-1)" style="font-weight:900;">أ−</span>
     <span class="quality-chip active" id="fontSizeLabel" style="pointer-events:none;">١٦px</span>
     <span class="quality-chip" onclick="changeFontSize(1)" style="font-weight:900;">أ+</span>
-  </div>
-  <div id="langToggleRow" style="display:flex; gap:8px; margin-bottom:12px;">
-    <span class="quality-chip active" id="langToggleAr" onclick="setReaderLang('ar')">العربية</span>
-    <span class="quality-chip" id="langToggleEn" onclick="setReaderLang('en')">English</span>
   </div>
 
   <div id="readerStream"></div>
@@ -967,10 +1012,11 @@
     </div>
     <div class="my-rate-inline"><span class="lbl">تقييمك:</span><div id="starPicker"><span class="star-pick" data-v="1">★</span><span class="star-pick" data-v="2">★</span><span class="star-pick" data-v="3">★</span><span class="star-pick" data-v="4">★</span><span class="star-pick" data-v="5">★</span></div></div>
     <div class="comments-inline">
-      <div class="ttl"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4V5z"/></svg>التعليقات</div>
+      <div class="ttl-row"><div class="ttl"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4V5z"/></svg>التعليقات</div>
+        <div class="lang-toggle" id="commentSortToggle"><span data-s="desc" class="active" onclick="setCommentSort('desc')">الأحدث</span><span data-s="asc" onclick="setCommentSort('asc')">الأقدم</span></div>
+      </div>
       <div class="chat-box" id="chatBox">
-        <div class="chat-msg"><div class="chat-user"><span class="cu-name">نجم_الليل</span><span class="cu-meta"><span>قبل ٥ د</span><span class="chat-report" onclick="event.stopPropagation();openReportFlow('comment','demo1','هذا العمل قلب موازين كل شي')"><svg viewBox="0 0 24 24"><path d="M5 3v18"/><path d="M5 4h11l-3 4 3 4H5"/></svg>إبلاغ</span></span></div><div class="chat-text">هذا العمل قلب موازين كل شي</div></div>
-        <div class="chat-msg"><div class="chat-user"><span class="cu-name">هدوء_الروح</span><span class="cu-meta"><span>قبل ٢٠ د</span><span class="chat-report" onclick="event.stopPropagation();openReportFlow('comment','demo2','حابب اسلوب الفريق بالترجمة')"><svg viewBox="0 0 24 24"><path d="M5 3v18"/><path d="M5 4h11l-3 4 3 4H5"/></svg>إبلاغ</span></span></div><div class="chat-text">حابب اسلوب الفريق بالترجمة، شغل نظيف</div></div>
+        <div class="chat-skel"></div><div class="chat-skel"></div>
       </div>
       <div class="chat-input-row"><input type="text" class="form-input" id="commentInput" placeholder="اكتب تعليقك..."><button class="chat-send" onclick="sendComment()"><svg viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></svg></button></div>
     </div>
@@ -1019,6 +1065,7 @@
     <div class="drawer-menu" style="margin-top:6px;">
       <div class="drawer-item" onclick="closeModal('accountModal'); openModal('settingsModal')"><span class="left-part"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12h2M3 12h2M12 3v2M12 19v2"/></svg>الإعدادات</span></div>
       <div class="drawer-item" id="adminEntryBtn" style="display:none;" onclick="closeModal('accountModal'); openModal('adminModal')"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3z"/></svg>لوحة الإدارة</span></div>
+      <div class="drawer-item" id="uploadEntryBtn" style="display:none;" onclick="closeDrawer(); openModal('uploadModal')"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>رفع محتوى (تيم بيور)</span></div>
       <div class="drawer-item" onclick="doSignOut()"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>تسجيل الخروج</span></div>
     </div>
   </div>
@@ -1039,6 +1086,7 @@ function initAuthListener(){
   });
   loadAdminRoles();
   loadSiteSettings();
+  loadPureTeam();
 }
 window.addEventListener('firebase-ready', ()=>{ fbReady = true; initAuthListener(); });
 // لو موديول Firebase خلص التحميل وأطلق الحدث قبل لا يوصل هذا السطر (نادر لكن ممكن)، نتأكد يدويًا
@@ -1060,8 +1108,11 @@ const THEMES = {
   modern:{name:"حديث", bg:"#0a0c11", bgRgb:"10,12,17", bgAlt:"#12151c", card:"#181c24", cardRgb:"24,28,36", card2:"#1f242e", text:"#f2f3f6", textDim:"#8b93a5", line:"rgba(255,255,255,.08)", lineStrong:"rgba(255,255,255,.14)", accent:"#ff7a45", accentRgb:"255,122,69", accentSoft:"#ffb08a", onAccent:"#1a0d05", secondary:"#4fd1c5", secondaryRgb:"79,209,197", star:"#ffc247", heart:"#ef5164"},
   kawaii:{name:"كيوت باستيل", bg:"#fff5f8", bgRgb:"255,245,248", bgAlt:"#ffeef3", card:"#ffffff", cardRgb:"255,255,255", card2:"#fff0f5", text:"#5a3d4a", textDim:"#b98a9c", line:"#f3d4de", lineStrong:"#f0b8cb", accent:"#ff9ec4", accentRgb:"255,158,196", accentSoft:"#ffc4dd", onAccent:"#5a2038", secondary:"#7ecbe0", secondaryRgb:"126,203,224", star:"#ffb84d", heart:"#ff6f91"},
   neon:{name:"نيون مظلم", bg:"#050507", bgRgb:"5,5,7", bgAlt:"#0a0a0f", card:"#0f0f16", cardRgb:"15,15,22", card2:"#15151f", text:"#f0f0ff", textDim:"#8888a8", line:"rgba(255,0,200,.15)", lineStrong:"rgba(0,255,220,.3)", accent:"#ff2fd6", accentRgb:"255,47,214", accentSoft:"#ff8ae8", onAccent:"#0a0006", secondary:"#00e5ff", secondaryRgb:"0,229,255", star:"#ffe600", heart:"#ff2f6d"},
-  minimal:{name:"مينمال أبيض", bg:"#fafafa", bgRgb:"250,250,250", bgAlt:"#f2f2f4", card:"#ffffff", cardRgb:"255,255,255", card2:"#f5f5f7", text:"#1a1a1e", textDim:"#8a8a92", line:"#e5e5ea", lineStrong:"#d5d5dc", accent:"#3d7bfd", accentRgb:"61,123,253", accentSoft:"#7aa5ff", onAccent:"#ffffff", secondary:"#20c997", secondaryRgb:"32,201,151", star:"#ffb800", heart:"#ff4d6d"}
+  minimal:{name:"مينمال أبيض", bg:"#fafafa", bgRgb:"250,250,250", bgAlt:"#f2f2f4", card:"#ffffff", cardRgb:"255,255,255", card2:"#f5f5f7", text:"#1a1a1e", textDim:"#8a8a92", line:"#e5e5ea", lineStrong:"#d5d5dc", accent:"#3d7bfd", accentRgb:"61,123,253", accentSoft:"#7aa5ff", onAccent:"#ffffff", secondary:"#20c997", secondaryRgb:"32,201,151", star:"#ffb800", heart:"#ff4d6d"},
+  aurora:{name:"أورورا", bg:"#0b0e1a", bgRgb:"11,14,26", bgAlt:"#12162a", card:"#181d35", cardRgb:"24,29,53", card2:"#212748", text:"#f4f5fb", textDim:"#9198c2", line:"rgba(255,255,255,.10)", lineStrong:"rgba(124,92,255,.35)", accent:"#7c5cff", accentRgb:"124,92,255", accentSoft:"#b3a1ff", onAccent:"#0d0620", secondary:"#22d3ee", secondaryRgb:"34,211,238", star:"#ffd166", heart:"#ff5c8a"}
 };
+/* هويتا الموقع الأساسيتان — تُعرضان أول شي بالإعدادات، وأي ثيمات إضافية أسفل منهما لمن يريد تخصيصًا أكثر */
+const PRIMARY_IDENTITIES = ["modern","aurora"];
 let currentTheme = "modern";
 let currentLayout = "grid";
 const PRESETS = [
@@ -1071,7 +1122,8 @@ const PRESETS = [
   {name:"النيون الليلي", theme:"neon", layout:"grid"},
   {name:"المينمال الهادئ", theme:"minimal", layout:"list"},
   {name:"الملكي المضغوط", theme:"royal", layout:"grid"},
-  {name:"النيون الموسّع", theme:"neon", layout:"cards"}
+  {name:"النيون الموسّع", theme:"neon", layout:"cards"},
+  {name:"أورورا الليلي", theme:"aurora", layout:"grid"}
 ];
 function renderPresetGrid(){
   const box = document.getElementById('presetGrid'); if(!box) return;
@@ -1090,15 +1142,21 @@ function applyPreset(i){
   setLayout(p.layout);
   renderPresetGrid();
 }
-function setLayout(name){
+function setLayout(name, skipSave){
   document.body.classList.remove('layout-grid','layout-list','layout-cards');
   document.body.classList.add('layout-'+name);
   currentLayout = name;
-  ['grid','list','cards'].forEach(n=>document.getElementById('layoutCard-'+n).classList.toggle('active', n===name));
+  ['grid','list','cards'].forEach(n=>{ const el=document.getElementById('layoutCard-'+n); if(el) el.classList.toggle('active', n===name); });
   renderPresetGrid();
   const ht = document.getElementById('heroTrack'); if(ht) ht.scrollTo({left:0});
+  if(!skipSave) saveIdentityChoice();
 }
-function applyTheme(name){
+function saveIdentityChoice(){
+  if(currentUser && fbReady){
+    window.fb.setDoc(window.fb.doc(window.fbDb,'profiles',currentUser.id), {theme:currentTheme, layout:currentLayout}, {merge:true}).catch(console.error);
+  }
+}
+function applyTheme(name, skipSave){
   const t = THEMES[name]; if(!t) return;
   const r = document.documentElement.style;
   r.setProperty('--bg', t.bg); r.setProperty('--bg-rgb', t.bgRgb); r.setProperty('--bg-alt', t.bgAlt);
@@ -1109,8 +1167,21 @@ function applyTheme(name){
   r.setProperty('--secondary', t.secondary); r.setProperty('--secondary-rgb', t.secondaryRgb);
   r.setProperty('--star', t.star); r.setProperty('--heart', t.heart);
   currentTheme = name;
+  renderIdentityGrid();
   renderThemeGrid();
   renderPresetGrid();
+  if(!skipSave) saveIdentityChoice();
+}
+function renderIdentityGrid(){
+  const box = document.getElementById('identityGrid'); if(!box) return;
+  box.innerHTML = PRIMARY_IDENTITIES.map(k=>{
+    const t = THEMES[k];
+    const active = currentTheme===k;
+    return `<div class="preset-card ${active?'active':''}" onclick="applyTheme('${k}')" style="min-height:90px;">
+      <div class="preset-swatch" style="background:linear-gradient(135deg, ${t.bg}, ${t.accent} 70%, ${t.secondary});"></div>
+      <div class="pn">${t.name}${k==='modern'?' (الافتراضية)':''}</div>
+    </div>`;
+  }).join('');
 }
 function renderThemeGrid(){
   const box = document.getElementById('themeGrid'); if(!box) return;
@@ -1123,23 +1194,28 @@ function renderThemeGrid(){
     </div>`;
   }).join('');
 }
-/* لا يوجد أي محتوى وهمي — كل الأعمال تُقرأ حصرًا من Firestore عبر loadMangasFromFirestore() */
-const ANIME = {};
+const ANIME = {
+  solo:{exclusive:true, views:"2.4M", title:"صاعد المستوى الوحيد", type:"manhwa", icon:"sword", genre:"أكشن · خيال", status:"مستمر", studio:"فريق الفانوس", season:"٢٠٢٦", rating:8.7, rank:"#٣", eps:112, nextH:26, desc:"صياد من أضعف الرتب يحصل على فرصة نادرة لإعادة صقل قوته بعد نجاته من زنزانة غامضة، ليبدأ رحلة تحوّل تقلب كل موازين عالم الصيادين."},
+  senki:{views:"890K", title:"مذكرات الجندية الصغيرة", type:"novel", icon:"shield", genre:"حربي · خيال", status:"مستمر", studio:"دار النشر الحرة", season:"٢٠٢٦", rating:8.1, rank:"#٩", eps:34, nextH:74, desc:"ضابطة شابة تقاد بحكمة باردة وسط حرب لا تنتهي، بينما تتصارع مع قوة غامضة تراقب كل قراراتها."},
+  nahr:{views:"640K", title:"نهر السماء القرمزي", type:"manga", icon:"crown", genre:"مغامرة · تاريخي", status:"مستمر", studio:"ظل الترجمة", season:"٢٠٢٦", rating:8.08, rank:"#١١", eps:58, nextH:8, desc:"فتاة تُنقل فجأة إلى زمن آخر، لتجد نفسها وسط صراع عروش يهدد بإعادة رسم خريطة مملكة كاملة."},
+  aila:{exclusive:true, views:"1.1M", title:"عائلة تحت شجرة التوت", type:"comic", icon:"tree", genre:"دراما · شريحة حياة", status:"مستمر", studio:"نجوم الأنمي", season:"٢٠٢٦", rating:8.3, rank:"#٧", eps:41, nextH:50, desc:"عائلة تعيد ترتيب حياتها بعد غياب طويل، وسط قرية هادئة تخفي أسرارًا قديمة بين جدرانها."},
+  qadisa:{exclusive:true, views:"1.7M", title:"القديسة الغافلة", type:"manhwa", icon:"sparkle", genre:"فانتازيا · إيزيكاي", status:"مستمر", studio:"فريق الفانوس", season:"٢٠٢٦", rating:8.2, rank:"#٥", eps:87, nextH:5, desc:"فتاة تُنقل لعالم آخر دون أن تدرك أنها تحمل قوة القديسة المنتظرة، وسط بلاط ملكي مليء بالدسائس."},
+  darb:{views:"520K", title:"درب الحيّ القديم", type:"manga", icon:"heartf", genre:"رومانسي · شريحة حياة", status:"مستمر", studio:"ظل الترجمة", season:"٢٠٢٦", rating:8.1, rank:"#١٠", eps:29, nextH:98, desc:"صديقان منذ الطفولة يعيدان اكتشاف مشاعرهما وسط حي هادئ يحمل ذكريات لا تُنسى."},
+  shati:{views:"410K", title:"شاطئ الصيف الثالث", type:"comic", icon:"wave", genre:"شريحة حياة · كوميدي", status:"مستمر", studio:"نجوم الأنمي", season:"٢٠٢٦", rating:7.9, rank:"#١٤", eps:18, nextH:122, desc:"مجموعة أصدقاء تقضي صيفًا أخيرًا معًا قبل تفرقهم للجامعات، بين ضحك وحنين."},
+  amir:{views:"760K", title:"أمير التيه الأقوى", type:"manhwa", icon:"crown", genre:"فانتازيا · أكشن", status:"مستمر", studio:"فريق الفانوس", season:"٢٠٢٦", rating:8.0, rank:"#١٢", eps:63, nextH:32, desc:"أمير منبوذ يُخفي قوة هائلة خلف مظهر هادئ، ويخوض تيهًا خطيرًا لإثبات جدارته."},
+  faris:{views:"330K", title:"فارس العظام الثاني", type:"novel", icon:"trending", genre:"فانتازيا · إيزيكاي", status:"مستمر", studio:"دار النشر الحرة", season:"٢٠٢٦", rating:7.8, rank:"#١٦", eps:22, nextH:146, desc:"فارس عظمي يستمر بمغامراته في عالم آخر، يواجه تنانين وأسرارًا أقدم مما توقع."}
+};
 const TYPE_LABELS = {manga:"مانجا", manhwa:"مانهوا", novel:"رواية", comic:"كومكس"};
-/* ماكو بيانات وهمية — MANGA تُشتق من ANIME الحقيقية، TEAMS تُحمّل من مجموعة "teams" بـ Firestore */
-function getMangaList(){
-  return Object.keys(ANIME).filter(k=>ANIME[k].type==='manga'||ANIME[k].type==='comic').map(k=>({key:k, title:ANIME[k].title, icon:ANIME[k].icon, ch:'الفصل '+(ANIME[k].eps||1), prog:0}));
-}
-let TEAMS = [];
-async function loadTeamsFromFirestore(){
-  if(!fbReady) return;
-  try{
-    const {collection, getDocs, limit, query} = window.fb;
-    const snap = await getDocs(query(collection(window.fbDb,'teams'), limit(30)));
-    TEAMS = snap.docs.map(d=>{ const t=d.data(); return {id:d.id, name:t.name||'فريق', icon:'shield', sub:t.description||''}; });
-  }catch(e){ console.error('تعذر تحميل الفرق:', e); }
-}
-if(fbReady) loadTeamsFromFirestore(); else window.addEventListener('firebase-ready', loadTeamsFromFirestore, {once:true});
+const MANGA = [
+  {title:"ظل الوريث المنسي", icon:"sword", ch:"الفصل ١٢٤", prog:60},
+  {title:"همسات القمر السابع", icon:"sparkle", ch:"الفصل ٨٩", prog:35},
+  {title:"سيف بلا اسم", icon:"shield", ch:"الفصل ٢٠٣", prog:80}
+];
+const TEAMS = [
+  {name:"فريق الفانوس", icon:"shield", sub:"١٢٠ عمل مترجم · ترجمة عربية"},
+  {name:"ظل الترجمة", icon:"sword", sub:"٨٥ عمل مترجم · جودة عالية"},
+  {name:"نجوم الأنمي", icon:"sparkle", sub:"٦٠ عمل مترجم · سرعة إصدار"}
+];
 const statusLabels = {plan:"مخطط", watching:"يُشاهد", done:"مكتمل", dropped:"متروك"};
 function svgIcon(name, cls){ return `<svg class="${cls||''}" viewBox="0 0 24 24">${IC[name]||IC.sparkle}</svg>`; }
 const nextEpAt = {}; Object.keys(ANIME).forEach(k=>{ nextEpAt[k] = Date.now() + ANIME[k].nextH*3600000; });
@@ -1151,8 +1227,8 @@ function fmtCountdown(ms){
   return `خلال ${m} دقيقة`;
 }
 
-let currentAnimeKey=null, currentEpNum=1, isPlaying=false;
-const favorites=new Set(), followed=new Set(), watchedEps={}, animeStatus={}, recentSearches=[], downloads=[];
+let currentAnimeKey="solo", currentEpNum=1, isPlaying=false;
+const favorites=new Set(), followed=new Set(["solo"]), watchedEps={}, animeStatus={}, recentSearches=[], downloads=[];
 let lastRead = {}; // { mangaKey: {chapter:Number, at:timestamp} } — لتتبع آخر فصل وصله القارئ لكل عمل
 function saveLastRead(){
   if(currentUser && fbReady){
@@ -1177,15 +1253,12 @@ function renderCard(key){
   </div>`;
 }
 function viewsToNum(v){ const n=parseFloat(v); return v.includes('M')?n*1e6:v.includes('K')?n*1e3:n; }
-function emptyRow(msg){ return `<div class="empty-state" style="min-width:100%;">${svgIcon('sparkle')}<div class="txt">${msg}</div></div>`; }
 function renderRows(){
-  const keys = Object.keys(ANIME);
-  document.getElementById('season').innerHTML = keys.length ? keys.slice(0,4).map(renderCard).join('') : emptyRow('ماكو أعمال مرفوعة بعد');
-  document.getElementById('latest').innerHTML = keys.length ? keys.map(renderCard).join('') : emptyRow('ماكو أعمال مرفوعة بعد');
-  document.getElementById('topRated').innerHTML = keys.length ? [...keys].sort((a,b)=>ANIME[b].rating-ANIME[a].rating).slice(0,6).map(renderCard).join('') : emptyRow('ماكو تقييمات بعد');
-  document.getElementById('mostViewed').innerHTML = keys.length ? [...keys].sort((a,b)=>viewsToNum(ANIME[b].views)-viewsToNum(ANIME[a].views)).slice(0,6).map(renderCard).join('') : emptyRow('ماكو مشاهدات بعد');
-  const excl = keys.filter(k=>ANIME[k].exclusive);
-  document.getElementById('exclusiveRow').innerHTML = excl.length ? excl.map(renderCard).join('') : emptyRow('ماكو أعمال حصرية بعد');
+  document.getElementById('season').innerHTML = ["solo","senki","nahr","qadisa"].map(renderCard).join('');
+  document.getElementById('latest').innerHTML = Object.keys(ANIME).map(renderCard).join('');
+  document.getElementById('topRated').innerHTML = Object.keys(ANIME).sort((a,b)=>ANIME[b].rating-ANIME[a].rating).slice(0,6).map(renderCard).join('');
+  document.getElementById('mostViewed').innerHTML = Object.keys(ANIME).sort((a,b)=>viewsToNum(ANIME[b].views)-viewsToNum(ANIME[a].views)).slice(0,6).map(renderCard).join('');
+  document.getElementById('exclusiveRow').innerHTML = Object.keys(ANIME).filter(k=>ANIME[k].exclusive).map(renderCard).join('');
   renderContinue();
 }
 function renderContinue(){
@@ -1203,13 +1276,15 @@ function renderContinue(){
 }
 renderRows();
 
-/* ===== تحميل المانهاوا الحقيقية من Firestore (collection "mangas") — المصدر الوحيد للمحتوى ===== */
+/* ===== تحميل المانهاوا الحقيقية من Firestore (collection "mangas")
+   لو الكولكشن فاضي (ما رفع محتوى بعد) نبقي البيانات التجريبية كما هي ===== */
 async function loadMangasFromFirestore(){
   if(!fbReady) return;
   try{
     const {collection, getDocs} = window.fb;
     const snap = await getDocs(collection(window.fbDb, 'mangas'));
-    Object.keys(ANIME).forEach(k=>delete ANIME[k]);
+    if(snap.empty) return; // ماكو بيانات مرفوعة بعد — نخلي البيانات التجريبية
+    Object.keys(ANIME).forEach(k=>delete ANIME[k]); // نفرّغ البيانات التجريبية
     snap.forEach(docSnap=>{
       const d = docSnap.data();
       ANIME[docSnap.id] = {
@@ -1222,7 +1297,6 @@ async function loadMangasFromFirestore(){
     });
     Object.keys(ANIME).forEach(k=>{ nextEpAt[k] = Date.now() + ANIME[k].nextH*3600000; });
     renderRows();
-    renderHero();
   }catch(e){ console.error('تعذر تحميل المانهاوا من Firestore:', e); }
 }
 if(fbReady) loadMangasFromFirestore();
@@ -1238,8 +1312,8 @@ function filterByType(type){
 
 function openGuide(which){
   document.getElementById('guideTitle').textContent = which==='season' ? 'أحدث الحلقات' : 'كل الأعمال';
-  const keys = which==='season' ? Object.keys(ANIME).slice(0,4) : Object.keys(ANIME);
-  document.getElementById('guideGrid').innerHTML = keys.length ? keys.map(renderCard).join('') : `<div class="empty-state">${svgIcon('sparkle')}<div class="txt">ماكو أعمال مرفوعة بعد</div></div>`;
+  const keys = which==='season' ? ["solo","senki","nahr","qadisa"] : Object.keys(ANIME);
+  document.getElementById('guideGrid').innerHTML = keys.map(renderCard).join('');
   openModal('guideModal');
 }
 function renderUpcoming(){
@@ -1265,13 +1339,14 @@ function openModal(id){
   if(id==='favoritesModal') renderFavorites();
   if(id==='accountModal') renderAccountStats();
   if(id==='mangaModal') renderManga();
-  if(id==='teamsModal') renderTeams();
+  if(id==='teamsModal') loadTeamPanel();
   if(id==='upcomingModal') renderUpcoming();
   if(id==='downloadsModal') renderDownloads();
   if(id==='storeModal'){ currentStoreCat='all'; renderStoreCats(); renderStoreGrid('all'); document.getElementById('pointsNum').textContent = isAdmin()?'∞':userPoints; }
   if(id==='adminModal'){ if(!isAdmin()){ closeModal('adminModal'); alert('هذا القسم للإدارة فقط'); return; } loadAdminSubs(); }
+  if(id==='uploadModal'){ if(!isPureTeam()){ closeModal('uploadModal'); alert('هذا القسم لأعضاء تيم بيور فقط'); return; } }
   if(id==='accountModal' && currentUser) loadMyProfile();
-  if(id==='settingsModal'){ renderThemeGrid(); setLayout(currentLayout); renderPresetGrid(); }
+  if(id==='settingsModal'){ renderIdentityGrid(); renderThemeGrid(); setLayout(currentLayout); renderPresetGrid(); }
   if(id==='accountModal' && !currentUser){ closeModal('accountModal'); openModal('authModal'); return; }
   if(id==='searchModal'){document.getElementById('liveSearchInput').value=''; document.getElementById('searchResults').innerHTML=''; document.getElementById('searchDefault').style.display='block'; renderRecentChips();}
   updateNav();
@@ -1279,7 +1354,7 @@ function openModal(id){
 function closeModal(id){document.getElementById(id).classList.remove('open'); const ov=document.getElementById(id+'Overlay'); if(ov) ov.classList.remove('open'); updateNav();}
 function updateNav(){ document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active', i===0)); }
 function goHome(){
-  ['drawer','guideModal','upcomingModal','downloadsModal','favoritesModal','reportModal','publicProfileModal','searchModal','mangaModal','teamsModal','settingsModal','playerModal','shareModal','animeDetailsModal','accountModal','authModal'].forEach(id=>{
+  ['drawer','guideModal','upcomingModal','downloadsModal','favoritesModal','reportModal','publicProfileModal','uploadModal','searchModal','mangaModal','teamsModal','settingsModal','playerModal','shareModal','animeDetailsModal','accountModal','authModal'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.classList.remove('open');
     const ov=document.getElementById(id+'Overlay'); if(ov) ov.classList.remove('open');
   });
@@ -1406,28 +1481,42 @@ function renderCommentRow(c, withReport){
   }
   const avatarHtml = c.avatarUrl
     ? `<img src="${c.avatarUrl}" class="chat-avatar">`
-    : `<span class="chat-avatar ph"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></span>`;
+    : `<span class="chat-avatar ph" style="background:${avatarColor(name)};">${(name||'?').trim().charAt(0)}</span>`;
   const nameClick = c.uid ? `onclick="openPublicProfile('${c.uid}')" style="cursor:pointer;"` : '';
   return `<div class="chat-msg"><div class="chat-user"><span ${nameClick} style="display:flex;align-items:center;gap:6px;cursor:${c.uid?'pointer':'default'};">${avatarHtml}<span class="cu-name">${name}</span></span><span class="cu-meta"><span>الآن</span>${reportBtn}</span></div><div class="chat-text">${safeText}</div></div>`;
 }
+const AVATAR_PALETTE = ['#ef7f5c','#5cb0ef','#8b5cf6','#ef5c8f','#5cef9e','#efc95c','#5c7fef','#ef5c5c'];
+function avatarColor(name){
+  let h=0; for(let i=0;i<(name||'?').length;i++) h = (h*31 + name.charCodeAt(i)) >>> 0;
+  return AVATAR_PALETTE[h % AVATAR_PALETTE.length];
+}
+let commentSortDir = 'desc';
+function setCommentSort(dir){
+  commentSortDir = dir;
+  document.querySelectorAll('#commentSortToggle span').forEach(s=>s.classList.toggle('active', s.dataset.s===dir));
+  loadComments(currentAnimeKey);
+}
 async function loadComments(mangaKey){
   const box = document.getElementById('chatBox'); if(!box || !fbReady) return;
+  box.innerHTML = '<div class="chat-skel"></div><div class="chat-skel"></div>';
   try{
     const {collection, query, where, orderBy, limit, getDocs} = window.fb;
-    const snap = await getDocs(query(collection(window.fbDb,'comments'), where('mangaId','==',mangaKey), where('chapterNum','==',null), orderBy('createdAt','desc'), limit(30)));
-    const rows = snap.docs.map(d=>({id:d.id, ...d.data()})).reverse();
+    const snap = await getDocs(query(collection(window.fbDb,'comments'), where('mangaId','==',mangaKey), where('chapterNum','==',null), orderBy('createdAt', commentSortDir==='desc'?'desc':'asc'), limit(30)));
+    const rows = snap.docs.map(d=>({id:d.id, ...d.data()}));
     box.innerHTML = rows.length ? rows.map(c=>renderCommentRow(c,true)).join('') : `<div class="chat-msg"><div class="chat-text" style="color:var(--text-dim);">كن أول من يعلّق على هذا العمل</div></div>`;
     box.scrollTop = box.scrollHeight;
-  }catch(e){ console.error('تعذر تحميل التعليقات:', e); }
+  }catch(e){ console.error('تعذر تحميل التعليقات:', e); box.innerHTML=''; }
 }
 async function loadEpComments(mangaKey, n){
   const box = document.getElementById('epChatBox'); if(!box || !fbReady) return;
+  box.innerHTML = '<div class="chat-skel"></div>';
   try{
     const {collection, query, where, orderBy, limit, getDocs} = window.fb;
     const snap = await getDocs(query(collection(window.fbDb,'comments'), where('mangaId','==',mangaKey), where('chapterNum','==',n), orderBy('createdAt','desc'), limit(30)));
     const rows = snap.docs.map(d=>({id:d.id, ...d.data()})).reverse();
     box.innerHTML = rows.length ? rows.map(c=>renderCommentRow(c,true)).join('') : '';
     box.scrollTop = box.scrollHeight;
+    if(readerLang==='ar') translateVisibleComments('epChatBox');
   }catch(e){ console.error('تعذر تحميل تعليقات الفصل:', e); }
 }
 async function sendComment(){
@@ -1435,16 +1524,15 @@ async function sendComment(){
   if(!checkNotBanned()) return;
   if(!currentUser && SITE_SETTINGS.blockGuestComments){ alert('التعليق كزائر متوقف حاليًا — سجّل الدخول للمتابعة'); return; }
   if(SITE_SETTINGS.commentsLocked && !isAdmin()){ alert('التعليقات مقفلة مؤقتًا من الإدارة'); return; }
-  const box=document.getElementById('chatBox');
   const displayName = currentUser ? (currentUser.displayName || currentUser.email.split('@')[0]) : 'زائر';
-  box.insertAdjacentHTML('beforeend', renderCommentRow({text:val, displayName, uid:currentUser?currentUser.id:null, avatarUrl:myAvatarUrl}, true));
-  input.value=''; box.scrollTop=box.scrollHeight;
+  input.value='';
   if(fbReady){
     try{
       await window.fb.addDoc(window.fb.collection(window.fbDb,'comments'), {
         mangaId: currentAnimeKey, chapterNum: null, text: val, uid: currentUser?currentUser.id:null,
         displayName, avatarUrl: myAvatarUrl||null, createdAt: window.fb.serverTimestamp()
       });
+      loadComments(currentAnimeKey);
     }catch(e){ console.error('تعذر حفظ التعليق:', e); }
   }
 }
@@ -1556,70 +1644,6 @@ async function openPublicProfile(uid){
 let readDirection = 'rtl';   // إعداد عام: اتجاه القراءة
 let novelFontSize = 16;
 let streamLoadedUpTo = 0;    // آخر فصل تم تحميله بالتيار المستمر
-let readerLang = 'ar';       // لغة عرض الفصل بصفحة القراءة الحالية
-let readerChapters = [];     // [{num, chData}] الفصول المحمّلة حاليًا بالتيار (تُستخدم لإعادة البناء عند تبديل اللغة بدون إعادة تحميل)
-async function translateText(text, targetLang){
-  try{
-    const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`);
-    const data = await res.json();
-    return data[0].map(chunk=>chunk[0]).join('');
-  }catch(e){ return text; }
-}
-/* يبني بلوك فصل واحد داخل التيار حسب اللغة المختارة حاليًا.
-   للنصوص (روايات): يترجم النص فوريًا عبر Google Translate.
-   للصور (مانهوا/مانجا): يعرض النسخة الإنجليزية لو رفعها فريقنا نفسه (pages_en)، وإلا يبقي الأصلية مع ملاحظة. لا يوجد أي OCR أو سحب تلقائي. */
-async function renderChapterBlock(container, n, chData, a){
-  const divider = document.createElement('div');
-  divider.className = 'chap-divider';
-  divider.innerHTML = `<span>دخلت الفصل رقم ${n}</span>`;
-  container.appendChild(divider);
-  if(a.type === 'novel'){
-    const p = document.createElement('div');
-    p.className = 'reader-para';
-    p.style.fontSize = novelFontSize+'px';
-    const original = (chData && chData.text) ? chData.text : (NOVEL_SAMPLE + ' ' + NOVEL_SAMPLE);
-    p.textContent = readerLang==='ar' ? original : '...جاري الترجمة';
-    container.appendChild(p);
-    if(readerLang!=='ar'){
-      const cacheKey = 'en';
-      if(chData && chData['text_'+cacheKey]) p.textContent = chData['text_'+cacheKey];
-      else{ const t = await translateText(original, readerLang); if(chData) chData['text_'+cacheKey]=t; p.textContent = t; }
-    }
-  } else {
-    const pages = (readerLang==='en' && chData && Array.isArray(chData.pages_en) && chData.pages_en.length) ? chData.pages_en
-      : (chData && Array.isArray(chData.pages) ? chData.pages : []);
-    if(readerLang==='en' && chData && (!chData.pages_en || !chData.pages_en.length)){
-      const note = document.createElement('div');
-      note.style.cssText = 'font-size:11px;color:var(--text-dim);text-align:center;padding:6px 0;';
-      note.textContent = 'ماكو نسخة إنجليزية لهذا الفصل بعد — يظهر بالعربي';
-      container.appendChild(note);
-    }
-    if(pages.length){
-      pages.forEach(url=>{
-        const pg = document.createElement('div');
-        pg.className = 'reader-page';
-        pg.innerHTML = `<img src="${url}" loading="lazy" style="width:100%; display:block;">`;
-        container.appendChild(pg);
-      });
-    } else {
-      for(let i=1;i<=4;i++){
-        const pg = document.createElement('div');
-        pg.className = 'reader-page';
-        pg.innerHTML = `<svg viewBox="0 0 24 24">${IC[a.icon]}</svg>`;
-        container.appendChild(pg);
-      }
-    }
-  }
-}
-function setReaderLang(lang){
-  readerLang = lang;
-  document.getElementById('langToggleAr').classList.toggle('active', lang==='ar');
-  document.getElementById('langToggleEn').classList.toggle('active', lang==='en');
-  const stream = document.getElementById('readerStream');
-  stream.innerHTML = '';
-  const a = ANIME[currentAnimeKey];
-  readerChapters.forEach(item=>renderChapterBlock(stream, item.num, item.chData, a));
-}
 const NOVEL_SAMPLE = "كان الليل هادئًا حين بدأت القصة، والرياح تحمل معها همسًا لا يفهمه إلا من عاش تلك اللحظة. في هذا الفصل تتكشف تفاصيل جديدة عن الشخصيات، وتتقاطع مصائرها بطريقة لم يتوقعها أحد.";
 
 function openPlayer(n){
@@ -1632,18 +1656,43 @@ function openPlayer(n){
   document.getElementById('playerTitle').textContent = a.title;
   const isNovel = a.type === 'novel';
   document.getElementById('fontControlsRow').style.display = isNovel ? 'flex' : 'none';
+  document.getElementById('readerLangToggle').style.display = isNovel ? 'flex' : 'none';
   const stream = document.getElementById('readerStream');
   stream.innerHTML = '';
   streamLoadedUpTo = 0;
-  readerChapters = [];
-  readerLang = 'ar';
-  document.getElementById('langToggleAr').classList.add('active');
-  document.getElementById('langToggleEn').classList.remove('active');
   appendChapterToStream(n);
   renderRows();
   if(document.getElementById('animeDetailsModal').classList.contains('open')) refreshEpGrid();
   openModal('playerModal');
   document.getElementById('playerModal').scrollTop = 0;
+}
+/* ===== لغة القراءة (عربي/English) — النص الأصلي يُحفظ كما رفعه فريق بيور، والعرض العربي ترجمة تلقائية عبر Google Translate ===== */
+let readerLang = 'ar';
+async function setReaderLang(lang){
+  readerLang = lang;
+  document.querySelectorAll('#readerLangToggle span').forEach(s=>s.classList.toggle('active', s.dataset.l===lang));
+  const paras = document.querySelectorAll('#readerStream .reader-para');
+  for(const p of paras){
+    if(!p.dataset.orig) p.dataset.orig = p.textContent;
+    if(lang==='en'){ p.textContent = p.dataset.orig; }
+    else{
+      if(!p.dataset.ar) p.dataset.ar = await gtranslate(p.dataset.orig, 'ar');
+      p.textContent = p.dataset.ar;
+    }
+  }
+  await translateVisibleComments('epChatBox');
+}
+async function translateVisibleComments(boxId){
+  const box = document.getElementById(boxId); if(!box) return;
+  const texts = box.querySelectorAll('.chat-text');
+  for(const el of texts){
+    if(!el.dataset.orig) el.dataset.orig = el.textContent;
+    if(readerLang==='en'){ el.textContent = el.dataset.orig; }
+    else{
+      if(!el.dataset.ar) el.dataset.ar = await gtranslate(el.dataset.orig, 'ar');
+      el.textContent = el.dataset.ar;
+    }
+  }
 }
 /* جلب فصل حقيقي من Firestore: مانهاوا/{مفتاح العمل}/chapters/{رقم الفصل} */
 async function fetchChapterData(mangaKey, n){
@@ -1662,9 +1711,33 @@ async function appendChapterToStream(n){
   if(n>a.eps || streamLoadedUpTo>=n) return;
   streamLoadedUpTo = n;
   const stream = document.getElementById('readerStream');
+  const divider = document.createElement('div');
+  divider.className = 'chap-divider';
+  divider.innerHTML = `<span>دخلت الفصل رقم ${n}</span>`;
+  stream.appendChild(divider);
   const chData = await fetchChapterData(currentAnimeKey, n);
-  readerChapters.push({num:n, chData});
-  await renderChapterBlock(stream, n, chData, a);
+  if(a.type === 'novel'){
+    const p = document.createElement('div');
+    p.className = 'reader-para';
+    p.style.fontSize = novelFontSize+'px';
+    p.textContent = (chData && chData.text) ? chData.text : (NOVEL_SAMPLE + ' ' + NOVEL_SAMPLE);
+    stream.appendChild(p);
+  } else if(chData && Array.isArray(chData.pages) && chData.pages.length){
+    chData.pages.forEach(url=>{
+      const pg = document.createElement('div');
+      pg.className = 'reader-page';
+      pg.innerHTML = `<img src="${url}" loading="lazy" style="width:100%; display:block;">`;
+      stream.appendChild(pg);
+    });
+  } else {
+    const pageCount = 4;
+    for(let i=1;i<=pageCount;i++){
+      const pg = document.createElement('div');
+      pg.className = 'reader-page';
+      pg.innerHTML = `<svg viewBox="0 0 24 24">${IC[a.icon]}</svg>`;
+      stream.appendChild(pg);
+    }
+  }
   if(!watchedEps[currentAnimeKey]) watchedEps[currentAnimeKey]=new Set();
   watchedEps[currentAnimeKey].add(n);
   updateReaderProgress();
@@ -1700,20 +1773,19 @@ function copyShareLink(){
 }
 
 function renderManga(){
-  const list = getMangaList();
-  document.getElementById('mangaList').innerHTML = list.length ? list.map(m=>`
-    <div class="fav-item-card" onclick="openAnimeDetails('${m.key}')"><div class="fav-item-cover">${svgIcon(m.icon)}</div>
+  document.getElementById('mangaList').innerHTML = MANGA.map(m=>`
+    <div class="fav-item-card"><div class="fav-item-cover">${svgIcon(m.icon)}</div>
       <div class="fav-item-details"><div class="fav-item-title">${m.title}</div><div class="fav-item-sub">${m.ch}</div>
       <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${m.prog}%"></div></div></div>
       <button class="follow-btn on">اقرأ</button>
-    </div>`).join('') : `<div class="empty-state">${svgIcon('sparkle')}<div class="txt">ماكو مانجا مرفوعة بعد</div></div>`;
+    </div>`).join('');
 }
 function renderTeams(){
-  document.getElementById('teamsList').innerHTML = TEAMS.length ? TEAMS.map((t,i)=>`
+  document.getElementById('teamsList').innerHTML = TEAMS.map((t,i)=>`
     <div class="team-card"><div class="team-ic">${svgIcon(t.icon)}</div>
       <div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.sub}</div></div>
       <button class="follow-btn" id="teamBtn${i}" onclick="toggleTeam(${i})">متابعة</button>
-    </div>`).join('') : `<div class="empty-state">${svgIcon('sparkle')}<div class="txt">ماكو فرق بعد</div></div>`;
+    </div>`).join('');
 }
 function toggleTeam(i){ const btn=document.getElementById('teamBtn'+i); const on=btn.classList.toggle('on'); btn.textContent = on ? 'متابَع' : 'متابعة'; }
 
@@ -1739,7 +1811,7 @@ function liveSearch(){
   if(sort==='rating') keys.sort((a,b)=>ANIME[b].rating-ANIME[a].rating);
   if(sort==='name') keys.sort((a,b)=>ANIME[a].title.localeCompare(ANIME[b].title,'ar'));
   let mangaHtml='', teamHtml='';
-  if(cat==='all' || cat==='manga'){ const mm=getMangaList().filter(m=>m.title.includes(q)); if(mm.length) mangaHtml = mm.map(m=>`<div class="fav-item-card" onclick="openAnimeDetails('${m.key}')"><div class="fav-item-cover">${svgIcon(m.icon)}</div><div class="fav-item-details"><div class="fav-item-title">${m.title}</div><div class="fav-item-sub">${m.ch}</div></div></div>`).join(''); }
+  if(cat==='all' || cat==='manga'){ const mm=MANGA.filter(m=>m.title.includes(q)); if(mm.length) mangaHtml = mm.map(m=>`<div class="fav-item-card"><div class="fav-item-cover">${svgIcon(m.icon)}</div><div class="fav-item-details"><div class="fav-item-title">${m.title}</div><div class="fav-item-sub">${m.ch}</div></div></div>`).join(''); }
   if(cat==='all' || cat==='teams'){ const tt=TEAMS.filter(t=>t.name.includes(q)); if(tt.length) teamHtml = tt.map(t=>`<div class="team-card"><div class="team-ic">${svgIcon(t.icon)}</div><div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.sub}</div></div></div>`).join(''); }
   const animeHtml = keys.length ? `<div class="grid-cards">${keys.map(renderCard).join('')}</div>` : '';
   const combined = animeHtml + mangaHtml + teamHtml;
@@ -1752,34 +1824,8 @@ document.querySelectorAll('.fav-tabs .fav-tab-btn').forEach(t=>t.addEventListene
 
 const heroTrack = document.getElementById('heroTrack');
 const heroDots = document.getElementById('heroDots');
-const HERO_BG = ['hs1','hs2','hs3'];
-const HERO_BADGES = ['الأكثر مشاهدة','إضافة جديدة','تصدر التقييمات'];
-function renderHero(){
-  const keys = Object.keys(ANIME).sort((a,b)=>viewsToNum(ANIME[b].views)-viewsToNum(ANIME[a].views)).slice(0,3);
-  if(!keys.length){
-    heroTrack.innerHTML = `<div class="hero-slide hs1"><div class="hero-bg-glow"></div><div class="hero-content"><h1>أهلاً فيك بموقع بيور</h1><p>راح تظهر هنا أحدث وأبرز الأعمال أول ما يرفعها فريقنا.</p><div class="cta-row"><button class="btn btn-ghost" onclick="openDrawer()">تصفح القائمة</button></div></div></div>`;
-  } else {
-    heroTrack.innerHTML = keys.map((k,i)=>{
-      const a = ANIME[k];
-      return `<div class="hero-slide ${HERO_BG[i%3]}">
-        <div class="hero-bg-glow"></div>
-        <div class="hero-badge">${HERO_BADGES[i%3]}</div>
-        <div class="hero-content">
-          <h1>${a.title}<br>الفصل ${a.eps} متوفر الآن</h1>
-          <p>${(a.desc||'').slice(0,90)}</p>
-          <div class="cta-row"><button class="btn btn-primary" onclick="openAnimeDetails('${k}')"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M6 4l14 8-14 8V4z"/></svg>اقرأ الآن</button></div>
-        </div>
-      </div>`;
-    }).join('');
-  }
-  initHeroDots();
-}
-function initHeroDots(){
-  heroDots.innerHTML = '';
-  const slideCount = document.querySelectorAll('.hero-slide').length;
-  for(let i=0;i<slideCount;i++){ const d=document.createElement('div'); d.className='hero-dot'+(i===0?' active':''); heroDots.appendChild(d); }
-  heroTrack.scrollTo({left:0});
-}
+const slideCount = document.querySelectorAll('.hero-slide').length;
+for(let i=0;i<slideCount;i++){ const d=document.createElement('div'); d.className='hero-dot'+(i===0?' active':''); heroDots.appendChild(d); }
 function updateDots(){ const idx = Math.round(heroTrack.scrollLeft / heroTrack.clientWidth); [...heroDots.children].forEach((d,i)=>d.classList.toggle('active', i===idx)); }
 heroTrack.addEventListener('scroll', ()=>{ clearTimeout(window._hs); window._hs=setTimeout(updateDots,80); });
 let heroAuto = setInterval(()=>{
@@ -1789,10 +1835,10 @@ let heroAuto = setInterval(()=>{
   heroTrack.scrollTo({left:next, behavior:'smooth'});
 }, 5000);
 heroTrack.addEventListener('touchstart', ()=>clearInterval(heroAuto));
-initHeroDots();
 
+renderIdentityGrid();
 renderThemeGrid();
-setLayout('grid');
+setLayout('grid', true);
 renderPresetGrid();
 
 /* ===== Firebase auth: باقي دوال تسجيل الدخول/الخروج (المتغيرات معرّفة بأعلى السكربت) ===== */
@@ -1927,9 +1973,40 @@ function applyMaintenanceMode(){
    2 = محرر محتوى (كل صلاحيات المشرف + طلبات الأعمال والفصول)
    3 = مدير عام (كل الصلاحيات + إدارة الإداريين أنفسهم) */
 const ADMIN_EMAIL = "sksnsjsj8@gmail.com"; // المالك الأساسي — ثابت بالكود، ما ينحذف من الواجهة
-const ADMIN_LEVEL_LABELS = {1:'مشرف', 2:'بيور تيم', 3:'مدير عام'};
+const ADMIN_LEVEL_LABELS = {1:'مشرف', 2:'محرر محتوى', 3:'مدير عام'};
 let adminRoles = {}; // { email: level }
 let adminRolesLoaded = false;
+let pureTeamEmails = {}; // { email: true } — رتبة "تيم بيور" لرفع المحتوى مباشرة
+function isPureTeam(){ return !!(currentUser && (pureTeamEmails[currentUser.email] || isAdmin())); }
+async function loadPureTeam(){
+  if(!fbReady) return;
+  try{
+    const {collection, getDocs} = window.fb;
+    const snap = await getDocs(collection(window.fbDb,'pure_team'));
+    pureTeamEmails = {};
+    snap.docs.forEach(d=>{ pureTeamEmails[d.id] = true; });
+  }catch(e){ console.error('تعذر تحميل قائمة تيم بيور:', e); }
+  const btn = document.getElementById('uploadEntryBtn'); if(btn) btn.style.display = isPureTeam() ? 'flex' : 'none';
+}
+async function addPureTeamMember(){
+  if(getAdminLevel() < 3){ alert('يحتاج صلاحية مدير عام'); return; }
+  const email = document.getElementById('newTeamEmail').value.trim();
+  if(!email) return;
+  try{ await window.fb.setDoc(window.fb.doc(window.fbDb,'pure_team',email), {email, addedBy:currentUser.email, addedAt:window.fb.serverTimestamp()}); document.getElementById('newTeamEmail').value=''; loadPureTeam(); loadPureTeamList(); }
+  catch(e){ alert('تعذر الإضافة: '+e.message); }
+}
+async function removePureTeamMember(email){
+  if(getAdminLevel() < 3) return;
+  try{ await window.fb.deleteDoc(window.fb.doc(window.fbDb,'pure_team',email)); loadPureTeam(); loadPureTeamList(); }
+  catch(e){ alert('تعذر الحذف: '+e.message); }
+}
+function loadPureTeamList(){
+  const box = document.getElementById('pureTeamList'); if(!box) return;
+  box.innerHTML = Object.keys(pureTeamEmails).map(email=>`
+    <div class="sub-card"><div class="sub-title">${email}</div>
+    <div class="sub-actions"><button class="sub-btn reject" onclick="removePureTeamMember('${email}')">إزالة</button></div></div>
+  `).join('') || `<div class="empty-state" style="padding:16px;">${svgIcon('sparkle')}<div class="txt">ماكو أعضاء بتيم بيور بعد</div></div>`;
+}
 async function loadAdminRoles(){
   if(!fbReady) return;
   try{
@@ -2004,6 +2081,8 @@ async function loadMyProfile(){
       if(data.avatar_url){ const img=document.getElementById('avatarImg'); const icon=document.getElementById('avatarPlaceholderIcon'); img.src=data.avatar_url; img.style.display='block'; if(icon) icon.style.display='none'; myAvatarUrl=data.avatar_url; }
       if(data.last_read) lastRead = data.last_read;
       if(data.equipped) equippedItems = {...equippedItems, ...data.equipped};
+      if(data.theme && THEMES[data.theme]) applyTheme(data.theme, true);
+      if(data.layout) setLayout(data.layout, true);
       if(data.display_name) document.getElementById('accNameText').textContent = data.display_name;
       userPoints = data.points || (computeWatchedTotal()*10);
       currentUserBanned = !!data.banned;
@@ -2143,7 +2222,7 @@ let currentStoreCat = 'all';
 /* ===== teams ===== */
 let myTeams = [];
 async function loadTeamPanel(){
-  const box = document.getElementById('teamPanelBox');
+  const box = document.getElementById('teamsList');
   if(!currentUser || !fbReady){ box.innerHTML = `<div class="empty-state">${svgIcon('shield')}<div class="txt">سجّل الدخول عشان تنشئ أو تنضم لفريق</div></div>`; return; }
   const {collection, query, where, limit, getDocs, doc, getDoc} = window.fb; const db = window.fbDb;
   const ownedSnap = await getDocs(query(collection(db,'teams'), where('owner','==',currentUser.id)));
@@ -2234,76 +2313,8 @@ function switchAdminTab(tab){
   if(tab==='reports') loadAdminReports();
   if(tab==='ban') loadBannedList();
   if(tab==='admins') loadAdminsList();
+  if(tab==='pureteam') loadPureTeamList();
   if(tab==='tools') fillSiteSettingsForm();
-  if(tab==='upload') fillUploadMangaSelect();
-}
-/* ===== لوحة الرفع (بيور تيم فقط) — رفع يدوي مباشر: العمل والفصل يدخلهن الإداري بنفسه، ماكو أي سحب تلقائي من أي موقع ===== */
-function fillUploadMangaSelect(){
-  const sel = document.getElementById('upChapterManga');
-  const keys = Object.keys(ANIME);
-  sel.innerHTML = keys.length ? keys.map(k=>`<option value="${k}">${ANIME[k].title} (${k})</option>`).join('') : '<option value="">لا يوجد أعمال بعد — أضف عمل أولاً</option>';
-  onUpChapterMangaChange();
-}
-function onUpChapterMangaChange(){
-  const key = document.getElementById('upChapterManga').value;
-  const isNovel = key && ANIME[key] && ANIME[key].type === 'novel';
-  document.getElementById('upChapterTextWrap').style.display = isNovel ? 'block' : 'none';
-  document.getElementById('upChapterPagesWrap').style.display = isNovel ? 'none' : 'block';
-}
-async function saveManga(){
-  if(getAdminLevel() < 2){ alert('يحتاج صلاحية بيور تيم فما فوق'); return; }
-  const key = document.getElementById('upMangaKey').value.trim();
-  const title = document.getElementById('upMangaTitle').value.trim();
-  const msg = document.getElementById('upMangaMsg');
-  if(!key || !title){ msg.className='auth-msg err'; msg.textContent='اكتب المفتاح والعنوان'; return; }
-  try{
-    await window.fb.setDoc(window.fb.doc(window.fbDb,'mangas',key), {
-      title, type: document.getElementById('upMangaType').value,
-      genre: document.getElementById('upMangaGenre').value.trim(),
-      desc: document.getElementById('upMangaDesc').value.trim(),
-      cover: document.getElementById('upMangaCover').value.trim() || null,
-      exclusive: document.getElementById('upMangaExclusive').checked,
-      status: 'مستمر', updatedBy: currentUser.email, updatedAt: window.fb.serverTimestamp()
-    }, {merge:true});
-    msg.className='auth-msg ok'; msg.textContent='تم حفظ العمل';
-    await loadMangasFromFirestore();
-    fillUploadMangaSelect();
-  }catch(e){ msg.className='auth-msg err'; msg.textContent='تعذر الحفظ: '+e.message; }
-}
-async function saveChapter(){
-  if(getAdminLevel() < 2){ alert('يحتاج صلاحية بيور تيم فما فوق'); return; }
-  const mangaKey = document.getElementById('upChapterManga').value;
-  const num = +document.getElementById('upChapterNum').value;
-  const msg = document.getElementById('upChapterMsg');
-  if(!mangaKey || !num){ msg.className='auth-msg err'; msg.textContent='اختر العمل واكتب رقم الفصل'; return; }
-  const isNovel = ANIME[mangaKey] && ANIME[mangaKey].type === 'novel';
-  try{
-    const data = { number: num, updatedBy: currentUser.email, updatedAt: window.fb.serverTimestamp() };
-    if(isNovel){
-      data.text = document.getElementById('upChapterText').value.trim();
-    } else {
-      data.pages = document.getElementById('upChapterPages').value.split('\n').map(s=>s.trim()).filter(Boolean);
-      const pagesEn = document.getElementById('upChapterPagesEn').value.split('\n').map(s=>s.trim()).filter(Boolean);
-      if(pagesEn.length) data.pages_en = pagesEn;
-    }
-    await window.fb.setDoc(window.fb.doc(window.fbDb,'mangas',mangaKey,'chapters',String(num)), data, {merge:true});
-    await window.fb.setDoc(window.fb.doc(window.fbDb,'mangas',mangaKey), {chaptersCount: Math.max(num, ANIME[mangaKey]?.eps||0)}, {merge:true});
-    msg.className='auth-msg ok'; msg.textContent='تم حفظ الفصل';
-    document.getElementById('upChapterNum').value=''; document.getElementById('upChapterText').value=''; document.getElementById('upChapterPages').value=''; document.getElementById('upChapterPagesEn').value='';
-    await loadMangasFromFirestore();
-  }catch(e){ msg.className='auth-msg err'; msg.textContent='تعذر الحفظ: '+e.message; }
-}
-/* ترجمة سريعة تساعد الإداري بصياغة نص هو مالكه — ما تسحب من أي موقع، فقط تترجم نص لاصقه هو بنفسه */
-async function translateForUpload(){
-  const src = document.getElementById('upChapterTranslateSrc').value.trim();
-  const dst = document.getElementById('upChapterText');
-  if(!src) return;
-  dst.value = '...جاري الترجمة';
-  try{
-    const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=ar&dt=t&q=${encodeURIComponent(src)}`);
-    const data = await res.json();
-    dst.value = data[0].map(chunk=>chunk[0]).join('');
-  }catch(e){ dst.value=''; alert('تعذر الاتصال بخدمة الترجمة'); }
 }
 async function loadAdminSubs(){
   if(!isAdmin()) return;
@@ -2447,7 +2458,7 @@ function loadAdminsList(){
     <div class="sub-meta">
       <select class="form-input" style="width:auto; display:inline-block; padding:4px 8px; font-size:10.5px;" onchange="changeAdminLevel('${email}', this.value)">
         <option value="1" ${adminRoles[email]===1?'selected':''}>مشرف</option>
-        <option value="2" ${adminRoles[email]===2?'selected':''}>بيور تيم</option>
+        <option value="2" ${adminRoles[email]===2?'selected':''}>محرر محتوى</option>
         <option value="3" ${adminRoles[email]===3?'selected':''}>مدير عام</option>
       </select>
     </div>
@@ -2474,23 +2485,70 @@ function exportSettingsBackup(){
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'pure-settings-backup.json'; a.click();
 }
 /* ===== مترجم نص يدوي (إنجليزي → عربي) — الأدمن يلصق نص عنده حقوقه ويترجمه بنفسه، بدون أي سحب أو تحرير آلي للصور ===== */
+/* ===== مترجم عام: يستخدمه المترجم اليدوي بلوحة الإدارة وزر تبديل لغة القراءة ===== */
+async function gtranslate(text, target){
+  if(!text || !text.trim()) return text;
+  try{
+    const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${target}&dt=t&q=${encodeURIComponent(text)}`);
+    const data = await res.json();
+    return data[0].map(chunk=>chunk[0]).join('');
+  }catch(e){ console.error('تعذر الترجمة:', e); return text; }
+}
 async function runTranslate(){
   const src = document.getElementById('translateSrc').value.trim();
   const out = document.getElementById('translateOut');
   if(!src){ out.value=''; return; }
   out.value = '...جاري الترجمة';
-  try{
-    const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ar&dt=t&q=${encodeURIComponent(src)}`);
-    const data = await res.json();
-    out.value = data[0].map(chunk=>chunk[0]).join('');
-  }catch(e){
-    out.value = 'تعذر الاتصال بخدمة الترجمة — تأكد من الإنترنت وحاول مرة ثانية';
-    console.error(e);
-  }
+  out.value = await gtranslate(src, 'ar');
 }
 function copyTranslateOut(){
   const out = document.getElementById('translateOut');
   out.select(); document.execCommand('copy');
+}
+/* ===== لوحة رفع تيم بيور: نشر مباشر لعمل/فصل يرفعه العضو بنفسه — بدون أي سحب أو معالجة آلية للصور ===== */
+async function translateUploadDesc(){
+  const en = document.getElementById('upDescEn').value.trim();
+  if(!en) return;
+  document.getElementById('upDescAr').value = await gtranslate(en, 'ar');
+}
+async function translateUploadChapter(){
+  const en = document.getElementById('upChTextEn').value.trim();
+  if(!en) return;
+  document.getElementById('upChTextAr').value = await gtranslate(en, 'ar');
+}
+async function publishManga(){
+  const msg = document.getElementById('upMangaMsg');
+  if(!isPureTeam()){ msg.className='auth-msg err'; msg.textContent='هذا القسم لتيم بيور فقط'; return; }
+  const key = document.getElementById('upKey').value.trim();
+  const title = document.getElementById('upTitle').value.trim();
+  if(!key || !title){ msg.className='auth-msg err'; msg.textContent='عبّي المعرّف والعنوان على الأقل'; return; }
+  try{
+    await window.fb.setDoc(window.fb.doc(window.fbDb,'mangas',key), {
+      title, type: document.getElementById('upType').value, genre: document.getElementById('upGenre').value.trim(),
+      description: document.getElementById('upDescAr').value.trim() || document.getElementById('upDescEn').value.trim(),
+      uploadedBy: currentUser.email, updatedAt: window.fb.serverTimestamp()
+    }, {merge:true});
+    msg.className='auth-msg ok'; msg.textContent='تم حفظ بيانات العمل';
+    document.getElementById('upChKey').value = key;
+    loadMangasFromFirestore();
+  }catch(e){ msg.className='auth-msg err'; msg.textContent='تعذر الحفظ: '+e.message; }
+}
+async function publishChapter(){
+  const msg = document.getElementById('upChMsg');
+  if(!isPureTeam()){ msg.className='auth-msg err'; msg.textContent='هذا القسم لتيم بيور فقط'; return; }
+  const key = document.getElementById('upChKey').value.trim();
+  const n = +document.getElementById('upChNum').value;
+  if(!key || !n){ msg.className='auth-msg err'; msg.textContent='عبّي معرّف العمل ورقم الفصل'; return; }
+  const pages = document.getElementById('upChPages').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const textAr = document.getElementById('upChTextAr').value.trim() || document.getElementById('upChTextEn').value.trim();
+  try{
+    await window.fb.setDoc(window.fb.doc(window.fbDb,'mangas',key,'chapters',String(n)), {
+      number:n, text: textAr || null, pages: pages.length?pages:null, uploadedBy: currentUser.email, createdAt: window.fb.serverTimestamp()
+    });
+    msg.className='auth-msg ok'; msg.textContent='تم نشر الفصل';
+    document.getElementById('upChNum').value=''; document.getElementById('upChTextEn').value=''; document.getElementById('upChTextAr').value=''; document.getElementById('upChPages').value='';
+    loadMangasFromFirestore();
+  }catch(e){ msg.className='auth-msg err'; msg.textContent='تعذر النشر: '+e.message; }
 }
 
 /* wire tabs that need data loading */
