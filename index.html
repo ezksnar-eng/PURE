@@ -477,6 +477,17 @@
   .store-item .buy{width:100%; padding:7px; border-radius:9px; font-size:10.5px; font-weight:800; border:none; cursor:pointer; background:var(--accent); color:var(--on-accent);}
   .store-item .buy.owned{background:var(--secondary);}
   .store-item .buy.free{background:linear-gradient(90deg,#ffd76a,#ff9f43); color:#2a1500;}
+  .notif-popup{position:fixed; top:calc(60px + var(--safe-top)); left:12px; right:12px; max-width:456px; margin:0 auto; background:var(--card); border:1px solid var(--line-strong); border-radius:16px; box-shadow:0 20px 50px rgba(0,0,0,.5); z-index:220; max-height:70vh; overflow-y:auto; opacity:0; visibility:hidden; transform:translateY(-8px); transition:opacity .2s ease, transform .2s ease, visibility 0s linear .2s;}
+  .notif-popup.open{opacity:1; visibility:visible; transform:translateY(0); transition:opacity .2s ease, transform .2s ease;}
+  .notif-popup-overlay{position:fixed; inset:0; z-index:210; background:transparent; display:none;}
+  .notif-popup-overlay.open{display:block;}
+  .notif-popup-head{display:flex; justify-content:space-between; align-items:center; padding:14px 16px; border-bottom:1px solid var(--line); font-size:13px; font-weight:800; color:var(--text); position:sticky; top:0; background:var(--card);}
+  .notif-popup-head span{font-size:10px; font-weight:700; color:var(--accent-soft); cursor:pointer;}
+  .notif-item{padding:11px 16px; border-bottom:1px solid var(--line); font-size:11.5px; color:var(--text); display:flex; gap:8px; align-items:flex-start;}
+  .notif-item.unread{background:rgba(var(--accent-rgb),.08);}
+  .notif-item .dot2{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:4px;}
+  .notif-item .txt{flex:1;}
+  .notif-item .t{color:var(--text-dim); font-size:9.5px; margin-top:3px;}
 
   /* continuous reader */
   .chap-divider{display:flex; align-items:center; gap:10px; margin:18px 0 12px; color:var(--accent); font-size:11.5px; font-weight:800;}
@@ -499,6 +510,7 @@
     <div style="display:flex; gap:8px;">
       <div class="icon-btn" onclick="openDrawer()"><svg viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></div>
       <div class="icon-btn" onclick="openModal('upcomingModal')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><span class="dot"></span></div>
+      <div class="icon-btn" id="notifBellBtn" onclick="toggleNotifPopup()" style="position:relative;"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg><span class="dot" id="notifDot" style="display:none;"></span></div>
     </div>
     <div class="brand">
       <div><div class="name">بيور</div><div class="tag" style="text-align:left;">مانجا · مانهوا · روايات · كومكس</div></div>
@@ -519,6 +531,12 @@
     </div>
   </div>
 </header>
+
+<div class="notif-popup" id="notifPopup">
+  <div class="notif-popup-head">الإشعارات <span id="notifMarkAll" onclick="markAllNotifsRead()">تعليم الكل كمقروء</span></div>
+  <div id="notifPopupList"></div>
+</div>
+<div class="notif-popup-overlay" id="notifPopupOverlay" onclick="toggleNotifPopup(false)"></div>
 
 <main>
   <div class="hero-carousel">
@@ -784,14 +802,33 @@
   <div class="anime-ratings-row">
     <div class="rate-box"><div class="num" id="teamMemberCount">0</div><div class="count">الأعضاء</div></div>
     <div class="rate-box"><div class="num" id="teamPublishedCount">0</div><div class="count">منشورة</div></div>
-    <div class="rate-box"><div class="num" id="teamPendingCount">0</div><div class="count">قيد المراجعة</div></div>
+    <div class="rate-box"><div class="num" id="teamFollowerCount">0</div><div class="count">متابعون</div></div>
   </div>
   <div class="anime-desc-box" id="teamRoomDesc">—</div>
   <div class="anime-action-buttons">
+    <div class="action-pill" id="teamFollowBtn" onclick="toggleFollowTeam()"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 5a5.5 5.5 0 019.5 7c-2.5 4.5-9.5 9-9.5 9z"/></svg><span id="teamFollowLabel">متابعة</span></div>
     <div class="action-pill on" onclick="openSubmitForm('manga')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M3 5c3-2 6-2 9 0v14c-3-2-6-2-9 0V5z"/></svg>إرسال عمل جديد</div>
+    <div class="action-pill" id="teamEditBtn" style="display:none;" onclick="openEditTeam()"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>تعديل الفريق</div>
   </div>
-  <div class="drawer-section-title">إصدارات الفريق</div>
-  <div id="teamSubsList"></div>
+  <div class="admin-tabs" style="margin-top:14px;">
+    <div class="admin-tab active" data-tt="subs" onclick="switchTeamRoomTab('subs')">الإصدارات</div>
+    <div class="admin-tab" data-tt="members" onclick="switchTeamRoomTab('members')">الأعضاء</div>
+    <div class="admin-tab" id="teamReqTab" style="display:none;" data-tt="requests" onclick="switchTeamRoomTab('requests')">طلبات الانضمام</div>
+  </div>
+  <div class="admin-panel2 active" data-tp="subs"><div id="teamSubsList"></div></div>
+  <div class="admin-panel2" data-tp="members"><div id="teamMembersList"></div></div>
+  <div class="admin-panel2" data-tp="requests"><div id="teamRequestsList"></div></div>
+</div>
+
+<div class="modal-overlay" id="editTeamModalOverlay" onclick="closeModal('editTeamModal')"></div>
+<div class="modal-window sheet" id="editTeamModal">
+  <div class="share-sheet">
+    <div class="modal-head" style="border:none;"><h3 style="font-size:15px;">تعديل الفريق</h3><div class="modal-close" onclick="closeModal('editTeamModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+    <div class="form-group"><label>اسم الفريق</label><input class="form-input" id="editTeamName"></div>
+    <div class="form-group"><label>الوصف</label><textarea class="form-input" id="editTeamDesc" rows="3"></textarea></div>
+    <button class="watch-btn" onclick="saveTeamEdit()">حفظ التعديلات</button>
+    <div id="editTeamMsg" class="auth-msg"></div>
+  </div>
 </div>
 
 <div class="modal-overlay" id="submitFormModalOverlay" onclick="closeModal('submitFormModal')"></div>
@@ -1364,7 +1401,7 @@ function openModal(id){
 function closeModal(id){document.getElementById(id).classList.remove('open'); const ov=document.getElementById(id+'Overlay'); if(ov) ov.classList.remove('open'); updateNav();}
 function updateNav(){ document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active', i===0)); }
 function goHome(){
-  ['drawer','guideModal','upcomingModal','downloadsModal','favoritesModal','reportModal','publicProfileModal','uploadModal','searchModal','mangaModal','teamsModal','settingsModal','playerModal','shareModal','animeDetailsModal','accountModal','authModal'].forEach(id=>{
+  ['drawer','guideModal','upcomingModal','downloadsModal','favoritesModal','reportModal','publicProfileModal','uploadModal','editTeamModal','searchModal','mangaModal','teamsModal','teamRoomModal','settingsModal','playerModal','shareModal','animeDetailsModal','accountModal','authModal'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.classList.remove('open');
     const ov=document.getElementById(id+'Overlay'); if(ov) ov.classList.remove('open');
   });
@@ -2131,6 +2168,7 @@ async function loadMyProfile(){
   updateAdminUI();
   applyEquippedDecorations();
   document.getElementById('pointsNum').textContent = isAdmin() ? '∞' : userPoints;
+  loadNotifications();
 }
 async function saveProfile(){
   const name = document.getElementById('editName').value.trim();
@@ -2271,7 +2309,7 @@ async function loadTeamPanel(){
   <div id="teamCreateMsg" class="auth-msg"></div>
   <div class="drawer-section-title">فرقي</div>`;
   const mine = [...owned, ...memberTeamDocs].filter(Boolean);
-  html += mine.length ? mine.map(t=>`<div class="team-card" onclick="openTeamRoom('${t.id}','${(t.name||'').replace(/'/g,"")}','${(t.description||'').replace(/'/g,"")}')"><div class="team-ic">${svgIcon('shield')}</div><div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.description||''}</div></div></div>`).join('') : `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو فرق لك بعد</div></div>`;
+  html += mine.length ? mine.map(t=>`<div class="team-card" onclick="openTeamRoom('${t.id}','${(t.name||'').replace(/'/g,"")}','${(t.description||'').replace(/'/g,"")}','${t.owner}')"><div class="team-ic">${svgIcon('shield')}</div><div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.description||''}</div></div></div>`).join('') : `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو فرق لك بعد</div></div>`;
   html += `<div class="drawer-section-title">فرق يمكن الانضمام لها</div>`;
   html += allTeams.filter(t=>!mine.find(m=>m.id===t.id)).map(t=>`<div class="team-card"><div class="team-ic">${svgIcon('shield')}</div><div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.description||''}</div></div><button class="follow-btn" onclick="joinTeam('${t.id}')">انضمام</button></div>`).join('') || '';
   box.innerHTML = html;
@@ -2284,33 +2322,154 @@ async function createTeam(){
   try{
     const {collection, addDoc, serverTimestamp} = window.fb; const db = window.fbDb;
     const teamRef = await addDoc(collection(db,'teams'), {name, description:desc, owner:currentUser.id, created_at:serverTimestamp()});
-    await addDoc(collection(db,'team_members'), {team_id:teamRef.id, user_id:currentUser.id});
+    await addDoc(collection(db,'team_members'), {team_id:teamRef.id, user_id:currentUser.id, user_email:currentUser.email});
     msg.className='auth-msg ok'; msg.textContent='تم إنشاء الفريق!';
     loadTeamPanel();
   }catch(error){ msg.className='auth-msg err'; msg.textContent=error.message; }
 }
 async function joinTeam(id){
   try{
-    await window.fb.addDoc(window.fb.collection(window.fbDb,'team_members'), {team_id:id, user_id:currentUser.id});
+    const {collection, query, where, getDocs, addDoc, serverTimestamp} = window.fb; const db = window.fbDb;
+    const existing = await getDocs(query(collection(db,'team_join_requests'), where('team_id','==',id), where('user_id','==',currentUser.id), where('status','==','pending')));
+    if(!existing.empty){ alert('عندك طلب انضمام مرسل مسبقًا لهذا الفريق، انتظر رد القائد'); return; }
+    await addDoc(collection(db,'team_join_requests'), {team_id:id, user_id:currentUser.id, user_email:currentUser.email, status:'pending', created_at:serverTimestamp()});
+    alert('تم إرسال طلب الانضمام، بانتظار موافقة قائد الفريق');
     loadTeamPanel();
   }catch(error){ alert(error.message); }
 }
-let currentTeamId = null;
-async function openTeamRoom(id, name, desc){
-  currentTeamId = id;
+let currentTeamId = null, currentTeamOwner = null;
+async function openTeamRoom(id, name, desc, owner){
+  currentTeamId = id; currentTeamOwner = owner || null;
   document.getElementById('teamRoomName').textContent = name;
   document.getElementById('teamRoomDesc').textContent = desc || 'ماكو وصف بعد';
+  const isOwner = currentUser && owner === currentUser.id;
+  document.getElementById('teamEditBtn').style.display = isOwner ? 'flex' : 'none';
+  document.getElementById('teamReqTab').style.display = isOwner ? '' : 'none';
+  document.getElementById('teamFollowBtn').style.display = currentUser ? 'flex' : 'none';
   const {collection, query, where, getDocs} = window.fb; const db = window.fbDb;
   const memberSnap = await getDocs(query(collection(db,'team_members'), where('team_id','==',id)));
   const subsSnap = await getDocs(query(collection(db,'submissions'), where('team_id','==',id)));
+  const followerSnap = await getDocs(query(collection(db,'team_followers'), where('team_id','==',id)));
   const subs = subsSnap.docs.map(d=>({id:d.id, ...d.data()}));
   const published = subs.filter(s=>s.status==='approved').length;
-  const pending = subs.filter(s=>s.status==='pending').length;
   document.getElementById('teamMemberCount').textContent = memberSnap.size||0;
   document.getElementById('teamPublishedCount').textContent = published;
-  document.getElementById('teamPendingCount').textContent = pending;
+  document.getElementById('teamFollowerCount').textContent = followerSnap.size||0;
+  if(currentUser){
+    const myFollow = await getDocs(query(collection(db,'team_followers'), where('team_id','==',id), where('user_id','==',currentUser.id)));
+    const following = !myFollow.empty;
+    document.getElementById('teamFollowLabel').textContent = following ? 'متابَع ✓' : 'متابعة';
+    document.getElementById('teamFollowBtn').classList.toggle('on', following);
+    window.__myTeamFollowDoc = following ? myFollow.docs[0].id : null;
+  }
   document.getElementById('teamSubsList').innerHTML = subs.map(s=>`<div class="sub-card"><div class="sub-head"><div class="sub-title">${s.title}</div><span class="tag-gold">${s.status==='approved'?'منشور':s.status==='pending'?'قيد المراجعة':'مرفوض'}</span></div><div class="sub-meta">${s.type==='anime'?'أنمي':'مانجا'} · ${s.genre||''}</div></div>`).join('') || `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو إصدارات بعد</div></div>`;
+  const memberDocs = memberSnap.docs.map(d=>({id:d.id, ...d.data()}));
+  document.getElementById('teamMembersList').innerHTML = memberDocs.map(m=>{
+    const isLeader = m.user_id === owner;
+    let actions = '';
+    if(isOwner && !isLeader) actions = `<div class="sub-actions"><button class="sub-btn reject" onclick="removeTeamMember('${m.id}')">إزالة من الفريق</button></div>`;
+    return `<div class="sub-card"><div class="sub-title" style="cursor:pointer;" onclick="openPublicProfile('${m.user_id}')">${isLeader?'👑 ':''}${m.user_email||m.user_id}</div><div class="sub-meta">${isLeader?'قائد الفريق':'عضو'}</div>${actions}</div>`;
+  }).join('') || `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو أعضاء</div></div>`;
+  if(isOwner){
+    const reqSnap = await getDocs(query(collection(db,'team_join_requests'), where('team_id','==',id), where('status','==','pending')));
+    const reqs = reqSnap.docs.map(d=>({id:d.id, ...d.data()}));
+    document.getElementById('teamRequestsList').innerHTML = reqs.map(r=>`
+      <div class="sub-card"><div class="sub-title">${r.user_email||r.user_id}</div><div class="sub-meta">طلب انضمام</div>
+      <div class="sub-actions"><button class="sub-btn approve" onclick="respondJoinRequest('${r.id}','${r.user_id}','${(r.user_email||'').replace(/'/g,"")}',true)">قبول</button><button class="sub-btn reject" onclick="respondJoinRequest('${r.id}','${r.user_id}','',false)">رفض</button></div></div>
+    `).join('') || `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو طلبات انضمام</div></div>`;
+  }
+  switchTeamRoomTab('subs');
   openModal('teamRoomModal');
+}
+function switchTeamRoomTab(tab){
+  document.querySelectorAll('#teamRoomModal .admin-tab').forEach(t=>t.classList.toggle('active', t.dataset.tt===tab));
+  document.querySelectorAll('#teamRoomModal .admin-panel2').forEach(p=>p.classList.toggle('active', p.dataset.tp===tab));
+}
+/* ===== صندوق إشعارات خفيف — يفتح كصندوق منسدل بدون فتح روم/صفحة كاملة (طلب سابق مكرر) ===== */
+let notifPopupOpen = false;
+function toggleNotifPopup(forceState){
+  notifPopupOpen = typeof forceState === 'boolean' ? forceState : !notifPopupOpen;
+  document.getElementById('notifPopup').classList.toggle('open', notifPopupOpen);
+  document.getElementById('notifPopupOverlay').classList.toggle('open', notifPopupOpen);
+  if(notifPopupOpen) loadNotifications();
+}
+async function loadNotifications(){
+  const box = document.getElementById('notifPopupList');
+  if(!currentUser){ box.innerHTML = `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">سجّل الدخول عشان تشوف إشعاراتك</div></div>`; return; }
+  if(!fbReady) return;
+  box.innerHTML = '<div class="chat-skel"></div><div class="chat-skel"></div>';
+  try{
+    const {collection, query, where, orderBy, limit, getDocs} = window.fb;
+    const snap = await getDocs(query(collection(window.fbDb,'notifications'), where('uid','==',currentUser.id), orderBy('createdAt','desc'), limit(30)));
+    const rows = snap.docs.map(d=>({id:d.id, ...d.data()}));
+    box.innerHTML = rows.length ? rows.map(n=>{
+      const when = n.createdAt && n.createdAt.toDate ? n.createdAt.toDate().toLocaleString('ar-EG') : '';
+      return `<div class="notif-item ${n.read?'':'unread'}">${n.read?'':'<span class="dot2"></span>'}<div class="txt"><div>${n.text||''}</div><div class="t">${when}</div></div></div>`;
+    }).join('') : `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو إشعارات بعد</div></div>`;
+    const unread = rows.filter(n=>!n.read).length;
+    document.getElementById('notifDot').style.display = unread ? 'block' : 'none';
+  }catch(e){ console.error('تعذر تحميل الإشعارات:', e); box.innerHTML=''; }
+}
+async function markAllNotifsRead(){
+  if(!currentUser || !fbReady) return;
+  try{
+    const {collection, query, where, getDocs, updateDoc, doc} = window.fb;
+    const snap = await getDocs(query(collection(window.fbDb,'notifications'), where('uid','==',currentUser.id), where('read','==',false)));
+    for(const d of snap.docs) await updateDoc(doc(window.fbDb,'notifications',d.id), {read:true});
+    loadNotifications();
+  }catch(e){ console.error(e); }
+}
+function pushNotification(uid, text){
+  if(!fbReady) return;
+  window.fb.addDoc(window.fb.collection(window.fbDb,'notifications'), {uid, text, read:false, createdAt: window.fb.serverTimestamp()}).catch(console.error);
+}
+async function respondJoinRequest(reqId, userId, userEmail, accept){
+  try{
+    await window.fb.updateDoc(window.fb.doc(window.fbDb,'team_join_requests',reqId), {status: accept?'accepted':'rejected'});
+    if(accept){
+      await window.fb.addDoc(window.fb.collection(window.fbDb,'team_members'), {team_id:currentTeamId, user_id:userId, user_email:userEmail});
+    }
+    pushNotification(userId, accept ? `تم قبول طلب انضمامك لفريق "${document.getElementById('teamRoomName').textContent}"` : `تم رفض طلب انضمامك لفريق "${document.getElementById('teamRoomName').textContent}"`);
+    openTeamRoom(currentTeamId, document.getElementById('teamRoomName').textContent, document.getElementById('teamRoomDesc').textContent, currentTeamOwner);
+  }catch(e){ alert('صار خطأ: '+e.message); }
+}
+async function removeTeamMember(memberDocId){
+  if(!confirm('إزالة هذا العضو من الفريق؟')) return;
+  try{
+    await window.fb.deleteDoc(window.fb.doc(window.fbDb,'team_members',memberDocId));
+    openTeamRoom(currentTeamId, document.getElementById('teamRoomName').textContent, document.getElementById('teamRoomDesc').textContent, currentTeamOwner);
+  }catch(e){ alert('تعذر الإزالة: '+e.message); }
+}
+async function toggleFollowTeam(){
+  if(!currentUser){ openModal('authModal'); return; }
+  try{
+    if(window.__myTeamFollowDoc){
+      await window.fb.deleteDoc(window.fb.doc(window.fbDb,'team_followers',window.__myTeamFollowDoc));
+    } else {
+      await window.fb.addDoc(window.fb.collection(window.fbDb,'team_followers'), {team_id:currentTeamId, user_id:currentUser.id});
+    }
+    openTeamRoom(currentTeamId, document.getElementById('teamRoomName').textContent, document.getElementById('teamRoomDesc').textContent, currentTeamOwner);
+  }catch(e){ alert('صار خطأ: '+e.message); }
+}
+function openEditTeam(){
+  document.getElementById('editTeamName').value = document.getElementById('teamRoomName').textContent;
+  document.getElementById('editTeamDesc').value = document.getElementById('teamRoomDesc').textContent;
+  document.getElementById('editTeamMsg').className='auth-msg'; document.getElementById('editTeamMsg').textContent='';
+  openModal('editTeamModal');
+}
+async function saveTeamEdit(){
+  const name = document.getElementById('editTeamName').value.trim();
+  const desc = document.getElementById('editTeamDesc').value.trim();
+  const msg = document.getElementById('editTeamMsg');
+  if(!name){ msg.className='auth-msg err'; msg.textContent='اكتب اسم الفريق'; return; }
+  try{
+    await window.fb.updateDoc(window.fb.doc(window.fbDb,'teams',currentTeamId), {name, description:desc});
+    msg.className='auth-msg ok'; msg.textContent='تم الحفظ';
+    document.getElementById('teamRoomName').textContent = name;
+    document.getElementById('teamRoomDesc').textContent = desc;
+    setTimeout(()=>closeModal('editTeamModal'), 900);
+    loadTeamPanel();
+  }catch(e){ msg.className='auth-msg err'; msg.textContent='تعذر الحفظ: '+e.message; }
 }
 let submitType = 'anime';
 function openSubmitForm(type){
@@ -2363,7 +2522,12 @@ async function loadAdminSubs(){
 async function reviewSub(id, status){
   if(getAdminLevel() < 2){ alert('يحتاج صلاحية محرر محتوى فما فوق'); return; }
   try{
+    const snap = await window.fb.getDoc(window.fb.doc(window.fbDb,'submissions',id));
     await window.fb.updateDoc(window.fb.doc(window.fbDb,'submissions',id), {status});
+    if(snap.exists()){
+      const s = snap.data();
+      if(s.submitted_by) pushNotification(s.submitted_by, status==='approved' ? `تم قبول عملك "${s.title}"` : `تم رفض عملك "${s.title}"`);
+    }
     loadAdminSubs();
   }catch(error){ alert(error.message); }
 }
