@@ -179,7 +179,9 @@
   .modal-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; border-bottom:1px solid var(--line); padding-bottom:12px;}
   .modal-head h3{font-weight:800; font-size:18px; color:var(--text); display:flex; align-items:center; gap:8px;}
   .modal-head h3 svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:1.7;}
-  .modal-close{width:34px; height:34px; border-radius:10px; background:var(--card); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--text); cursor:pointer; flex-shrink:0;}
+  .modal-close{width:34px; height:34px; min-width:34px; border-radius:10px; background:var(--card); border:1px solid var(--line); display:flex; align-items:center; justify-content:center; color:var(--text); cursor:pointer; flex-shrink:0;}
+  .modal-head{flex-wrap:nowrap;}
+  .modal-head h3{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;}
   .modal-close svg{width:14px;height:14px;}
   .form-group{margin-bottom:14px;}
   .form-group label{font-size:12px; color:var(--text-dim); margin-bottom:6px; display:block;}
@@ -432,21 +434,23 @@
 
   /* responsive banner — fits any uploaded image size automatically */
   .acc-cover{overflow:hidden;}
-  .acc-cover img{width:100%; height:100%; object-fit:contain; object-position:center; display:block; background:rgba(0,0,0,.15);}
+  .acc-cover img{width:100%; height:100%; object-fit:cover; object-position:center; display:block; background:rgba(0,0,0,.15);}
   .banner-upload-btn{position:absolute; bottom:8px; left:8px; z-index:2; background:rgba(0,0,0,.55); color:#fff; border:1px solid rgba(255,255,255,.3); border-radius:9px; padding:6px 10px; font-size:10px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:5px;}
   .banner-upload-btn svg{width:12px;height:12px;stroke:#fff;fill:none;stroke-width:1.8;}
 
   /* admin distinguishing */
   .admin-badge{display:inline-flex; align-items:center; gap:4px; background:linear-gradient(90deg,#ffd76a,#ff9f43); color:#2a1500; font-size:9px; font-weight:900; padding:3px 9px; border-radius:9px; margin-right:6px;}
   .admin-badge svg{width:10px;height:10px;fill:#2a1500;stroke:none;}
-  .is-admin .acc-avatar-wrap{border-color:#ffd76a; box-shadow:0 0 0 3px rgba(255,215,106,.25);}
+
   .is-admin .acc-name-block .nm{background:linear-gradient(90deg,#ffd76a,#ff9f43); -webkit-background-clip:text; background-clip:text; color:transparent;}
 
   /* admin panel */
-  .admin-tabs{display:flex; gap:8px; overflow-x:auto; margin-bottom:16px;}
+  .admin-tabs{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;}
   .admin-tab{padding:8px 14px; border-radius:11px; font-size:11.5px; font-weight:700; white-space:nowrap; background:var(--card); border:1px solid var(--line); color:var(--text-dim); cursor:pointer;}
   .admin-tab.active{background:var(--accent); color:var(--on-accent); border-color:var(--accent);}
   .admin-panel2{visibility:hidden; height:0; overflow:hidden; opacity:0; transform:translateY(6px); transition:opacity .22s ease, transform .22s ease, visibility 0s linear .22s;}
+  .team-tab-panel{display:none;}
+  .team-tab-panel.active{display:block;}
   .admin-panel2.active{visibility:visible; height:auto; overflow:visible; opacity:1; transform:translateY(0); transition:opacity .22s ease, transform .22s ease;}
   .toggle-row{display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--text); padding:9px 2px; border-bottom:1px solid var(--line); cursor:pointer;}
   .toggle-row input{width:16px; height:16px; accent-color:var(--accent); flex-shrink:0;}
@@ -477,17 +481,6 @@
   .store-item .buy{width:100%; padding:7px; border-radius:9px; font-size:10.5px; font-weight:800; border:none; cursor:pointer; background:var(--accent); color:var(--on-accent);}
   .store-item .buy.owned{background:var(--secondary);}
   .store-item .buy.free{background:linear-gradient(90deg,#ffd76a,#ff9f43); color:#2a1500;}
-  .notif-popup{position:fixed; top:calc(60px + var(--safe-top)); left:12px; right:12px; max-width:456px; margin:0 auto; background:var(--card); border:1px solid var(--line-strong); border-radius:16px; box-shadow:0 20px 50px rgba(0,0,0,.5); z-index:220; max-height:70vh; overflow-y:auto; opacity:0; visibility:hidden; transform:translateY(-8px); transition:opacity .2s ease, transform .2s ease, visibility 0s linear .2s;}
-  .notif-popup.open{opacity:1; visibility:visible; transform:translateY(0); transition:opacity .2s ease, transform .2s ease;}
-  .notif-popup-overlay{position:fixed; inset:0; z-index:210; background:transparent; display:none;}
-  .notif-popup-overlay.open{display:block;}
-  .notif-popup-head{display:flex; justify-content:space-between; align-items:center; padding:14px 16px; border-bottom:1px solid var(--line); font-size:13px; font-weight:800; color:var(--text); position:sticky; top:0; background:var(--card);}
-  .notif-popup-head span{font-size:10px; font-weight:700; color:var(--accent-soft); cursor:pointer;}
-  .notif-item{padding:11px 16px; border-bottom:1px solid var(--line); font-size:11.5px; color:var(--text); display:flex; gap:8px; align-items:flex-start;}
-  .notif-item.unread{background:rgba(var(--accent-rgb),.08);}
-  .notif-item .dot2{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:4px;}
-  .notif-item .txt{flex:1;}
-  .notif-item .t{color:var(--text-dim); font-size:9.5px; margin-top:3px;}
 
   /* continuous reader */
   .chap-divider{display:flex; align-items:center; gap:10px; margin:18px 0 12px; color:var(--accent); font-size:11.5px; font-weight:800;}
@@ -509,8 +502,7 @@
   <div class="brand-row">
     <div style="display:flex; gap:8px;">
       <div class="icon-btn" onclick="openDrawer()"><svg viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg></div>
-      <div class="icon-btn" onclick="openModal('upcomingModal')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg><span class="dot"></span></div>
-      <div class="icon-btn" id="notifBellBtn" onclick="toggleNotifPopup()" style="position:relative;"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 01-3.4 0"/></svg><span class="dot" id="notifDot" style="display:none;"></span></div>
+      <div class="icon-btn" onclick="openModal('notificationsModal')"><svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot" id="notifDot" style="display:none;"></span></div>
     </div>
     <div class="brand">
       <div><div class="name">بيور</div><div class="tag" style="text-align:left;">مانجا · مانهوا · روايات · كومكس</div></div>
@@ -531,12 +523,6 @@
     </div>
   </div>
 </header>
-
-<div class="notif-popup" id="notifPopup">
-  <div class="notif-popup-head">الإشعارات <span id="notifMarkAll" onclick="markAllNotifsRead()">تعليم الكل كمقروء</span></div>
-  <div id="notifPopupList"></div>
-</div>
-<div class="notif-popup-overlay" id="notifPopupOverlay" onclick="toggleNotifPopup(false)"></div>
 
 <main>
   <div class="hero-carousel">
@@ -576,17 +562,23 @@
     <span class="g-tab active">الشائع</span><span class="g-tab">أكشن</span><span class="g-tab">خيال</span><span class="g-tab">رومانسي</span><span class="g-tab">غموض</span>
   </div>
 
+  <div id="welcomeEmptyState" style="display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:12px; padding:56px 20px;">
+    <svg viewBox="0 0 24 24" style="width:46px;height:46px;stroke:var(--accent);fill:none;stroke-width:1.4;"><path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3z"/></svg>
+    <div style="font-size:15px;font-weight:800;">أهلاً بيك بموقع بيور</div>
+    <div style="font-size:12px;color:var(--text-dim);max-width:280px;">لسا ماكو أعمال منشورة — تيم بيور راح يبدون برفع المحتوى الحقيقي قريبًا</div>
+  </div>
+
   <section class="section" id="continueSection" style="display:none;">
     <div class="section-head"><h2>تابع القراءة</h2></div>
     <div class="rowscroll" id="continueRow"></div>
   </section>
 
-  <section class="section">
+  <section class="section" id="rowSectionSeason">
     <div class="section-head"><h2>أحدث الفصول</h2><span class="seeall" onclick="openGuide('season')">عرض الكل ‹</span></div>
     <div class="rowscroll" id="season"></div>
   </section>
 
-  <section class="section">
+  <section class="section" id="rowSectionExclusive">
     <div class="section-head"><h2>حصريات المنصة</h2></div>
     <div class="rowscroll" id="exclusiveRow"></div>
   </section>
@@ -596,12 +588,12 @@
     <div class="rowscroll" id="topRated"></div>
   </section>
 
-  <section class="section">
+  <section class="section" id="rowSectionMostViewed">
     <div class="section-head"><h2>الأكثر قراءة</h2></div>
     <div class="rowscroll" id="mostViewed"></div>
   </section>
 
-  <section class="section">
+  <section class="section" id="rowSectionLatest">
     <div class="section-head"><h2>الأعمال المضافة</h2><span class="seeall" onclick="openGuide('latest')">عرض الكل ‹</span></div>
     <div class="rowscroll" id="latest"></div>
   </section>
@@ -627,14 +619,15 @@
     <div class="drawer-item" onclick="closeDrawer(); openModal('storeModal')"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v10h16V9"/><path d="M9 13a3 3 0 0 0 6 0"/></svg>المتجر</span></div>
     <div class="drawer-item" onclick="closeDrawer(); openModal('accountModal')"><span class="left-part"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>الحساب</span></div>
   </div>
-  <div class="drawer-section-title">الأقسام</div>
+  <div class="drawer-section-title">الفريق</div>
   <div class="drawer-menu">
     <div class="drawer-item" onclick="closeDrawer(); openModal('mangaModal')"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M3 5c3-2 6-2 9 0v14c-3-2-6-2-9 0V5z"/><path d="M21 5c-3-2-6-2-9 0v14c3-2 6-2 9 0V5z"/></svg>مانجا / مانوا</span></div>
     <div class="drawer-item" onclick="closeDrawer(); scrollToTop()"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>الأعلى تقييمًا</span></div>
     <div class="drawer-item" onclick="closeDrawer(); openModal('teamsModal')"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3z"/></svg>الفرق المميزة</span></div>
   </div>
-  <div class="drawer-section-title">عام</div>
+  <div class="drawer-section-title">الإدارة</div>
   <div class="drawer-menu">
+    <div class="drawer-item" id="drawerAdminEntry" style="display:none;" onclick="closeDrawer(); openModal('adminModal')"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3z"/></svg>لوحة الإدارة</span></div>
     <div class="drawer-item" onclick="closeDrawer(); openModal('settingsModal')"><span class="left-part"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12h2M3 12h2M12 3v2M12 19v2"/></svg>الإعدادات</span></div>
     <div class="drawer-item" onclick="closeDrawer(); doSignOut()"><span class="left-part"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>تسجيل الخروج</span></div>
   </div>
@@ -678,8 +671,9 @@
     <div class="admin-tab" data-at="ban" onclick="switchAdminTab('ban')">حظر / إيقاف</div>
     <div class="admin-tab" data-at="admins" data-needs-level="3" onclick="switchAdminTab('admins')">الإداريين</div>
     <div class="admin-tab" data-at="pureteam" data-needs-level="3" onclick="switchAdminTab('pureteam')">تيم بيور</div>
-    <div class="admin-tab" data-needs-level="3" data-at="logins" onclick="switchAdminTab('logins')">سجل الدخول</div>
+    <div class="admin-tab" data-needs-level="3" data-at="logins" onclick="switchAdminTab('logins')">مراقبة</div>
     <div class="admin-tab" data-needs-level="2" data-at="deletecontent" onclick="switchAdminTab('deletecontent')">حذف محتوى</div>
+    <div class="admin-tab" data-needs-level="2" data-at="trash" onclick="switchAdminTab('trash')">المحذوفات (مخفي)</div>
     <div class="admin-tab" data-at="tools" onclick="switchAdminTab('tools')">أدوات</div>
   </div>
   <div class="admin-panel2 active" data-ap="subs">
@@ -723,13 +717,24 @@
     <div id="pureTeamList"></div>
   </div>
   <div class="admin-panel2" data-ap="logins">
-    <div class="drawer-section-title">سجل تسجيل الدخول — منو دخل ومتى</div>
+    <div class="drawer-section-title">مراقبة الدخول</div>
+    <div class="anime-ratings-row" style="margin-bottom:14px;">
+      <div class="rate-box"><div class="num" id="onlineNowCount">0</div><div class="count">متواجدين تقريبًا الآن</div></div>
+      <div class="rate-box"><div class="num" id="uniqueUsersCount">0</div><div class="count">حسابات دخلت (آخر ٥٠ سجل)</div></div>
+    </div>
+    <div class="drawer-section-title">سجل تسجيل الدخول — منو دخل ومتى وبأي إيميل</div>
     <div id="loginLogsList"></div>
   </div>
   <div class="admin-panel2" data-ap="deletecontent">
     <div class="drawer-section-title">حذف عمل كامل (مانجا/مانهوا/رواية/كومكس)</div>
-    <p style="font-size:10px;color:var(--text-dim);margin-bottom:8px;">حذف نهائي — يشيل العمل وكل فصوله وكل التعليقات المرتبطة به دفعة وحدة. ما ينرجع.</p>
+    <p style="font-size:10px;color:var(--text-dim);margin-bottom:8px;">"أرشفة" تخفي العمل عن الجميع وتحطه بروم المحذوفات المخفي عندك بس، وتگدر ترجعه بأي وقت. "حذف نهائي" يشيله هو وفصوله وتعليقاته بلا رجعة.</p>
     <div id="deleteContentList"></div>
+  </div>
+  <div class="admin-panel2" data-ap="trash">
+    <div class="drawer-section-title">مانهاوا مؤرشفة (مخفية عن الجميع غيرك)</div>
+    <div id="trashMangaList"></div>
+    <div class="drawer-section-title" style="margin-top:16px;">تعليقات محذوفة (مخفية عن الجميع غيرك)</div>
+    <div id="trashCommentsList"></div>
   </div>
   <div class="admin-panel2" data-ap="tools">
     <div class="drawer-section-title">إعدادات تشغيل الموقع</div>
@@ -764,25 +769,55 @@
 <div class="modal-window" id="uploadModal">
   <div class="modal-head"><h3>رفع محتوى — تيم بيور</h3><div class="modal-close" onclick="closeModal('uploadModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
   <p style="font-size:10px;color:var(--text-dim);margin-bottom:10px;">هذا الرفع مباشر بدون مراجعة — تأكد إن المحتوى من عملك أو عندك حق نشره.</p>
-  <div class="drawer-section-title">بيانات العمل</div>
-  <div class="form-group"><label>معرّف العمل (إنجليزي، بدون مسافات، يُستخدم كرابط دائم)</label><input class="form-input" id="upKey" placeholder="مثال: my-manga-1"></div>
+
+  <div class="drawer-section-title">إضافة سلسلة جديدة</div>
   <div class="form-group"><label>العنوان (عربي)</label><input class="form-input" id="upTitle" placeholder="عنوان العمل بالعربي"></div>
-  <div class="form-group"><label>النوع</label>
-    <select class="form-input" id="upType"><option value="manhwa">مانهوا</option><option value="manga">مانجا</option><option value="novel">رواية</option><option value="comic">كومكس</option></select>
-  </div>
-  <div class="form-group"><label>التصنيف</label><input class="form-input" id="upGenre" placeholder="أكشن · خيال"></div>
+  <div class="form-group"><label>معرّف العمل (إنجليزي، بدون مسافات، يُستخدم كرابط دائم)</label><input class="form-input" id="upKey" dir="ltr" style="text-align:left;" placeholder="مثال: my-manga-1"></div>
+  <div class="form-group"><label>صورة الغلاف (رابط)</label><input class="form-input" id="upCoverUrl" dir="ltr" style="text-align:left;" placeholder="https://..."></div>
+  <div class="form-group"><label>صورة البانر (رابط)</label><input class="form-input" id="upBannerUrl" dir="ltr" style="text-align:left;" placeholder="https://..."></div>
+  <div class="form-group"><label>أسماء بديلة</label><input class="form-input" id="upAltNames" placeholder="اسم بديل ١، اسم بديل ٢..."></div>
   <div class="form-group">
-    <label>الوصف (إنجليزي)</label>
+    <label>نبذة (إنجليزي)</label>
     <textarea class="form-input" id="upDescEn" rows="2" placeholder="Description in English..."></textarea>
     <button class="watch-btn" style="margin-top:6px; background:var(--card2); color:var(--text); border:1px solid var(--line);" onclick="translateUploadDesc()">ترجمة تلقائية ← عربي</button>
   </div>
-  <div class="form-group"><label>الوصف (عربي)</label><textarea class="form-input" id="upDescAr" rows="2" placeholder="يظهر هنا بعد الترجمة، أو اكتبه يدويًا"></textarea></div>
-  <button class="watch-btn" onclick="publishManga()">حفظ بيانات العمل</button>
+  <div class="form-group"><label>نبذة (عربي)</label><textarea class="form-input" id="upDescAr" rows="2" placeholder="يظهر هنا بعد الترجمة، أو اكتبه يدويًا"></textarea></div>
+
+  <div class="drawer-section-title" style="margin-top:16px;">تفاصيل السلسلة</div>
+  <div class="form-group"><label>النوع</label>
+    <select class="form-input" id="upType"><option value="manhwa">مانهوا</option><option value="manga">مانجا</option><option value="novel">رواية</option><option value="comic">كومكس</option></select>
+  </div>
+  <div class="form-group"><label>الحالة</label>
+    <select class="form-input" id="upStatus"><option value="مستمر">مستمر</option><option value="مكتمل">مكتمل</option><option value="متوقف">متوقف</option></select>
+  </div>
+  <div class="form-group"><label>اتجاه القراءة</label>
+    <select class="form-input" id="upReadDir"><option value="rtl">من اليمين إلى اليسار</option><option value="ltr">من اليسار إلى اليمين</option></select>
+  </div>
+  <div class="form-group"><label>تقييم العمر</label>
+    <select class="form-input" id="upAgeRating"><option value="عام">عام</option><option value="+13">+13</option><option value="+16">+16</option><option value="+18">+18</option></select>
+  </div>
+
+  <div class="drawer-section-title" style="margin-top:16px;">التصنيفات</div>
+  <div class="form-group"><label>التصنيف الرئيسي</label><input class="form-input" id="upGenre" placeholder="أكشن · خيال"></div>
+
+  <div class="drawer-section-title" style="margin-top:16px;">المؤلف والرسام</div>
+  <div class="form-group"><label>المؤلف</label><input class="form-input" id="upAuthor" placeholder="اسم المؤلف"></div>
+  <div class="form-group"><label>الرسام</label><input class="form-input" id="upArtist" placeholder="اسم الرسام"></div>
+  <div class="form-group"><label>الناشر الأصلي</label><input class="form-input" id="upPublisher" placeholder="الناشر الأصلي"></div>
+
+  <div class="drawer-section-title" style="margin-top:16px;">تفاصيل النشر</div>
+  <div class="form-group"><label>عدد المجلدات</label><input class="form-input" id="upVolumes" type="number" placeholder="عدد المجلدات"></div>
+  <div class="form-group"><label>عدد الفصول الإجمالي</label><input class="form-input" id="upTotalChapters" type="number" placeholder="عدد الفصول"></div>
+
+  <button class="watch-btn" onclick="publishManga()">إنشاء السلسلة</button>
   <div id="upMangaMsg" class="auth-msg"></div>
 
-  <div class="drawer-section-title" style="margin-top:20px;">إضافة فصل</div>
-  <div class="form-group"><label>معرّف العمل المستهدف</label><input class="form-input" id="upChKey" placeholder="نفس المعرّف أعلاه"></div>
-  <div class="form-group"><label>رقم الفصل</label><input class="form-input" id="upChNum" type="number" placeholder="1"></div>
+  <div class="drawer-section-title" style="margin-top:20px;">رفع فصل جديد</div>
+  <div class="form-group"><label>السلسلة</label><input class="form-input" id="upChKey" dir="ltr" style="text-align:left;" placeholder="نفس المعرّف أعلاه"></div>
+  <div class="form-group"><label>رقم الفصل</label><input class="form-input" id="upChNum" type="number" placeholder="مثال: 1، 2.5، 10"></div>
+  <div class="form-group"><label>المجلد (اختياري)</label><input class="form-input" id="upChVolume" placeholder="مثال: 1"></div>
+  <div class="form-group"><label>الموسم (اختياري)</label><input class="form-input" id="upChSeason" placeholder="مثال: 1"></div>
+  <div class="form-group"><label>عنوان الفصل (اختياري)</label><input class="form-input" id="upChTitle" placeholder="مثال: البداية"></div>
   <div class="form-group" id="upChTextWrap">
     <label>نص الفصل (إنجليزي — للروايات فقط)</label>
     <textarea class="form-input" id="upChTextEn" rows="4" placeholder="Chapter text in English..."></textarea>
@@ -790,6 +825,7 @@
     <textarea class="form-input" id="upChTextAr" rows="4" style="margin-top:8px;" placeholder="النص العربي يطلع هنا، أو اكتبه يدويًا"></textarea>
   </div>
   <div class="form-group"><label>روابط صفحات الفصل (مانجا/مانهوا/كومكس) — رابط بكل سطر</label><textarea class="form-input" id="upChPages" rows="4" placeholder="https://.../page1.jpg&#10;https://.../page2.jpg"></textarea></div>
+  <p style="font-size:10px;color:var(--text-dim);margin:-4px 0 8px;">الرفع المباشر لملف مضغوط (ZIP/RAR) غير متاح حاليًا — ارفع صورك على رابط خارجي (Google Drive، Catbox...) والصق روابط الصفحات أعلاه.</p>
   <button class="watch-btn" onclick="publishChapter()">نشر الفصل</button>
   <div id="upChMsg" class="auth-msg"></div>
 </div>
@@ -802,33 +838,14 @@
   <div class="anime-ratings-row">
     <div class="rate-box"><div class="num" id="teamMemberCount">0</div><div class="count">الأعضاء</div></div>
     <div class="rate-box"><div class="num" id="teamPublishedCount">0</div><div class="count">منشورة</div></div>
-    <div class="rate-box"><div class="num" id="teamFollowerCount">0</div><div class="count">متابعون</div></div>
+    <div class="rate-box"><div class="num" id="teamPendingCount">0</div><div class="count">قيد المراجعة</div></div>
   </div>
   <div class="anime-desc-box" id="teamRoomDesc">—</div>
   <div class="anime-action-buttons">
-    <div class="action-pill" id="teamFollowBtn" onclick="toggleFollowTeam()"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0112 5a5.5 5.5 0 019.5 7c-2.5 4.5-9.5 9-9.5 9z"/></svg><span id="teamFollowLabel">متابعة</span></div>
     <div class="action-pill on" onclick="openSubmitForm('manga')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M3 5c3-2 6-2 9 0v14c-3-2-6-2-9 0V5z"/></svg>إرسال عمل جديد</div>
-    <div class="action-pill" id="teamEditBtn" style="display:none;" onclick="openEditTeam()"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 01-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 010-4h.1a1.7 1.7 0 001.5-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 014 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 010 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>تعديل الفريق</div>
   </div>
-  <div class="admin-tabs" style="margin-top:14px;">
-    <div class="admin-tab active" data-tt="subs" onclick="switchTeamRoomTab('subs')">الإصدارات</div>
-    <div class="admin-tab" data-tt="members" onclick="switchTeamRoomTab('members')">الأعضاء</div>
-    <div class="admin-tab" id="teamReqTab" style="display:none;" data-tt="requests" onclick="switchTeamRoomTab('requests')">طلبات الانضمام</div>
-  </div>
-  <div class="admin-panel2 active" data-tp="subs"><div id="teamSubsList"></div></div>
-  <div class="admin-panel2" data-tp="members"><div id="teamMembersList"></div></div>
-  <div class="admin-panel2" data-tp="requests"><div id="teamRequestsList"></div></div>
-</div>
-
-<div class="modal-overlay" id="editTeamModalOverlay" onclick="closeModal('editTeamModal')"></div>
-<div class="modal-window sheet" id="editTeamModal">
-  <div class="share-sheet">
-    <div class="modal-head" style="border:none;"><h3 style="font-size:15px;">تعديل الفريق</h3><div class="modal-close" onclick="closeModal('editTeamModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
-    <div class="form-group"><label>اسم الفريق</label><input class="form-input" id="editTeamName"></div>
-    <div class="form-group"><label>الوصف</label><textarea class="form-input" id="editTeamDesc" rows="3"></textarea></div>
-    <button class="watch-btn" onclick="saveTeamEdit()">حفظ التعديلات</button>
-    <div id="editTeamMsg" class="auth-msg"></div>
-  </div>
+  <div class="drawer-section-title">إصدارات الفريق</div>
+  <div id="teamSubsList"></div>
 </div>
 
 <div class="modal-overlay" id="submitFormModalOverlay" onclick="closeModal('submitFormModal')"></div>
@@ -853,6 +870,12 @@
 <div class="modal-window" id="guideModal">
   <div class="modal-head"><h3 id="guideTitle">كل الأعمال</h3><div class="modal-close" onclick="closeModal('guideModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
   <div class="grid-cards" id="guideGrid"></div>
+</div>
+
+<div class="modal-overlay" id="notificationsModalOverlay" onclick="closeModal('notificationsModal')"></div>
+<div class="modal-window" id="notificationsModal">
+  <div class="modal-head"><h3><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>الإشعارات</h3><div class="modal-close" onclick="closeModal('notificationsModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div id="notificationsList"></div>
 </div>
 
 <div class="modal-overlay" id="upcomingModalOverlay" onclick="closeModal('upcomingModal')"></div>
@@ -921,8 +944,39 @@
 
 <div class="modal-overlay" id="teamsModalOverlay" onclick="closeModal('teamsModal')"></div>
 <div class="modal-window" id="teamsModal">
-  <div class="modal-head"><h3>الفرق المميزة</h3><div class="modal-close" onclick="closeModal('teamsModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
-  <div id="teamsList"></div>
+  <div class="modal-head"><h3>فريق بيور</h3><div class="modal-close" onclick="closeModal('teamsModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div class="acc-cover" id="teamCoverBox" style="margin-bottom:36px;"><img id="teamBannerImg" style="display:none;"><div class="acc-avatar-wrap" style="cursor:default;"><img id="teamAvatarImg" style="display:none;"><svg id="teamAvatarPlaceholder" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 5-3 8-7 9-4-1-7-4-7-9V6l7-3z"/></svg></div></div>
+  <div class="acc-name-block"><div class="nm" id="teamNameText">فريق بيور</div><div class="rl" id="teamDescText" style="font-size:11px; color:var(--text-dim); margin-top:4px;">فريق ترجمة وتحرير المانها</div></div>
+  <div class="anime-ratings-row" style="margin-top:16px;">
+    <div class="rate-box"><div class="num" id="teamStatWorks">0</div><div class="count">مشاريع</div></div>
+    <div class="rate-box"><div class="num" id="teamStatChapters">0</div><div class="count">فصول</div></div>
+    <div class="rate-box"><div class="num" id="teamStatMembers">0</div><div class="count">أعضاء</div></div>
+  </div>
+  <div style="display:flex; gap:8px; margin-top:14px;">
+    <button class="watch-btn" style="flex:1;" onclick="closeDrawer(); closeModal('teamsModal'); openModal('uploadModal')">إصدار جديد</button>
+    <button class="watch-btn" id="teamEditBtn" style="display:none; flex:1; background:var(--card2); color:var(--text); border:1px solid var(--line);" onclick="openModal('teamEditModal')">تعديل الفريق</button>
+  </div>
+  <div class="acc-tabs" style="margin-top:18px;" id="teamTabsRow">
+    <div class="acc-tab active" data-tt="projects" onclick="switchTeamTab('projects')">المشاريع</div>
+    <div class="acc-tab" data-tt="members" onclick="switchTeamTab('members')">أعضاء</div>
+    <div class="acc-tab" id="teamRequestsTabBtn" style="display:none;" data-tt="requests" onclick="switchTeamTab('requests')">طلبات الانضمام</div>
+  </div>
+  <div class="team-tab-panel active" data-tp="projects"><div id="teamProjectsList"></div></div>
+  <div class="team-tab-panel" data-tp="members"><div id="teamMembersList2"></div></div>
+  <div class="team-tab-panel" data-tp="requests"><div id="teamRequestsList"></div><button class="watch-btn" style="margin-top:10px; background:var(--card2); color:var(--text); border:1px solid var(--line);" onclick="sendTeamJoinRequest()">إرسال طلب انضمام</button></div>
+</div>
+
+<div class="modal-overlay" id="teamEditModalOverlay" onclick="closeModal('teamEditModal')"></div>
+<div class="modal-window" id="teamEditModal">
+  <div class="modal-head"><h3>تعديل الفريق</h3><div class="modal-close" onclick="closeModal('teamEditModal')"><svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="2"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg></div></div>
+  <div class="form-group"><label>اسم الفريق</label><input class="form-input" id="teamEditName" placeholder="فريق بيور"></div>
+  <div class="form-group"><label>الوصف</label><textarea class="form-input" id="teamEditDesc" rows="2" placeholder="صف فريقك وما الذي يقوم به"></textarea></div>
+  <div class="form-group"><label>صورة الفريق (رابط)</label><input class="form-input" id="teamEditAvatarUrl" dir="ltr" style="text-align:left;" placeholder="https://..."></div>
+  <div class="form-group"><label>بانر الفريق (رابط)</label><input class="form-input" id="teamEditBannerUrl" dir="ltr" style="text-align:left;" placeholder="https://..."></div>
+  <div class="form-group"><label>تيك توك</label><input class="form-input" id="teamEditTiktok" dir="ltr" style="text-align:left;" placeholder="https://tiktok.com/@..."></div>
+  <div class="form-group"><label>بينترست</label><input class="form-input" id="teamEditPinterest" dir="ltr" style="text-align:left;" placeholder="https://pin.it/..."></div>
+  <button class="watch-btn" onclick="saveTeamProfile()">حفظ التغييرات</button>
+  <div id="teamEditMsg" class="auth-msg"></div>
 </div>
 
 <div class="modal-overlay" id="settingsModalOverlay" onclick="closeModal('settingsModal')"></div>
@@ -946,8 +1000,8 @@
   <div class="theme-grid" id="themeGrid"></div>
 
   <div class="drawer-section-title">الحساب</div>
-  <div class="form-group"><label>البريد الإلكتروني</label><input class="form-input" value="kodi@animepure.app"></div>
-  <div class="form-group"><label>كلمة المرور</label><input class="form-input" type="password" value="********"></div>
+  <div class="form-group"><label>البريد الإلكتروني</label><input class="form-input" id="settingsEmailField" dir="ltr" style="text-align:left;" value="" readonly></div>
+  <div class="form-group"><label>كلمة المرور</label><input class="form-input" type="password" value="********" readonly></div>
   <div class="switch-row"><div class="lbl">حساب عام</div><label class="switch"><input type="checkbox" checked><span class="slider-tg"></span></label></div>
   <div class="drawer-section-title">الإشعارات</div>
   <div class="switch-row"><div><div class="lbl">حلقات جديدة</div><div class="sub">تنبيه فوري عند صدور حلقة</div></div><label class="switch"><input type="checkbox" checked><span class="slider-tg"></span></label></div>
@@ -1106,7 +1160,7 @@
   </div>
   <div class="acc-panel" data-p="edit">
     <div class="form-group"><label>الاسم</label><input class="form-input" id="editName" placeholder="اكتب اسمك"></div>
-    <div class="form-group"><label>الاسم المستعار</label><input class="form-input" id="editUsername" placeholder="@اسمك_المستعار"></div>
+    <div class="form-group"><label>الاسم المستعار</label><input class="form-input" id="editUsername" dir="ltr" style="text-align:left;" placeholder="@اسمك_المستعار"></div>
     <button class="watch-btn" onclick="saveProfile()">حفظ التعديلات</button>
     <div id="editSaveMsg" class="auth-msg"></div>
     <div class="drawer-menu" style="margin-top:6px;">
@@ -1241,28 +1295,11 @@ function renderThemeGrid(){
     </div>`;
   }).join('');
 }
-const ANIME = {
-  solo:{exclusive:true, views:"2.4M", title:"صاعد المستوى الوحيد", type:"manhwa", icon:"sword", genre:"أكشن · خيال", status:"مستمر", studio:"فريق الفانوس", season:"٢٠٢٦", rating:8.7, rank:"#٣", eps:112, nextH:26, desc:"صياد من أضعف الرتب يحصل على فرصة نادرة لإعادة صقل قوته بعد نجاته من زنزانة غامضة، ليبدأ رحلة تحوّل تقلب كل موازين عالم الصيادين."},
-  senki:{views:"890K", title:"مذكرات الجندية الصغيرة", type:"novel", icon:"shield", genre:"حربي · خيال", status:"مستمر", studio:"دار النشر الحرة", season:"٢٠٢٦", rating:8.1, rank:"#٩", eps:34, nextH:74, desc:"ضابطة شابة تقاد بحكمة باردة وسط حرب لا تنتهي، بينما تتصارع مع قوة غامضة تراقب كل قراراتها."},
-  nahr:{views:"640K", title:"نهر السماء القرمزي", type:"manga", icon:"crown", genre:"مغامرة · تاريخي", status:"مستمر", studio:"ظل الترجمة", season:"٢٠٢٦", rating:8.08, rank:"#١١", eps:58, nextH:8, desc:"فتاة تُنقل فجأة إلى زمن آخر، لتجد نفسها وسط صراع عروش يهدد بإعادة رسم خريطة مملكة كاملة."},
-  aila:{exclusive:true, views:"1.1M", title:"عائلة تحت شجرة التوت", type:"comic", icon:"tree", genre:"دراما · شريحة حياة", status:"مستمر", studio:"نجوم الأنمي", season:"٢٠٢٦", rating:8.3, rank:"#٧", eps:41, nextH:50, desc:"عائلة تعيد ترتيب حياتها بعد غياب طويل، وسط قرية هادئة تخفي أسرارًا قديمة بين جدرانها."},
-  qadisa:{exclusive:true, views:"1.7M", title:"القديسة الغافلة", type:"manhwa", icon:"sparkle", genre:"فانتازيا · إيزيكاي", status:"مستمر", studio:"فريق الفانوس", season:"٢٠٢٦", rating:8.2, rank:"#٥", eps:87, nextH:5, desc:"فتاة تُنقل لعالم آخر دون أن تدرك أنها تحمل قوة القديسة المنتظرة، وسط بلاط ملكي مليء بالدسائس."},
-  darb:{views:"520K", title:"درب الحيّ القديم", type:"manga", icon:"heartf", genre:"رومانسي · شريحة حياة", status:"مستمر", studio:"ظل الترجمة", season:"٢٠٢٦", rating:8.1, rank:"#١٠", eps:29, nextH:98, desc:"صديقان منذ الطفولة يعيدان اكتشاف مشاعرهما وسط حي هادئ يحمل ذكريات لا تُنسى."},
-  shati:{views:"410K", title:"شاطئ الصيف الثالث", type:"comic", icon:"wave", genre:"شريحة حياة · كوميدي", status:"مستمر", studio:"نجوم الأنمي", season:"٢٠٢٦", rating:7.9, rank:"#١٤", eps:18, nextH:122, desc:"مجموعة أصدقاء تقضي صيفًا أخيرًا معًا قبل تفرقهم للجامعات، بين ضحك وحنين."},
-  amir:{views:"760K", title:"أمير التيه الأقوى", type:"manhwa", icon:"crown", genre:"فانتازيا · أكشن", status:"مستمر", studio:"فريق الفانوس", season:"٢٠٢٦", rating:8.0, rank:"#١٢", eps:63, nextH:32, desc:"أمير منبوذ يُخفي قوة هائلة خلف مظهر هادئ، ويخوض تيهًا خطيرًا لإثبات جدارته."},
-  faris:{views:"330K", title:"فارس العظام الثاني", type:"novel", icon:"trending", genre:"فانتازيا · إيزيكاي", status:"مستمر", studio:"دار النشر الحرة", season:"٢٠٢٦", rating:7.8, rank:"#١٦", eps:22, nextH:146, desc:"فارس عظمي يستمر بمغامراته في عالم آخر، يواجه تنانين وأسرارًا أقدم مما توقع."}
-};
+/* بيانات المانها الحقيقية تجي فقط من Firestore (loadMangasFromFirestore) — ماكو بيانات وهمية بالكود */
+const ANIME = {};
 const TYPE_LABELS = {manga:"مانجا", manhwa:"مانهوا", novel:"رواية", comic:"كومكس"};
-const MANGA = [
-  {title:"ظل الوريث المنسي", icon:"sword", ch:"الفصل ١٢٤", prog:60},
-  {title:"همسات القمر السابع", icon:"sparkle", ch:"الفصل ٨٩", prog:35},
-  {title:"سيف بلا اسم", icon:"shield", ch:"الفصل ٢٠٣", prog:80}
-];
-const TEAMS = [
-  {name:"فريق الفانوس", icon:"shield", sub:"١٢٠ عمل مترجم · ترجمة عربية"},
-  {name:"ظل الترجمة", icon:"sword", sub:"٨٥ عمل مترجم · جودة عالية"},
-  {name:"نجوم الأنمي", icon:"sparkle", sub:"٦٠ عمل مترجم · سرعة إصدار"}
-];
+/* المفضلة/الفرق تُبنى من بيانات حقيقية فقط — لا بيانات وهمية */
+const MANGA = [];
 const statusLabels = {plan:"مخطط", watching:"يُشاهد", done:"مكتمل", dropped:"متروك"};
 function svgIcon(name, cls){ return `<svg class="${cls||''}" viewBox="0 0 24 24">${IC[name]||IC.sparkle}</svg>`; }
 const nextEpAt = {}; Object.keys(ANIME).forEach(k=>{ nextEpAt[k] = Date.now() + ANIME[k].nextH*3600000; });
@@ -1300,12 +1337,24 @@ function renderCard(key){
   </div>`;
 }
 function viewsToNum(v){ const n=parseFloat(v); return v.includes('M')?n*1e6:v.includes('K')?n*1e3:n; }
+function emptyRow(msg){ return `<div class="empty-state" style="padding:24px 10px;">${svgIcon('sparkle')}<div class="txt">${msg}</div></div>`; }
 function renderRows(){
-  document.getElementById('season').innerHTML = ["solo","senki","nahr","qadisa"].map(renderCard).join('');
-  document.getElementById('latest').innerHTML = Object.keys(ANIME).map(renderCard).join('');
-  document.getElementById('topRated').innerHTML = Object.keys(ANIME).sort((a,b)=>ANIME[b].rating-ANIME[a].rating).slice(0,6).map(renderCard).join('');
-  document.getElementById('mostViewed').innerHTML = Object.keys(ANIME).sort((a,b)=>viewsToNum(ANIME[b].views)-viewsToNum(ANIME[a].views)).slice(0,6).map(renderCard).join('');
-  document.getElementById('exclusiveRow').innerHTML = Object.keys(ANIME).filter(k=>ANIME[k].exclusive).map(renderCard).join('');
+  const keys = Object.keys(ANIME);
+  const welcomeBox = document.getElementById('welcomeEmptyState');
+  const rowSections = ['rowSectionSeason','rowSectionExclusive','topRatedSection','rowSectionMostViewed','rowSectionLatest'];
+  if(welcomeBox) welcomeBox.style.display = keys.length===0 ? 'flex' : 'none';
+  rowSections.forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display = keys.length===0 ? 'none' : ''; });
+  if(keys.length===0){
+    ['season','latest','topRated','mostViewed','exclusiveRow'].forEach(id=>{ const el=document.getElementById(id); if(el) el.innerHTML=''; });
+    renderContinue();
+    return;
+  }
+  document.getElementById('season').innerHTML = keys.slice(0,4).map(renderCard).join('') || emptyRow('ماكو حلقات هذا الموسم بعد');
+  document.getElementById('latest').innerHTML = keys.map(renderCard).join('');
+  document.getElementById('topRated').innerHTML = keys.sort((a,b)=>ANIME[b].rating-ANIME[a].rating).slice(0,6).map(renderCard).join('');
+  document.getElementById('mostViewed').innerHTML = keys.sort((a,b)=>viewsToNum(ANIME[b].views)-viewsToNum(ANIME[a].views)).slice(0,6).map(renderCard).join('');
+  const excl = keys.filter(k=>ANIME[k].exclusive);
+  document.getElementById('exclusiveRow').innerHTML = excl.length ? excl.map(renderCard).join('') : emptyRow('ماكو أعمال حصرية بعد');
   renderContinue();
 }
 function renderContinue(){
@@ -1322,24 +1371,26 @@ function renderContinue(){
   }).join('');
 }
 renderRows();
+if(typeof refreshNotifDot==='function') setTimeout(refreshNotifDot, 300);
 
-/* ===== تحميل المانهاوا الحقيقية من Firestore (collection "mangas")
-   لو الكولكشن فاضي (ما رفع محتوى بعد) نبقي البيانات التجريبية كما هي ===== */
+/* ===== تحميل المانهاوا الحقيقية من Firestore (collection "mangas") — بدون بيانات وهمية، والمحذوفة (deleted:true) ما تنعرض ===== */
 async function loadMangasFromFirestore(){
   if(!fbReady) return;
   try{
     const {collection, getDocs} = window.fb;
     const snap = await getDocs(collection(window.fbDb, 'mangas'));
-    if(snap.empty) return; // ماكو بيانات مرفوعة بعد — نخلي البيانات التجريبية
-    Object.keys(ANIME).forEach(k=>delete ANIME[k]); // نفرّغ البيانات التجريبية
+    Object.keys(ANIME).forEach(k=>delete ANIME[k]);
     snap.forEach(docSnap=>{
       const d = docSnap.data();
+      if(d.deleted) return; // موجودة بروم المحذوفات المخفي فقط، ما تنعرض بالموقع
       ANIME[docSnap.id] = {
         title: d.title || 'بدون عنوان', type: d.type || 'manhwa', icon: d.icon || 'sparkle',
-        cover: d.cover || d.cover_url || null, genre: d.genre || '', status: d.status || 'مستمر',
+        cover: d.cover || d.cover_url || null, banner: d.banner || null, genre: d.genre || '', status: d.status || 'مستمر',
         studio: d.studio || d.team || '', season: d.season || '', rating: d.rating || 0,
-        rank: d.rank || '-', eps: d.chaptersCount || d.eps || 1, views: d.views || '0',
-        exclusive: !!d.exclusive, nextH: d.nextH ?? 999999, desc: d.desc || d.description || ''
+        rank: d.rank || '-', eps: d.totalChapters || d.chaptersCount || d.eps || 1, views: d.views || '0',
+        exclusive: !!d.exclusive, nextH: d.nextH ?? 999999, desc: d.desc || d.description || '',
+        altNames: d.altNames || '', ageRating: d.ageRating || '', readDirection: d.readDirection || 'rtl',
+        author: d.author || '', artist: d.artist || '', publisher: d.publisher || '', volumes: d.volumes || null
       };
     });
     Object.keys(ANIME).forEach(k=>{ nextEpAt[k] = Date.now() + ANIME[k].nextH*3600000; });
@@ -1359,7 +1410,7 @@ function filterByType(type){
 
 function openGuide(which){
   document.getElementById('guideTitle').textContent = which==='season' ? 'أحدث الحلقات' : 'كل الأعمال';
-  const keys = which==='season' ? ["solo","senki","nahr","qadisa"] : Object.keys(ANIME);
+  const keys = which==='season' ? Object.keys(ANIME).slice(0,4) : Object.keys(ANIME);
   document.getElementById('guideGrid').innerHTML = keys.map(renderCard).join('');
   openModal('guideModal');
 }
@@ -1371,6 +1422,37 @@ function renderUpcoming(){
     const a=ANIME[k]; const r=lastRead[k];
     return `<div class="upcoming-item" onclick="closeModal('upcomingModal'); openAnimeDetails('${k}'); setTimeout(()=>openPlayer(${r.chapter}),50)"><div class="upcoming-ic">${svgIcon(a.icon)}</div><div class="upcoming-info"><div class="t">${a.title}</div><div class="s">وصلت لفصل ${r.chapter}</div></div><div class="upcoming-count">متابعة ›</div></div>`;
   }).join('');
+}
+/* ===== الإشعارات: صندوق واحد يجمع كل التنبيهات الفعلية بدل النقطة الحمراء بدون معنى ===== */
+function buildNotifications(){
+  const items = [];
+  followed.forEach(k=>{
+    const a = ANIME[k]; if(!a) return;
+    const done = watchedEps[k] ? watchedEps[k].size : 0;
+    if(done < a.eps){
+      items.push({icon:a.icon, title:a.title, text:`فصل جديد متوفر (فصل ${done+1})`, action:()=>{closeModal('notificationsModal'); openAnimeDetails(k);}});
+    }
+  });
+  if(isAdmin()){
+    const openReportsCount = (typeof allReports!=='undefined' && Array.isArray(allReports)) ? allReports.filter(r=>!r.resolved).length : 0;
+    if(openReportsCount>0){
+      items.push({icon:'shield', title:'بلاغات مفتوحة', text:`عندك ${openReportsCount} بلاغ ينتظر المراجعة`, action:()=>{closeModal('notificationsModal'); openModal('adminModal'); switchAdminTab('reports');}});
+    }
+  }
+  return items;
+}
+function renderNotifications(){
+  const box = document.getElementById('notificationsList');
+  const items = buildNotifications();
+  if(!items.length){ box.innerHTML = `<div class="empty-state">${svgIcon('sparkle')}<div class="txt">ماكو إشعارات جديدة حاليًا</div></div>`; refreshNotifDot(); return; }
+  box.innerHTML = items.map((n,i)=>`<div class="upcoming-item" onclick="notifActions[${i}]()"><div class="upcoming-ic">${svgIcon(n.icon)}</div><div class="upcoming-info"><div class="t">${n.title}</div><div class="s">${n.text}</div></div></div>`).join('');
+  window.notifActions = items.map(n=>n.action);
+  refreshNotifDot();
+}
+function refreshNotifDot(){
+  const dot = document.getElementById('notifDot'); if(!dot) return;
+  const has = buildNotifications().length > 0;
+  dot.style.display = has ? 'block' : 'none';
 }
 setInterval(()=>{
   if(document.getElementById('upcomingModal').classList.contains('open')) renderUpcoming();
@@ -1386,14 +1468,16 @@ function openModal(id){
   if(id==='favoritesModal') renderFavorites();
   if(id==='accountModal') renderAccountStats();
   if(id==='mangaModal') renderManga();
-  if(id==='teamsModal') loadTeamPanel();
+  if(id==='teamsModal'){ loadTeamProfile(); switchTeamTab('projects'); }
+  if(id==='teamEditModal') fillTeamEditForm();
   if(id==='upcomingModal') renderUpcoming();
   if(id==='downloadsModal') renderDownloads();
   if(id==='storeModal'){ currentStoreCat='all'; renderStoreCats(); renderStoreGrid('all'); document.getElementById('pointsNum').textContent = isAdmin()?'∞':userPoints; }
   if(id==='adminModal'){ if(!isAdmin()){ closeModal('adminModal'); alert('هذا القسم للإدارة فقط'); return; } loadAdminSubs(); }
   if(id==='uploadModal'){ if(!isPureTeam()){ closeModal('uploadModal'); alert('هذا القسم لأعضاء تيم بيور فقط'); return; } }
   if(id==='accountModal' && currentUser) loadMyProfile();
-  if(id==='settingsModal'){ renderIdentityGrid(); renderThemeGrid(); setLayout(currentLayout); renderPresetGrid(); }
+  if(id==='settingsModal'){ renderIdentityGrid(); renderThemeGrid(); setLayout(currentLayout); renderPresetGrid(); const emailF=document.getElementById('settingsEmailField'); if(emailF) emailF.value = currentUser ? currentUser.email : 'سجّل الدخول لعرض بريدك'; }
+  if(id==='notificationsModal') renderNotifications();
   if(id==='accountModal' && !currentUser){ closeModal('accountModal'); openModal('authModal'); return; }
   if(id==='searchModal'){document.getElementById('liveSearchInput').value=''; document.getElementById('searchResults').innerHTML=''; document.getElementById('searchDefault').style.display='block'; renderRecentChips();}
   updateNav();
@@ -1401,7 +1485,7 @@ function openModal(id){
 function closeModal(id){document.getElementById(id).classList.remove('open'); const ov=document.getElementById(id+'Overlay'); if(ov) ov.classList.remove('open'); updateNav();}
 function updateNav(){ document.querySelectorAll('.nav-btn').forEach((b,i)=>b.classList.toggle('active', i===0)); }
 function goHome(){
-  ['drawer','guideModal','upcomingModal','downloadsModal','favoritesModal','reportModal','publicProfileModal','uploadModal','editTeamModal','searchModal','mangaModal','teamsModal','teamRoomModal','settingsModal','playerModal','shareModal','animeDetailsModal','accountModal','authModal'].forEach(id=>{
+  ['drawer','guideModal','upcomingModal','downloadsModal','favoritesModal','reportModal','publicProfileModal','uploadModal','searchModal','mangaModal','teamsModal','teamEditModal','notificationsModal','settingsModal','playerModal','shareModal','animeDetailsModal','accountModal','authModal'].forEach(id=>{
     const el=document.getElementById(id); if(el) el.classList.remove('open');
     const ov=document.getElementById(id+'Overlay'); if(ov) ov.classList.remove('open');
   });
@@ -1528,7 +1612,7 @@ function renderCommentRow(c, withReport){
   const avatarHtml = c.avatarUrl
     ? `<img src="${c.avatarUrl}" class="chat-avatar">`
     : `<span class="chat-avatar ph" style="background:${avatarColor(name)};">${(name||'?').trim().charAt(0)}</span>`;
-  const nameClick = c.uid ? `onclick="openPublicProfile('${c.uid}')" style="cursor:pointer;"` : '';
+  const nameClick = c.uid ? `onclick="openPublicProfile('${c.uid}')"` : '';
   return `<div class="chat-msg"><div class="chat-user"><span ${nameClick} style="display:flex;align-items:center;gap:6px;cursor:${c.uid?'pointer':'default'};">${avatarHtml}<span class="cu-name">${name}</span></span><span class="cu-meta"><span>الآن</span>${reportBtn}</span></div><div class="chat-text">${safeText}</div></div>`;
 }
 const AVATAR_PALETTE = ['#ef7f5c','#5cb0ef','#8b5cf6','#ef5c8f','#5cef9e','#efc95c','#5c7fef','#ef5c5c'];
@@ -1548,7 +1632,7 @@ async function loadComments(mangaKey){
   try{
     const {collection, query, where, orderBy, limit, getDocs} = window.fb;
     const snap = await getDocs(query(collection(window.fbDb,'comments'), where('mangaId','==',mangaKey), where('chapterNum','==',null), orderBy('createdAt', commentSortDir==='desc'?'desc':'asc'), limit(30)));
-    const rows = snap.docs.map(d=>({id:d.id, ...d.data()}));
+    const rows = snap.docs.map(d=>({id:d.id, ...d.data()})).filter(c=>!c.deleted);
     box.innerHTML = rows.length ? rows.map(c=>renderCommentRow(c,true)).join('') : `<div class="chat-msg"><div class="chat-text" style="color:var(--text-dim);">كن أول من يعلّق على هذا العمل</div></div>`;
     box.scrollTop = box.scrollHeight;
   }catch(e){ console.error('تعذر تحميل التعليقات:', e); box.innerHTML=''; }
@@ -1559,7 +1643,7 @@ async function loadEpComments(mangaKey, n){
   try{
     const {collection, query, where, orderBy, limit, getDocs} = window.fb;
     const snap = await getDocs(query(collection(window.fbDb,'comments'), where('mangaId','==',mangaKey), where('chapterNum','==',n), orderBy('createdAt','desc'), limit(30)));
-    const rows = snap.docs.map(d=>({id:d.id, ...d.data()})).reverse();
+    const rows = snap.docs.map(d=>({id:d.id, ...d.data()})).filter(c=>!c.deleted).reverse();
     box.innerHTML = rows.length ? rows.map(c=>renderCommentRow(c,true)).join('') : '';
     box.scrollTop = box.scrollHeight;
     if(readerLang==='ar') translateVisibleComments('epChatBox');
@@ -1776,13 +1860,11 @@ async function appendChapterToStream(n){
       stream.appendChild(pg);
     });
   } else {
-    const pageCount = 4;
-    for(let i=1;i<=pageCount;i++){
-      const pg = document.createElement('div');
-      pg.className = 'reader-page';
-      pg.innerHTML = `<svg viewBox="0 0 24 24">${IC[a.icon]}</svg>`;
-      stream.appendChild(pg);
-    }
+    const pg = document.createElement('div');
+    pg.className = 'reader-page empty-state';
+    pg.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:40px 16px;text-align:center;';
+    pg.innerHTML = `<svg viewBox="0 0 24 24" style="width:34px;height:34px;stroke:var(--text-dim);fill:none;stroke-width:1.5;">${IC[a.icon]}</svg><div style="color:var(--text-dim);font-size:12px;">هذا الفصل لسا ما انرفعت صفحاته فعليًا — تواصل مع تيم بيور</div>`;
+    stream.appendChild(pg);
   }
   if(!watchedEps[currentAnimeKey]) watchedEps[currentAnimeKey]=new Set();
   watchedEps[currentAnimeKey].add(n);
@@ -1826,14 +1908,113 @@ function renderManga(){
       <button class="follow-btn on">اقرأ</button>
     </div>`).join('');
 }
-function renderTeams(){
-  document.getElementById('teamsList').innerHTML = TEAMS.map((t,i)=>`
-    <div class="team-card"><div class="team-ic">${svgIcon(t.icon)}</div>
-      <div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.sub}</div></div>
-      <button class="follow-btn" id="teamBtn${i}" onclick="toggleTeam(${i})">متابعة</button>
-    </div>`).join('');
+/* ===== صفحة فريق بيور: بروفايل الفريق (بانر + صورة + إحصائيات + مشاريع + أعضاء + طلبات انضمام) ===== */
+let TEAM_PROFILE = { name:'فريق بيور', description:'فريق ترجمة وتحرير المانها', avatarUrl:'', bannerUrl:'', tiktok:'', pinterest:'' };
+async function loadTeamProfile(){
+  document.getElementById('teamNameText').textContent = TEAM_PROFILE.name;
+  document.getElementById('teamDescText').textContent = TEAM_PROFILE.description || '—';
+  const av=document.getElementById('teamAvatarImg'), ph=document.getElementById('teamAvatarPlaceholder'), bn=document.getElementById('teamBannerImg');
+  if(TEAM_PROFILE.avatarUrl){ av.src=TEAM_PROFILE.avatarUrl; av.style.display='block'; ph.style.display='none'; } else { av.style.display='none'; ph.style.display='block'; }
+  if(TEAM_PROFILE.bannerUrl){ bn.src=TEAM_PROFILE.bannerUrl; bn.style.display='block'; } else { bn.style.display='none'; }
+  const editBtn = document.getElementById('teamEditBtn'); if(editBtn) editBtn.style.display = getAdminLevel()>=3 ? 'flex' : 'none';
+  const reqTab = document.getElementById('teamRequestsTabBtn'); if(reqTab) reqTab.style.display = getAdminLevel()>=3 ? 'block' : 'none';
+  if(!fbReady) return;
+  try{
+    const snap = await window.fb.getDoc(window.fb.doc(window.fbDb,'settings','teamProfile'));
+    if(snap.exists()){
+      TEAM_PROFILE = {...TEAM_PROFILE, ...snap.data()};
+      document.getElementById('teamNameText').textContent = TEAM_PROFILE.name;
+      document.getElementById('teamDescText').textContent = TEAM_PROFILE.description || '—';
+      if(TEAM_PROFILE.avatarUrl){ av.src=TEAM_PROFILE.avatarUrl; av.style.display='block'; ph.style.display='none'; }
+      if(TEAM_PROFILE.bannerUrl){ bn.src=TEAM_PROFILE.bannerUrl; bn.style.display='block'; }
+    }
+  }catch(e){ console.error('تعذر تحميل بروفايل الفريق:', e); }
 }
-function toggleTeam(i){ const btn=document.getElementById('teamBtn'+i); const on=btn.classList.toggle('on'); btn.textContent = on ? 'متابَع' : 'متابعة'; }
+function fillTeamEditForm(){
+  document.getElementById('teamEditName').value = TEAM_PROFILE.name||'';
+  document.getElementById('teamEditDesc').value = TEAM_PROFILE.description||'';
+  document.getElementById('teamEditAvatarUrl').value = TEAM_PROFILE.avatarUrl||'';
+  document.getElementById('teamEditBannerUrl').value = TEAM_PROFILE.bannerUrl||'';
+  document.getElementById('teamEditTiktok').value = TEAM_PROFILE.tiktok||'';
+  document.getElementById('teamEditPinterest').value = TEAM_PROFILE.pinterest||'';
+}
+async function saveTeamProfile(){
+  const msg = document.getElementById('teamEditMsg');
+  if(getAdminLevel()<3){ msg.className='auth-msg err'; msg.textContent='يحتاج صلاحية مدير عام'; return; }
+  const data = {
+    name: document.getElementById('teamEditName').value.trim() || 'فريق بيور',
+    description: document.getElementById('teamEditDesc').value.trim(),
+    avatarUrl: document.getElementById('teamEditAvatarUrl').value.trim(),
+    bannerUrl: document.getElementById('teamEditBannerUrl').value.trim(),
+    tiktok: document.getElementById('teamEditTiktok').value.trim(),
+    pinterest: document.getElementById('teamEditPinterest').value.trim()
+  };
+  try{
+    await window.fb.setDoc(window.fb.doc(window.fbDb,'settings','teamProfile'), data, {merge:true});
+    TEAM_PROFILE = {...TEAM_PROFILE, ...data};
+    msg.className='auth-msg ok'; msg.textContent='تم الحفظ بنجاح';
+    loadTeamProfile();
+  }catch(e){ msg.className='auth-msg err'; msg.textContent='تعذر الحفظ: '+e.message; }
+}
+function switchTeamTab(tab){
+  document.querySelectorAll('#teamTabsRow .acc-tab').forEach(t=>t.classList.toggle('active', t.dataset.tt===tab));
+  document.querySelectorAll('.team-tab-panel').forEach(p=>p.classList.toggle('active', p.dataset.tp===tab));
+  if(tab==='projects') renderTeamProjects();
+  if(tab==='members') renderTeamMembersTab();
+  if(tab==='requests') renderTeamRequests();
+}
+function renderTeamProjects(){
+  const box = document.getElementById('teamProjectsList');
+  const keys = Object.keys(ANIME);
+  document.getElementById('teamStatWorks').textContent = keys.length;
+  document.getElementById('teamStatChapters').textContent = keys.reduce((s,k)=>s+(ANIME[k].eps||0),0);
+  if(!box) return;
+  box.innerHTML = keys.length ? keys.map(renderCard).join('') : `<div class="empty-state">${svgIcon('sparkle')}<div class="txt">ماكو مشاريع منشورة بعد</div></div>`;
+  box.style.cssText = 'display:grid; grid-template-columns:repeat(2,1fr); gap:12px;';
+}
+function renderTeamMembersTab(){
+  document.getElementById('teamStatMembers').textContent = Object.keys(pureTeamEmails).length + 1;
+  const box = document.getElementById('teamMembersList2'); if(!box) return;
+  const canManage = getAdminLevel()>=3;
+  let html = `<div class="sub-card"><div class="sub-title">${ADMIN_EMAIL}</div><div class="sub-meta">قائد الفريق</div></div>`;
+  html += Object.keys(pureTeamEmails).map(email=>`
+    <div class="sub-card"><div class="sub-title">${email}</div><div class="sub-meta">عضو</div>
+    ${canManage ? `<div class="sub-actions"><button class="sub-btn reject" onclick="removePureTeamMember('${email}')">إزالة من الفريق</button></div>` : ''}</div>
+  `).join('');
+  box.innerHTML = html;
+}
+async function sendTeamJoinRequest(){
+  if(!currentUser){ alert('سجّل الدخول أول'); return; }
+  if(!fbReady) return;
+  try{
+    await window.fb.setDoc(window.fb.doc(window.fbDb,'team_requests', currentUser.id), {email:currentUser.email, status:'pending', at:window.fb.serverTimestamp()});
+    alert('تم إرسال طلب الانضمام للفريق');
+  }catch(e){ alert('تعذر إرسال الطلب: '+e.message); }
+}
+async function renderTeamRequests(){
+  const box = document.getElementById('teamRequestsList'); if(!box || getAdminLevel()<3 || !fbReady) return;
+  box.innerHTML = `<div class="empty-state">${svgIcon('sparkle')}<div class="txt">جاري التحميل...</div></div>`;
+  try{
+    const {collection, getDocs, query, where} = window.fb;
+    const snap = await getDocs(query(collection(window.fbDb,'team_requests'), where('status','==','pending')));
+    if(snap.empty){ box.innerHTML = `<div class="empty-state">${svgIcon('sparkle')}<div class="txt">ماكو طلبات انضمام حاليًا</div></div>`; return; }
+    box.innerHTML = snap.docs.map(d=>{
+      const r = d.data();
+      return `<div class="sub-card"><div class="sub-title">${r.email}</div><div class="sub-meta">طلب انضمام</div>
+        <div class="sub-actions"><button class="sub-btn reject" onclick="resolveTeamRequest('${d.id}',false)">رفض</button><button class="sub-btn resolve" onclick="resolveTeamRequest('${d.id}',true)">قبول</button></div></div>`;
+    }).join('');
+  }catch(e){ box.innerHTML = `<div class="empty-state">${svgIcon('sparkle')}<div class="txt">تعذر تحميل الطلبات</div></div>`; }
+}
+async function resolveTeamRequest(uid, accept){
+  if(getAdminLevel()<3) return;
+  try{
+    const snap = await window.fb.getDoc(window.fb.doc(window.fbDb,'team_requests',uid));
+    const r = snap.data();
+    if(accept && r && r.email){ await window.fb.setDoc(window.fb.doc(window.fbDb,'pure_team',r.email), {email:r.email, addedBy:currentUser.email, addedAt:window.fb.serverTimestamp()}); }
+    await window.fb.deleteDoc(window.fb.doc(window.fbDb,'team_requests',uid));
+    loadPureTeam(); renderTeamRequests(); renderTeamMembersTab();
+  }catch(e){ alert('تعذر تنفيذ الإجراء: '+e.message); }
+}
 
 function renderRecentChips(){
   const box=document.getElementById('recentChips');
@@ -1858,7 +2039,7 @@ function liveSearch(){
   if(sort==='name') keys.sort((a,b)=>ANIME[a].title.localeCompare(ANIME[b].title,'ar'));
   let mangaHtml='', teamHtml='';
   if(cat==='all' || cat==='manga'){ const mm=MANGA.filter(m=>m.title.includes(q)); if(mm.length) mangaHtml = mm.map(m=>`<div class="fav-item-card"><div class="fav-item-cover">${svgIcon(m.icon)}</div><div class="fav-item-details"><div class="fav-item-title">${m.title}</div><div class="fav-item-sub">${m.ch}</div></div></div>`).join(''); }
-  if(cat==='all' || cat==='teams'){ const tt=TEAMS.filter(t=>t.name.includes(q)); if(tt.length) teamHtml = tt.map(t=>`<div class="team-card"><div class="team-ic">${svgIcon(t.icon)}</div><div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.sub}</div></div></div>`).join(''); }
+  if(cat==='all' || cat==='teams'){ if(TEAM_PROFILE.name.includes(q)) teamHtml = `<div class="team-card"><div class="team-ic">${svgIcon('shield')}</div><div class="team-info"><div class="team-name">${TEAM_PROFILE.name}</div><div class="team-sub">${TEAM_PROFILE.description||''}</div></div></div>`; }
   const animeHtml = keys.length ? `<div class="grid-cards">${keys.map(renderCard).join('')}</div>` : '';
   const combined = animeHtml + mangaHtml + teamHtml;
   box.innerHTML = combined || `<div class="empty-state">${svgIcon('sparkle')}<div class="txt">ما لقينا نتائج لـ"${q}"</div></div>`;
@@ -2083,6 +2264,7 @@ function isAdmin(){ return getAdminLevel() > 0; }
 function updateAdminUI(){
   const admin = isAdmin();
   document.getElementById('adminEntryBtn').style.display = admin ? 'flex' : 'none';
+  const drawerAdminE = document.getElementById('drawerAdminEntry'); if(drawerAdminE) drawerAdminE.style.display = admin ? 'flex' : 'none';
   const coverBox = document.getElementById('accCoverBox');
   if(coverBox) coverBox.parentElement.classList.toggle('is-admin', admin);
   const roleEl = document.getElementById('accRoleText');
@@ -2168,7 +2350,7 @@ async function loadMyProfile(){
   updateAdminUI();
   applyEquippedDecorations();
   document.getElementById('pointsNum').textContent = isAdmin() ? '∞' : userPoints;
-  loadNotifications();
+  refreshNotifDot();
 }
 async function saveProfile(){
   const name = document.getElementById('editName').value.trim();
@@ -2309,7 +2491,7 @@ async function loadTeamPanel(){
   <div id="teamCreateMsg" class="auth-msg"></div>
   <div class="drawer-section-title">فرقي</div>`;
   const mine = [...owned, ...memberTeamDocs].filter(Boolean);
-  html += mine.length ? mine.map(t=>`<div class="team-card" onclick="openTeamRoom('${t.id}','${(t.name||'').replace(/'/g,"")}','${(t.description||'').replace(/'/g,"")}','${t.owner}')"><div class="team-ic">${svgIcon('shield')}</div><div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.description||''}</div></div></div>`).join('') : `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو فرق لك بعد</div></div>`;
+  html += mine.length ? mine.map(t=>`<div class="team-card" onclick="openTeamRoom('${t.id}','${(t.name||'').replace(/'/g,"")}','${(t.description||'').replace(/'/g,"")}')"><div class="team-ic">${svgIcon('shield')}</div><div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.description||''}</div></div></div>`).join('') : `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو فرق لك بعد</div></div>`;
   html += `<div class="drawer-section-title">فرق يمكن الانضمام لها</div>`;
   html += allTeams.filter(t=>!mine.find(m=>m.id===t.id)).map(t=>`<div class="team-card"><div class="team-ic">${svgIcon('shield')}</div><div class="team-info"><div class="team-name">${t.name}</div><div class="team-sub">${t.description||''}</div></div><button class="follow-btn" onclick="joinTeam('${t.id}')">انضمام</button></div>`).join('') || '';
   box.innerHTML = html;
@@ -2322,154 +2504,33 @@ async function createTeam(){
   try{
     const {collection, addDoc, serverTimestamp} = window.fb; const db = window.fbDb;
     const teamRef = await addDoc(collection(db,'teams'), {name, description:desc, owner:currentUser.id, created_at:serverTimestamp()});
-    await addDoc(collection(db,'team_members'), {team_id:teamRef.id, user_id:currentUser.id, user_email:currentUser.email});
+    await addDoc(collection(db,'team_members'), {team_id:teamRef.id, user_id:currentUser.id});
     msg.className='auth-msg ok'; msg.textContent='تم إنشاء الفريق!';
     loadTeamPanel();
   }catch(error){ msg.className='auth-msg err'; msg.textContent=error.message; }
 }
 async function joinTeam(id){
   try{
-    const {collection, query, where, getDocs, addDoc, serverTimestamp} = window.fb; const db = window.fbDb;
-    const existing = await getDocs(query(collection(db,'team_join_requests'), where('team_id','==',id), where('user_id','==',currentUser.id), where('status','==','pending')));
-    if(!existing.empty){ alert('عندك طلب انضمام مرسل مسبقًا لهذا الفريق، انتظر رد القائد'); return; }
-    await addDoc(collection(db,'team_join_requests'), {team_id:id, user_id:currentUser.id, user_email:currentUser.email, status:'pending', created_at:serverTimestamp()});
-    alert('تم إرسال طلب الانضمام، بانتظار موافقة قائد الفريق');
+    await window.fb.addDoc(window.fb.collection(window.fbDb,'team_members'), {team_id:id, user_id:currentUser.id});
     loadTeamPanel();
   }catch(error){ alert(error.message); }
 }
-let currentTeamId = null, currentTeamOwner = null;
-async function openTeamRoom(id, name, desc, owner){
-  currentTeamId = id; currentTeamOwner = owner || null;
+let currentTeamId = null;
+async function openTeamRoom(id, name, desc){
+  currentTeamId = id;
   document.getElementById('teamRoomName').textContent = name;
   document.getElementById('teamRoomDesc').textContent = desc || 'ماكو وصف بعد';
-  const isOwner = currentUser && owner === currentUser.id;
-  document.getElementById('teamEditBtn').style.display = isOwner ? 'flex' : 'none';
-  document.getElementById('teamReqTab').style.display = isOwner ? '' : 'none';
-  document.getElementById('teamFollowBtn').style.display = currentUser ? 'flex' : 'none';
   const {collection, query, where, getDocs} = window.fb; const db = window.fbDb;
   const memberSnap = await getDocs(query(collection(db,'team_members'), where('team_id','==',id)));
   const subsSnap = await getDocs(query(collection(db,'submissions'), where('team_id','==',id)));
-  const followerSnap = await getDocs(query(collection(db,'team_followers'), where('team_id','==',id)));
   const subs = subsSnap.docs.map(d=>({id:d.id, ...d.data()}));
   const published = subs.filter(s=>s.status==='approved').length;
+  const pending = subs.filter(s=>s.status==='pending').length;
   document.getElementById('teamMemberCount').textContent = memberSnap.size||0;
   document.getElementById('teamPublishedCount').textContent = published;
-  document.getElementById('teamFollowerCount').textContent = followerSnap.size||0;
-  if(currentUser){
-    const myFollow = await getDocs(query(collection(db,'team_followers'), where('team_id','==',id), where('user_id','==',currentUser.id)));
-    const following = !myFollow.empty;
-    document.getElementById('teamFollowLabel').textContent = following ? 'متابَع ✓' : 'متابعة';
-    document.getElementById('teamFollowBtn').classList.toggle('on', following);
-    window.__myTeamFollowDoc = following ? myFollow.docs[0].id : null;
-  }
+  document.getElementById('teamPendingCount').textContent = pending;
   document.getElementById('teamSubsList').innerHTML = subs.map(s=>`<div class="sub-card"><div class="sub-head"><div class="sub-title">${s.title}</div><span class="tag-gold">${s.status==='approved'?'منشور':s.status==='pending'?'قيد المراجعة':'مرفوض'}</span></div><div class="sub-meta">${s.type==='anime'?'أنمي':'مانجا'} · ${s.genre||''}</div></div>`).join('') || `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو إصدارات بعد</div></div>`;
-  const memberDocs = memberSnap.docs.map(d=>({id:d.id, ...d.data()}));
-  document.getElementById('teamMembersList').innerHTML = memberDocs.map(m=>{
-    const isLeader = m.user_id === owner;
-    let actions = '';
-    if(isOwner && !isLeader) actions = `<div class="sub-actions"><button class="sub-btn reject" onclick="removeTeamMember('${m.id}')">إزالة من الفريق</button></div>`;
-    return `<div class="sub-card"><div class="sub-title" style="cursor:pointer;" onclick="openPublicProfile('${m.user_id}')">${isLeader?'👑 ':''}${m.user_email||m.user_id}</div><div class="sub-meta">${isLeader?'قائد الفريق':'عضو'}</div>${actions}</div>`;
-  }).join('') || `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو أعضاء</div></div>`;
-  if(isOwner){
-    const reqSnap = await getDocs(query(collection(db,'team_join_requests'), where('team_id','==',id), where('status','==','pending')));
-    const reqs = reqSnap.docs.map(d=>({id:d.id, ...d.data()}));
-    document.getElementById('teamRequestsList').innerHTML = reqs.map(r=>`
-      <div class="sub-card"><div class="sub-title">${r.user_email||r.user_id}</div><div class="sub-meta">طلب انضمام</div>
-      <div class="sub-actions"><button class="sub-btn approve" onclick="respondJoinRequest('${r.id}','${r.user_id}','${(r.user_email||'').replace(/'/g,"")}',true)">قبول</button><button class="sub-btn reject" onclick="respondJoinRequest('${r.id}','${r.user_id}','',false)">رفض</button></div></div>
-    `).join('') || `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو طلبات انضمام</div></div>`;
-  }
-  switchTeamRoomTab('subs');
   openModal('teamRoomModal');
-}
-function switchTeamRoomTab(tab){
-  document.querySelectorAll('#teamRoomModal .admin-tab').forEach(t=>t.classList.toggle('active', t.dataset.tt===tab));
-  document.querySelectorAll('#teamRoomModal .admin-panel2').forEach(p=>p.classList.toggle('active', p.dataset.tp===tab));
-}
-/* ===== صندوق إشعارات خفيف — يفتح كصندوق منسدل بدون فتح روم/صفحة كاملة (طلب سابق مكرر) ===== */
-let notifPopupOpen = false;
-function toggleNotifPopup(forceState){
-  notifPopupOpen = typeof forceState === 'boolean' ? forceState : !notifPopupOpen;
-  document.getElementById('notifPopup').classList.toggle('open', notifPopupOpen);
-  document.getElementById('notifPopupOverlay').classList.toggle('open', notifPopupOpen);
-  if(notifPopupOpen) loadNotifications();
-}
-async function loadNotifications(){
-  const box = document.getElementById('notifPopupList');
-  if(!currentUser){ box.innerHTML = `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">سجّل الدخول عشان تشوف إشعاراتك</div></div>`; return; }
-  if(!fbReady) return;
-  box.innerHTML = '<div class="chat-skel"></div><div class="chat-skel"></div>';
-  try{
-    const {collection, query, where, orderBy, limit, getDocs} = window.fb;
-    const snap = await getDocs(query(collection(window.fbDb,'notifications'), where('uid','==',currentUser.id), orderBy('createdAt','desc'), limit(30)));
-    const rows = snap.docs.map(d=>({id:d.id, ...d.data()}));
-    box.innerHTML = rows.length ? rows.map(n=>{
-      const when = n.createdAt && n.createdAt.toDate ? n.createdAt.toDate().toLocaleString('ar-EG') : '';
-      return `<div class="notif-item ${n.read?'':'unread'}">${n.read?'':'<span class="dot2"></span>'}<div class="txt"><div>${n.text||''}</div><div class="t">${when}</div></div></div>`;
-    }).join('') : `<div class="empty-state" style="padding:20px;">${svgIcon('sparkle')}<div class="txt">ماكو إشعارات بعد</div></div>`;
-    const unread = rows.filter(n=>!n.read).length;
-    document.getElementById('notifDot').style.display = unread ? 'block' : 'none';
-  }catch(e){ console.error('تعذر تحميل الإشعارات:', e); box.innerHTML=''; }
-}
-async function markAllNotifsRead(){
-  if(!currentUser || !fbReady) return;
-  try{
-    const {collection, query, where, getDocs, updateDoc, doc} = window.fb;
-    const snap = await getDocs(query(collection(window.fbDb,'notifications'), where('uid','==',currentUser.id), where('read','==',false)));
-    for(const d of snap.docs) await updateDoc(doc(window.fbDb,'notifications',d.id), {read:true});
-    loadNotifications();
-  }catch(e){ console.error(e); }
-}
-function pushNotification(uid, text){
-  if(!fbReady) return;
-  window.fb.addDoc(window.fb.collection(window.fbDb,'notifications'), {uid, text, read:false, createdAt: window.fb.serverTimestamp()}).catch(console.error);
-}
-async function respondJoinRequest(reqId, userId, userEmail, accept){
-  try{
-    await window.fb.updateDoc(window.fb.doc(window.fbDb,'team_join_requests',reqId), {status: accept?'accepted':'rejected'});
-    if(accept){
-      await window.fb.addDoc(window.fb.collection(window.fbDb,'team_members'), {team_id:currentTeamId, user_id:userId, user_email:userEmail});
-    }
-    pushNotification(userId, accept ? `تم قبول طلب انضمامك لفريق "${document.getElementById('teamRoomName').textContent}"` : `تم رفض طلب انضمامك لفريق "${document.getElementById('teamRoomName').textContent}"`);
-    openTeamRoom(currentTeamId, document.getElementById('teamRoomName').textContent, document.getElementById('teamRoomDesc').textContent, currentTeamOwner);
-  }catch(e){ alert('صار خطأ: '+e.message); }
-}
-async function removeTeamMember(memberDocId){
-  if(!confirm('إزالة هذا العضو من الفريق؟')) return;
-  try{
-    await window.fb.deleteDoc(window.fb.doc(window.fbDb,'team_members',memberDocId));
-    openTeamRoom(currentTeamId, document.getElementById('teamRoomName').textContent, document.getElementById('teamRoomDesc').textContent, currentTeamOwner);
-  }catch(e){ alert('تعذر الإزالة: '+e.message); }
-}
-async function toggleFollowTeam(){
-  if(!currentUser){ openModal('authModal'); return; }
-  try{
-    if(window.__myTeamFollowDoc){
-      await window.fb.deleteDoc(window.fb.doc(window.fbDb,'team_followers',window.__myTeamFollowDoc));
-    } else {
-      await window.fb.addDoc(window.fb.collection(window.fbDb,'team_followers'), {team_id:currentTeamId, user_id:currentUser.id});
-    }
-    openTeamRoom(currentTeamId, document.getElementById('teamRoomName').textContent, document.getElementById('teamRoomDesc').textContent, currentTeamOwner);
-  }catch(e){ alert('صار خطأ: '+e.message); }
-}
-function openEditTeam(){
-  document.getElementById('editTeamName').value = document.getElementById('teamRoomName').textContent;
-  document.getElementById('editTeamDesc').value = document.getElementById('teamRoomDesc').textContent;
-  document.getElementById('editTeamMsg').className='auth-msg'; document.getElementById('editTeamMsg').textContent='';
-  openModal('editTeamModal');
-}
-async function saveTeamEdit(){
-  const name = document.getElementById('editTeamName').value.trim();
-  const desc = document.getElementById('editTeamDesc').value.trim();
-  const msg = document.getElementById('editTeamMsg');
-  if(!name){ msg.className='auth-msg err'; msg.textContent='اكتب اسم الفريق'; return; }
-  try{
-    await window.fb.updateDoc(window.fb.doc(window.fbDb,'teams',currentTeamId), {name, description:desc});
-    msg.className='auth-msg ok'; msg.textContent='تم الحفظ';
-    document.getElementById('teamRoomName').textContent = name;
-    document.getElementById('teamRoomDesc').textContent = desc;
-    setTimeout(()=>closeModal('editTeamModal'), 900);
-    loadTeamPanel();
-  }catch(e){ msg.className='auth-msg err'; msg.textContent='تعذر الحفظ: '+e.message; }
 }
 let submitType = 'anime';
 function openSubmitForm(type){
@@ -2506,6 +2567,7 @@ function switchAdminTab(tab){
   if(tab==='pureteam') loadPureTeamList();
   if(tab==='logins') loadLoginLogs();
   if(tab==='deletecontent') loadDeleteContentList();
+  if(tab==='trash') loadTrash();
   if(tab==='tools') fillSiteSettingsForm();
 }
 async function loadAdminSubs(){
@@ -2522,12 +2584,7 @@ async function loadAdminSubs(){
 async function reviewSub(id, status){
   if(getAdminLevel() < 2){ alert('يحتاج صلاحية محرر محتوى فما فوق'); return; }
   try{
-    const snap = await window.fb.getDoc(window.fb.doc(window.fbDb,'submissions',id));
     await window.fb.updateDoc(window.fb.doc(window.fbDb,'submissions',id), {status});
-    if(snap.exists()){
-      const s = snap.data();
-      if(s.submitted_by) pushNotification(s.submitted_by, status==='approved' ? `تم قبول عملك "${s.title}"` : `تم رفض عملك "${s.title}"`);
-    }
     loadAdminSubs();
   }catch(error){ alert(error.message); }
 }
@@ -2557,12 +2614,12 @@ async function resolveReport(id){
   catch(error){ alert(error.message); }
 }
 async function adminDeleteComment(commentId, reportId){
-  if(!confirm('حذف هذا التعليق نهائيًا؟')) return;
+  if(!confirm('إخفاء هذا التعليق؟ راح يروح لروم المحذوفات المخفي وتگدر ترجعه لو تريد.')) return;
   try{
-    await window.fb.deleteDoc(window.fb.doc(window.fbDb,'comments',commentId));
+    await window.fb.updateDoc(window.fb.doc(window.fbDb,'comments',commentId), {deleted:true, deletedAt: window.fb.serverTimestamp(), deletedBy: currentUser.email});
     if(reportId) await window.fb.updateDoc(window.fb.doc(window.fbDb,'reports',reportId), {status:'resolved'});
-    alert('تم حذف التعليق'); loadAdminReports();
-  }catch(e){ alert('تعذر الحذف: '+e.message); }
+    alert('تم إخفاء التعليق'); loadAdminReports();
+  }catch(e){ alert('تعذر الإخفاء: '+e.message); }
 }
 async function adminDeleteChapter(mangaKey, n, reportId){
   if(!confirm(`حذف الفصل ${n} نهائيًا؟`)) return;
@@ -2655,21 +2712,48 @@ async function loadLoginLogs(){
     const {collection, query, orderBy, limit, getDocs} = window.fb;
     const snap = await getDocs(query(collection(window.fbDb,'login_logs'), orderBy('loginAt','desc'), limit(50)));
     const rows = snap.docs.map(d=>d.data());
+    const now = Date.now();
+    const onlineEmails = new Set();
+    const allEmails = new Set();
+    rows.forEach(r=>{
+      if(r.email) allEmails.add(r.email);
+      const t = r.loginAt && r.loginAt.toDate ? r.loginAt.toDate().getTime() : 0;
+      if(r.email && t && (now - t) < 15*60*1000) onlineEmails.add(r.email);
+    });
+    document.getElementById('onlineNowCount').textContent = onlineEmails.size;
+    document.getElementById('uniqueUsersCount').textContent = allEmails.size;
     box.innerHTML = rows.length ? rows.map(r=>{
       const when = r.loginAt && r.loginAt.toDate ? r.loginAt.toDate().toLocaleString('ar-EG') : '—';
       return `<div class="sub-card"><div class="sub-title">${r.email||'—'}</div><div class="sub-meta">${when}${r.device?(' · '+r.device.slice(0,50)):''}</div></div>`;
     }).join('') : `<div class="empty-state" style="padding:16px;">${svgIcon('sparkle')}<div class="txt">ماكو تسجيلات دخول بعد</div></div>`;
   }catch(e){ console.error(e); box.innerHTML = `<div class="empty-state" style="padding:16px;"><div class="txt">تعذر تحميل السجل</div></div>`; }
 }
-/* ===== حذف عمل كامل (عمل + كل فصوله + كل تعليقاته) — طلب هذي الرسالة ===== */
+/* ===== حذف عمل: أرشفة مخفية (تقدر ترجعها) أو حذف نهائي بلا رجعة ===== */
 async function loadDeleteContentList(){
   if(getAdminLevel() < 2) return;
   const box = document.getElementById('deleteContentList');
   const keys = Object.keys(ANIME);
   box.innerHTML = keys.length ? keys.map(k=>`
     <div class="sub-card"><div class="sub-title">${ANIME[k].title}</div><div class="sub-meta">معرّف: ${k}</div>
-    <div class="sub-actions"><button class="sub-btn reject" onclick="cascadeDeleteManga('${k}')">حذف العمل كامل + فصوله + تعليقاته</button></div></div>
+    <div class="sub-actions"><button class="sub-btn approve" onclick="archiveManga('${k}')">أرشفة (إخفاء — تقدر ترجعها)</button><button class="sub-btn reject" onclick="cascadeDeleteManga('${k}')">حذف نهائي بلا رجعة</button></div></div>
   `).join('') : `<div class="empty-state" style="padding:16px;">${svgIcon('sparkle')}<div class="txt">ماكو أعمال حاليًا</div></div>`;
+}
+async function archiveManga(key){
+  const title = ANIME[key] ? ANIME[key].title : key;
+  if(!confirm(`أرشفة "${title}"؟ راح تختفي عن كل الزوار وتصير بروم المحذوفات المخفي عندك بس.`)) return;
+  try{
+    await window.fb.updateDoc(window.fb.doc(window.fbDb,'mangas',key), {deleted:true, deletedAt: window.fb.serverTimestamp(), deletedBy: currentUser.email});
+    delete ANIME[key];
+    alert('تم إخفاء العمل — تلگاه بروم المحذوفات');
+    loadDeleteContentList(); renderRows();
+  }catch(e){ alert('تعذر الإخفاء: '+e.message); }
+}
+async function restoreManga(id, title){
+  try{
+    await window.fb.updateDoc(window.fb.doc(window.fbDb,'mangas',id), {deleted:false});
+    alert(`تم استرجاع "${title}"`);
+    loadTrash(); loadMangasFromFirestore();
+  }catch(e){ alert('تعذر الاسترجاع: '+e.message); }
 }
 async function cascadeDeleteManga(key){
   const title = ANIME[key] ? ANIME[key].title : key;
@@ -2686,6 +2770,32 @@ async function cascadeDeleteManga(key){
     loadDeleteContentList();
     renderRows();
   }catch(e){ alert('تعذر الحذف الكامل: '+e.message); }
+}
+/* ===== روم المحذوفات المخفي — مانهاوا مؤرشفة + تعليقات محذوفة، ماحد يشوفهن غير الإداري ===== */
+async function loadTrash(){
+  if(getAdminLevel() < 2) return;
+  const mBox = document.getElementById('trashMangaList');
+  const cBox = document.getElementById('trashCommentsList');
+  mBox.innerHTML = `<div class="chat-skel"></div>`; cBox.innerHTML = `<div class="chat-skel"></div>`;
+  try{
+    const {collection, query, where, getDocs, limit} = window.fb;
+    const mSnap = await getDocs(query(collection(window.fbDb,'mangas'), where('deleted','==',true)));
+    mBox.innerHTML = mSnap.docs.length ? mSnap.docs.map(d=>{
+      const v = d.data();
+      return `<div class="sub-card"><div class="sub-title">${v.title||d.id}</div><div class="sub-meta">أُخفيت بواسطة: ${v.deletedBy||'—'}</div>
+      <div class="sub-actions"><button class="sub-btn approve" onclick="restoreManga('${d.id}','${(v.title||d.id).replace(/'/g,"")}')">استرجاع</button></div></div>`;
+    }).join('') : `<div class="empty-state" style="padding:16px;">${svgIcon('sparkle')}<div class="txt">ماكو مانهاوا مؤرشفة</div></div>`;
+    const cSnap = await getDocs(query(collection(window.fbDb,'comments'), where('deleted','==',true), limit(50)));
+    cBox.innerHTML = cSnap.docs.length ? cSnap.docs.map(d=>{
+      const v = d.data();
+      return `<div class="sub-card"><div class="sub-title">${(v.text||'').slice(0,80)}</div><div class="sub-meta">${v.authorEmail||v.userEmail||'—'} · حذفه: ${v.deletedBy||'—'}</div>
+      <div class="sub-actions"><button class="sub-btn approve" onclick="restoreComment('${d.id}')">استرجاع</button></div></div>`;
+    }).join('') : `<div class="empty-state" style="padding:16px;">${svgIcon('sparkle')}<div class="txt">ماكو تعليقات محذوفة</div></div>`;
+  }catch(e){ console.error(e); mBox.innerHTML = cBox.innerHTML = `<div class="empty-state" style="padding:16px;"><div class="txt">تعذر التحميل</div></div>`; }
+}
+async function restoreComment(id){
+  try{ await window.fb.updateDoc(window.fb.doc(window.fbDb,'comments',id), {deleted:false}); loadTrash(); alert('تم استرجاع التعليق'); }
+  catch(e){ alert('تعذر الاسترجاع: '+e.message); }
 }
 function loadAdminsList(){
   const box = document.getElementById('adminsList'); if(!box) return;
@@ -2764,9 +2874,20 @@ async function publishManga(){
     await window.fb.setDoc(window.fb.doc(window.fbDb,'mangas',key), {
       title, type: document.getElementById('upType').value, genre: document.getElementById('upGenre').value.trim(),
       description: document.getElementById('upDescAr').value.trim() || document.getElementById('upDescEn').value.trim(),
+      cover: document.getElementById('upCoverUrl').value.trim() || null,
+      banner: document.getElementById('upBannerUrl').value.trim() || null,
+      altNames: document.getElementById('upAltNames').value.trim() || null,
+      status: document.getElementById('upStatus').value,
+      readDirection: document.getElementById('upReadDir').value,
+      ageRating: document.getElementById('upAgeRating').value,
+      author: document.getElementById('upAuthor').value.trim() || null,
+      artist: document.getElementById('upArtist').value.trim() || null,
+      publisher: document.getElementById('upPublisher').value.trim() || null,
+      volumes: +document.getElementById('upVolumes').value || null,
+      totalChapters: +document.getElementById('upTotalChapters').value || null,
       uploadedBy: currentUser.email, updatedAt: window.fb.serverTimestamp()
     }, {merge:true});
-    msg.className='auth-msg ok'; msg.textContent='تم حفظ بيانات العمل';
+    msg.className='auth-msg ok'; msg.textContent='تم إنشاء السلسلة';
     document.getElementById('upChKey').value = key;
     loadMangasFromFirestore();
   }catch(e){ msg.className='auth-msg err'; msg.textContent='تعذر الحفظ: '+e.message; }
@@ -2781,10 +2902,13 @@ async function publishChapter(){
   const textAr = document.getElementById('upChTextAr').value.trim() || document.getElementById('upChTextEn').value.trim();
   try{
     await window.fb.setDoc(window.fb.doc(window.fbDb,'mangas',key,'chapters',String(n)), {
-      number:n, text: textAr || null, pages: pages.length?pages:null, uploadedBy: currentUser.email, createdAt: window.fb.serverTimestamp()
+      number:n, volume: document.getElementById('upChVolume').value.trim() || null, season: document.getElementById('upChSeason').value.trim() || null,
+      title: document.getElementById('upChTitle').value.trim() || null,
+      text: textAr || null, pages: pages.length?pages:null, uploadedBy: currentUser.email, createdAt: window.fb.serverTimestamp()
     });
     msg.className='auth-msg ok'; msg.textContent='تم نشر الفصل';
-    document.getElementById('upChNum').value=''; document.getElementById('upChTextEn').value=''; document.getElementById('upChTextAr').value=''; document.getElementById('upChPages').value='';
+    document.getElementById('upChNum').value=''; document.getElementById('upChVolume').value=''; document.getElementById('upChSeason').value=''; document.getElementById('upChTitle').value='';
+    document.getElementById('upChTextEn').value=''; document.getElementById('upChTextAr').value=''; document.getElementById('upChPages').value='';
     loadMangasFromFirestore();
   }catch(e){ msg.className='auth-msg err'; msg.textContent='تعذر النشر: '+e.message; }
 }
